@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+   <head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+      <title>Community Room Title</title>
+            <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <!-- jQuery library -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <!-- Popper JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+      <!-- Latest compiled JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="../../css/style.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous">
+      <style>
+          body{
+        font: 400 15px/1.8 Lato, sans-serif;
+        width: 100%;
+        height: 100%;
+    }
+          strong.intro {
+    font-size: 20px;
+    color: #274d5c !important;
+    text-transform: capitalize;
+    font-weight: bold !important;
+}
+.margin{
+    margin-top: 15% !important;
+}
+h2.font_2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #64c9f1 !important;
+    text-transform: capitalize;
+}
+p.font_8 {
+    font-size: 16px;
+    color: #eef3f5 !important;
+}
+ul.font_8 li {
+    margin-left: 40px;
+    list-style: disc;
+}
+strong.accept {
+    font-size: 20px;
+}
+span.font_8 {
+    font-size: 20px;
+    font-weight: bold;
+}
+strong.accept1 {
+    font-size: 20px;
+    font-weight: bold;
+}
+.card{
+        background: url("../../img/truso_bg1.png");
+        border-radius: 3px !important;
+        padding: 20px;
+        margin-bottom: 2% !important;
+        box-shadow: 0 0 10px rgb(247, 78, 11), 0 0 10px rgb(247, 78, 11), 0 0 10px rgb(247, 78, 11);
+    }
+.sdfasda{
+        background: transparent !important;
+        box-shadow: 0 0 10px rgb(102, 170, 248), 0 0 10px rgb(40, 67, 224), 0 0 10px rgb(103, 150, 250);
+    }
+      </style>
+   </head>
+   <body>
+      <section class="trsuing">
+         <div class="container">
+            <a href="/">
+               <div class="logo">
+                  <img src="../../img/Truso_logo.png">
+               </div>
+            </a>
+         </div>
+         {{#if data}}
+      </section>
+      <section class="untree_co-hero1">
+          <div class="main-content">
+       <div class="container">
+           <div class="card" style="margin-top: 2% !important">
+               <header class="text-center text-white" style="font-size: 30px;letter-spacing: 2px;font-weight: bold;">Community Room</header>
+                <br>
+            <div class="row pl-3">
+               <div class="col-lg-12">
+                    <div class="headsss">
+                        <form action="">
+                            <lable class="text-white">
+                                        <h5>Select Room Title </h5>
+                                    </lable>
+                            <select name="category" class="form-control" id="roomUid">
+                                <option value="">Select</option>
+                                    {{#each data}}
+                                        <option value="{{{this.uid}}}">{{this.title}}</option>
+                                    {{/each}}
+                            </select>
+                        </form>
+                        <br>
+                    </div>
+               </div>
+           </div>
+           <div id="dataappend">
+
+           </div>
+      </div>
+       </div>
+      </section>
+      {{/if}}
+      <footer id="footer" class="footer-area">
+         <div class="footer-widget">
+            <div class="container">
+               <div class="row">
+                  <div class="col-lg-4 col-sm-6">
+                     <div class="imgs">
+                        &nbsp;<img src="../../img/app_screen.png" style="width:55%">
+                        <h6 class="footer-title1">A true social network based on video.</h6>
+                     </div>
+                  </div>
+                  <div class="col-lg-4 col-sm-6">
+                     <div class="footer-link">
+                        <h6 class="footer-title">Things To Know</h6>
+                        <ul class="user-list">
+                           <li class="listing"><a href="/terms">Terms & Conditions</a></li>
+                           <li class="listing"><a href="/privacy" class="plicy">Privacy Policy</a></li>
+                           <li class="listing"><a href="/guide">Guidelines</a></li>
+                           <li class="listing"><a href="/press">Press</a></li>
+                        </ul>
+                     </div>
+                  </div>
+                  <div class="col-lg-4 col-sm-6">
+                     <div class="footer-link">
+                        <h6 class="footer-title">Get Connected!</h6>
+                        <h6 class="footer-titles">help@jointruso.com</h6>
+                        <ul class="olisted">
+                           <li><a href="https://www.facebook.com/truso.app.7"><i class="fab fa-facebook-square" aria-hidden="true"></i></a></li>
+                        <li><a href="https://twitter.com/jointruso/"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="https://www.instagram.com/jointruso/"><i class="fab fa-instagram" aria-hidden="true"></i></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="rights-rsvd">
+                        <p>All Right Reserved @ Copyright 2021</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </footer>
+   </body>
+   
+   <script>
+    $(function(){
+        $("#roomUid").change(function(e){
+            let roomUid = $(this).val();
+            $('#dataappend div').remove();
+            $('#dataappend p').remove();
+            $('#dataappend h2').remove();
+            $('#dataappend header').remove();
+            $.ajax({
+                url:`/admin/Show_communityRoom?roomUid=${roomUid}`,
+                type:'GET', 
+                success:function(data){
+                        $('#dataappend').append(`<div class="card sdfasda" style="margin-top: 2% !important" >
+            <header class="text-center text-white" style="font-size: 30px;letter-spacing: 2px;font-weight: bold;">Community Room Details</header>
+            <br>
+            <div class="row pl-3">
+                <div class="col-lg-4">
+                    <div class="headsss">
+                        <h2 class="font_2">title :</h2>
+                        <p class="font_8">${data.title}</p>
+                        <h2 class="font_2">startTime :</h2>
+                        <p class="font_8"> ${data.startTime} </p>
+                        <h2 class="font_2">endTime :</h2>
+                        <p class="font_8">${data.endTime}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="headsss">
+                        <h2 class="font_2">hoster Name :</h2>
+                        <p class="font_8"> ${data.hosterID} </p>
+                        <h2 class="font_2">description :</h2>
+                        <p class="font_8"> ${data.description} </p>
+                        <h2 class="font_2">hands Name :</h2>
+                        <p class="font_8"> ${data.hands} </p>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="headsss">
+                        <h2 class="font_2">thumbImageURL</h2>
+                        <p class="font_8"> 
+                            <img src="${data.thumbImageURL}" class="rounded d-block img-thumbnail" style="width: 20%;" alt="Responsive image">
+                            </p>
+                        <h2 class="font_2">bgImageURL</h2>
+                        <p class="font_8">
+                            <img src="${data.bgImageURL}" class="rounded d-block img-thumbnail" style="width: 20%;" alt="Responsive image">
+                            </p>
+                        <h2 class="font_2">hosters Name :</h2>
+                        <p class="font_8">${data.hosters}</p>
+                    </div>
+                </div>
+           </div>
+           <div class="row pl-3">
+                <div class="col-lg-4">
+                    <div class="headsss">
+                        <h2 class="font_2">idArr Name :</h2>
+                        <p class="font_8"> ${data.idArr} </p>
+                        <h2 class="font_2">audiences Name :</h2>
+                        <p class="font_8">${data.audiences}</p>
+                        <h2 class="font_2">inviters Name :</h2>
+                        <p class="font_8">${data.inviters}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="headsss">
+                        <h2 class="font_2">allParticipants Name :</h2>
+                        <p class="font_8">${data.allParticipants}</p>
+                        <h2 class="font_2">allParticipantIds Name :</h2>
+                        <p class="font_8">${data.allParticipantIds}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <br>
+                    <br>
+                    <br>
+                    <h2 class="font_2"> Delete Profile Image <a class="btn btn-sm btn-outline-danger text-white" title="Delete profile image" href="/admin/deleteprofileimageC/${data.uid}" style="text-decoration: none;"><i class="fas fa-trash"></i></a></h2>
+                    <h2 class="font_2"> Delete bg Image <a class="btn btn-sm btn-outline-danger text-white" title="Delete bg image" href="/admin/deletebgimageC/${data.uid}" style="text-decoration: none;"><i class="fas fa-trash"></i></a></h2>
+                    <div class="headsss">
+                        <h2 class="font_2">  <a class="btn btn-outline-danger text-white" title="Delete Community Room" href="/admin/deletecommunityroom/${data.uid}" style="text-decoration: none;"><i class="fas fa-trash"></i> &nbsp;&nbsp;Delete Community Room</a></h2>
+                    </div>
+                </div>
+           </div>
+           </div>`
+           );
+                }
+            });
+        });
+    });
+</script>
+</html>
+{{!-- <a class="btn btn-sm btn-outline-info text-white "target="_blank" title="Download image" href="${data.bgImageURL}" style="text-decoration: none;"><i class="fas fa-download"></i></a> --}}
