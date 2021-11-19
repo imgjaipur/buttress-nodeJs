@@ -14,7 +14,7 @@ var upload=multer({storage:Storage}).single("image");
 
 userRoutes.post('/insert',upload,userController.register);
 userRoutes.post('/login', userController.login);
-userRoutes.post('/user', userController.verify);
-
+userRoutes.post('/verify', userController.verify);
+userRoutes.put('/update/:id',upload, userController.updateprofile);
 
 exports.userRoutes = userRoutes;

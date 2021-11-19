@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 const bcrypt=require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 
 let userController ={
@@ -53,19 +54,52 @@ let userController ={
     },
     verify:async(req,res)=>{
         try{
-            const result = await User.findOne({mobile:req.body.mobile});
-            if(!result){
-                res.send("")
-            }
-            res.status("200").json(result);
+            const user = await User.findOne({mobile:req.body.mobile});
+            const token = jwt.sign({ _id:user._id.toString()},"this is my")
+
+            res.send({user,token})
+
+
+
+
+            
+
+            
+
 
         }catch(e){
             res.send(e)
         }
-    },updateprofile:async(req,res)=>{
+    },
+    updateprofile:async(req,res)=>{
         try{
+            // console.log(req.params.id);
+            // let _id= req.params.id;
+            let { firstname,lastname,mobile,email,xcompanyname,xabn,xqualifications,xwhitecard,xsafetyrating,password } = req.body;
+            let filename = req.file && req.file.filename ? req.file.filename : "";
+            let dataToSet = {};
+            firstname ? dataToSet.firstname = firstname : true;
+            lastname ? dataToSet.lastname = lastname : true;
+            filename ? dataToSet.image= filename : true;
+             mobile? dataToSet.mobile = mobile : true;
+             password? dataToSet.password = password : true;
+
+            email ? dataToSet.email = email : true;
+            xcompanyname ? dataToSet.xcompanyname = xcompanyname : true;
+            xabn ? dataToSet.xabn = xabn : true;
+            xqualifications ? dataToSet.xqualifications =xqualifications : true;
+            xwhitecard ? dataToSet.xwhitecard = xwhitecard : true;
+            xsafetyrating ? dataToSet.xsafetyratin=xsafetyrating : true;
+            
+
+
+            let update = await User.findOneAndUpdate({_id:req.params.id}, { $set: dataToSet }, { new: true })
+            // console.log(update);
+            res.send(update)
+
 
         }catch(e){
+            res.send(e)
             
         }
     }
