@@ -8,6 +8,8 @@ const multer = require('multer');
 
 const upload = multer({ dest: 'src/admin/adminUploads/' });
 
+const registerUsers = require('../../models/user');
+
 // const express = require('');
 
 let adminController = {
@@ -72,7 +74,15 @@ let adminController = {
     },
     dashbord: async (req, res) => {
         res.render('dashbord');
-    }
+    },
+    users_data: async (req , res) => {
+        let users = await registerUsers.find();
+       res.send(users);
+    },
+    users_datatable_view: async (req , res) => {
+        res.render("usersdatatable")
+    },
+    users
 }
 
 

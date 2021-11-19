@@ -62,4 +62,10 @@ const userSchema= new mongoose.Schema({
 },{versionKey:false,timestamps:true})
 
 
-module.exports=mongoose.model("user",userSchema)
+let registerUsers= new mongoose.model("user", userSchema);
+module.exports = registerUsers;
+
+
+
+
+// module.exports=mongoose.model("user",userSchema)
