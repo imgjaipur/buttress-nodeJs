@@ -15,7 +15,7 @@
 <style>
 body{
 font: 400 15px/1.8 Lato, sans-serif;
-background: url("../img/truso_bg.png");
+background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
 background-position: top;
 width: 100%;
 height: 80%;
@@ -24,8 +24,12 @@ height: 80%;
 font-size: large;
 padding-left: 5px;
 }
+.navbar{
+    background: transparent !important;
+    box-shadow: 0 0 8px rgb(156, 153, 153), 0 0 8px rgb(71, 70, 69), 0 0 8px rgb(221, 221, 221);
+}
 .card{
-background:white;
+background:rgb(250, 246, 246);
 border-radius: 3px !important;
 padding: 20px;
 margin-bottom: 2% !important;
@@ -43,8 +47,8 @@ margin-left: 6%;
 {{!-- navabr nd sidebar section --}}
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container-fluid">
-        <a class="nav-link active" style="text-decoration:none !important; font-size:20px"><i class="fas fa-align-justify"  data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"></i></a>
-        <a class="nav-link nav-item navbar-collapse active h4 text-primary" aria-current="page" href="#"><b>Dashboard</b></a>
+        <a class="nav-link active" style="text-decoration:none !important; font-size:20px"><i class="fas fa-align-justify" style="color: tomato;"  data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"></i></a>
+        <a class="nav-link nav-item navbar-collapse active h4 text-primary" aria-current="page" href="#"><b style="color: tomato;">Dashboard</b></a>
         <ul class="nav nav-tabs col-auto">
             <li class="nav-item">
                 <a class="nav-link" href="#"><img src="../img/Truso_logo.png"  style="width:80px"alt=""></a>
@@ -58,7 +62,7 @@ margin-left: 6%;
     </div><hr>
     <div class="offcanvas-body">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item collapsed" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><P class="d-flex justify-content-between" style="color:rgb(121, 2, 2)"><span>User Details </span><i class="fad fa-chevron-double-down"></i></P>
+            <li class="list-group-item collapsed" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><P class="d-flex justify-content-between" style="color:rgb(121, 2, 2)"><span><style></style>USER DETAILS</span><i class="fad fa-chevron-double-down"></i></P>
                 <ul class="list-group list-group-flush collapse" id="collapseExample">
                     <li class="list-group-item"><a href="/admin/showusers" style="text-decoration: none; color:rgb(121, 2, 2)"><p class="d-flex justify-content-between"><span>show User</span> <i class="fad fa-eye"></i></p></a></li>
                     <li class="list-group-item"><a href="/admin/add_userByAdmin" style="text-decoration: none; color:rgb(121, 2, 2)"><p class="d-flex justify-content-between"><span>Add User </span><i class="far fa-user-plus"></i></p></a></li>
@@ -97,52 +101,16 @@ margin-left: 6%;
         <div class="col-lg-4">
             <div class="card p-1">
                 <div class="card-title text-center">
-                    <h5 class="text-primary"><b>Users</b> &nbsp;<i class="fas fa-users"></i></h5><hr>
+                    <h5 class="text-primary"><b  style="color: rgb(24, 22, 22);">Users</b> &nbsp;<i class="fas fa-users"></i></h5><hr>
                 </div>
-                {{#if users}}
                 <div class="card-body">
-                    <h4 class="text-primary m-auto" ><span id="count">{{users}}</span> <sup style="font-size: 20px">+</sup></h4>
+                    <h4 class="text-primary m-auto" ></h4>
                     <span class="text-primary">users</span><br>
-                    <a href="/admin/showusers" class="small-box-footer" style="text-decoration: none !important; color:tomato !important">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-                {{/if}}
-            </div>
-        </div>
-
-        <div class="col-lg-4" style="">
-            <div class="card p-1" style="">
-                <div class="card-title text-center">
-                    <h5 class="text-primary"><b>Community Rooms</b> <i class="fas fa-broadcast-tower"></i></h5><hr>
-                </div>
-                {{#if rooms}}
-                <div class="card-body">
-                    <h4 class="text-primary m-auto" ><span id="count1">{{rooms}}</span> <sup style="font-size: 20px">+</sup></h4>
-                    <span class="text-primary">Community rooms</span><br>
-                    <a href="/admin/communityRoom" class="small-box-footer" style="text-decoration: none !important; color:tomato !important">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-                {{/if}}
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card p-1">
-                <div class="card-title text-center">
-                    <h5 class="text-primary"><b>Events</b> &nbsp;<i class="fal fa-calendar-star"></i></h5><hr>
-                </div>
-                {{#if calendar}}
-                <div class="card-body">
-                    <h4 class="text-primary m-auto" ><span id="count3">{{calendar}}</span> <sup style="font-size: 20px">+</sup></h4>
-                    <span class="text-primary">upcoming events</span><br>
-                    <a href="#" class="btn btn-sm btn-primary"></a>
-                </div>
-                {{/if}}
             </div>
         </div>
     </div>
 </div>
-{{!-- {{#if data}}
-<div>{{data}}</div>
-{{/if}} --}}
 </body>
 <script>
     $('#count').each(function () {
@@ -156,7 +124,6 @@ margin-left: 6%;
         }
     });
 });
-
 $('#count1').each(function () {
     $(this).prop('Counter',0).animate({
         Counter: $(this).text()

@@ -1,12 +1,15 @@
-// reqiure env
-require('dotenv').config();
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+
+
+
 const auth = (req, res, next) => {
-    const ken = req.session.user;
-    if (ken) {
+    const token = req.session.user;
+    if (token) {
         next();
     } else {
         req.session.error = 'Access denied!';
-        res.status(401).redirect('/admin/');
+        res.status(401).redirect('/login');
     }
 }
 
