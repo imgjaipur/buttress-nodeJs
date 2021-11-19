@@ -43,15 +43,16 @@ const userSchema= new mongoose.Schema({
         type:String
     },
     profilestatus:{
-        type:String,
-        enum:['ACTIVE','INACTIVE' ],
-        default:'ACTIVE'
-     },
+        type:Boolean,
+        default:false
+    },
     status:{
-        type:String,
-        enum:['ACTIVE','INACTIVE' ],
-        default:'ACTIVE'
-
+        type:Boolean,
+        default:true
+    },
+    blocked :{
+        type : Boolean,
+        default:false
     },
     otp:{
         type:String
@@ -69,4 +70,10 @@ userSchema.methods.generateAuthToken = async function(){
 }
 
 
-module.exports=mongoose.model("user",userSchema)
+let registerUsers= new mongoose.model("user", userSchema);
+module.exports = registerUsers;
+
+
+
+
+// module.exports=mongoose.model("user",userSchema)

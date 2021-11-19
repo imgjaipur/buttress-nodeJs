@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>admin_insert</title>
+  <title>Admin_Signup</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
@@ -16,17 +16,16 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
   
-  {{!-- {{>index}} --}}
 </head>
 <style>
     body{
         font: 400 15px/1.8 Lato, sans-serif;
-        background: url("../img/truso_bg.png");
+        background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
         width: 100%;
         height: 100%;
     }
     .card{
-        background: url("../img/truso_bg.png");
+        background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
         background-position: center;
         margin-top: 5% !important;
         border-radius: 3% !important;
@@ -62,12 +61,12 @@
 <div class="login-img">
     <div class="container">
         <div class="logo">
-            <img src="../img/Truso_logo.png" style="width: 20%; margin-top:10px">
+            <img src="" alt = "logo_place" style="width: 20%; margin-top:10px">
         </div>
         <div class="card col-lg-4 text-center m-auto" style="">
             <div class="card-body">
                 <h4 class="card-title">Admin Sign-Up</h4>
-                <form class="form-group card-text  pt-2" action="/admin/registerAdmin" method="POST">
+                <form class="form-group card-text  pt-2" action="/register" method="POST" enctype="multipart/form-data">
                     <div class="p-3">
                         <input class="form-control" type="text"  name="name" placeholder="name">
                     </div>
@@ -79,6 +78,9 @@
                     </div>
                     <div class="p-3">
                         <input class="form-control" type="password" name="password" placeholder="Password">
+                    </div>
+                     <div class="p-3">
+                        <input class="form-control" type="file" name = "profile">
                     </div>
                     <div class="p-3 mt-2">
                         <button type="submit" class="btn text-white">&nbsp;Sign-Up<sup><i class="fal fa-user-plus"></i></sup></button>
