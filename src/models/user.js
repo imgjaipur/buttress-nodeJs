@@ -1,5 +1,5 @@
 const mongoose=require("mongoose");
-const bcrypt=require("bcrypt");
+// const bcrypt=require("bcrypt");
 const userSchema= new mongoose.Schema({
     firstname:{
         type:String,
@@ -11,17 +11,17 @@ const userSchema= new mongoose.Schema({
 
     },
     mobile:{
-        type:Number,
-        required:true,
-        unique:true
+        type:String,
+        // required:true,
+        // unique:true
     },
     email:{
         type:String,
-        required:true
+        // required:true
     },
     password:{
         type:String,
-        required:true
+        // required:true
     },
     image:{
         type:String
@@ -51,6 +51,9 @@ const userSchema= new mongoose.Schema({
         enum:['ACTIVE','INACTIVE' ],
         default:'ACTIVE'
 
+    },
+    otp:{
+        type:String
     }
 
 

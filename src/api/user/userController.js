@@ -1,6 +1,7 @@
 const User = require('../../models/user');
 const bcrypt=require("bcrypt");
 
+
 let userController ={
     register:async(req,res)=>{
         try{
@@ -28,22 +29,48 @@ let userController ={
     },
     login:async(req,res)=>{
         try{
-            const {mobile}=req.body
-            const login = await User.findOne({mobile});
-            // console.log(login);
-            if(!login){
-                res.status(201).send("go to registration page")
-            }
-            res.send(login)
-    
+            
+            
+            const data = await User.findOne({mobile:req.body.mobile})
+            // const responsetype={}
+            
+                let otpcode =Math.floor((Math.random()*10000)+1)
+            
+                let result = await User.findOneAndUpdate({ mobile:data.mobile},{ otp: otpcode} );
+
+            
+            res.send(result) 
+            // res.send(data)
+            
+            
+
     
         }catch(e){
             console.log(e);
-            res.status(500).json(e)
+            res.send(e)
         }
     
+    },
+    verify:async(req,res)=>{
+        try{
+            const result = await User.findOne({mobile:req.body.mobile});
+            if(!result){
+                res.send("")
+            }
+            res.status("200").json(result);
+
+        }catch(e){
+            res.send(e)
+        }
+    },updateprofile:async(req,res)=>{
+        try{
+
+        }catch(e){
+            
+        }
     }
 }
+
 
 
 
