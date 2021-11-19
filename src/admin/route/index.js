@@ -17,7 +17,7 @@ const auth = require('../middleware/auth');
 
 var storage1 = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, 'uploads/adminuploads/')
+        cb(null, 'C:/NodeJs/buttress-nodeJs/uploads/adminuploads/')
     },
     filename: function(req, file, cb) {
         let ext = path.extname(file.originalname)
@@ -40,7 +40,7 @@ router.get('/api', auth , adminController.admindata);
 router.get('/login' , adminController.login_View);
 router.post('/login' , adminController.log_in);
 router.get('/dashbord' ,auth, adminController.dashbord);
-router.get('/users-datatable' , adminController.users_datatable)
+// router.get('/users-datatable' , adminController.users_datatable)
 router.get('/usersdata' , adminController.users_data);
 
 

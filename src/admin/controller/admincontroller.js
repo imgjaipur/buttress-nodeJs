@@ -82,7 +82,7 @@ let adminController = {
     users_datatable_view: async (req , res) => {
         res.render("usersdatatable")
     },
-    users
+    // users
 }
 
 
