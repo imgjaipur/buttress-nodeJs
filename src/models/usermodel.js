@@ -1,46 +1,54 @@
 const mongoose=require("mongoose");
 
 // const jwt = require("jsonwebtoken");
-const userSchema= new mongoose.Schema({
+const registerSchema= new mongoose.Schema({
     firstname:{
         type:String,
+        default:""
 
     },
     lastname:{
         type:String,
+        default:""
     
 
     },
-    // mobile:{
-    //     type:String,
-    //     // required:true,
-    //     unique:true
-    // },
+    mobile:{
+        type:String,
+        // required:true,
+        unique:true,
+        default:""
+
+    },
     email:{
         type:String,
         // required:true
+        default:""
     },
     password:{
         type:String,
         // required:true
+        default:""
     },
     image:{
-        type:String
-    },
-    xcompanyname:{
-        type:String
+        type:String,
+        required:true,
+        default:""
     },
     xabn:{
-        type:String
+        type:String,
+        default:""
     },
     xqualifications:{
-        type:String
+        type:String,
+        default:""
     },
     xwhitecard:{
         type:String
     },
     xsafetyrating:{
-        type:String
+        type:String,
+        default:""
     },
     profilestatus:{
         type:Boolean,
@@ -56,7 +64,14 @@ const userSchema= new mongoose.Schema({
     },
     otp:{
         type:String
-    }
+    },
+    tokens:[{
+        token:{
+            type:String,
+            required:true
+
+        }
+    }]
 
 
 
@@ -64,10 +79,5 @@ const userSchema= new mongoose.Schema({
 
 
 
-let registerUsers= new mongoose.model("user", userSchema);
+let registerUsers= new mongoose.model("register", registerSchema);
 module.exports = registerUsers;
-
-
-
-
-// module.exports=mongoose.model("user",userSchema)

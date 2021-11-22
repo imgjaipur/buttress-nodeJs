@@ -20,6 +20,7 @@ app.use(
 // Routes 
 app.use('/', require('./src/api/index').v1routes);
 
+
 const port = process.env.PORT || 3030;
 app.listen(port, () => {
     // LoggerOutput.info('Log', `🌏 Express server started at ${port}`);
