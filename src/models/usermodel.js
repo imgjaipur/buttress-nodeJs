@@ -65,16 +65,11 @@ const registerSchema= new mongoose.Schema({
     otp:{
         type:String
     },
-    tokens:[{
-        token:{
-            type:String,
-            required:true
+    token:{
+        type:String,
+        required:true
 
-        }
-    }]
-
-
-
+    }
 },{versionKey:false,timestamps:true})
 
 
