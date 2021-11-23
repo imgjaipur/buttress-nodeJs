@@ -4,3 +4,4 @@ const {userRoutes} = require('./user/userRoute');
 const app = express();
 let routes = [].concat(userRoutes);
 exports.v1routes = 	app.use('/api' ,routes);
+
