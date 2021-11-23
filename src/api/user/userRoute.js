@@ -5,6 +5,7 @@ const userRoutes = Router();
 
 const userController = require('./userController');
 const auth =require('./../../lib/authmiddleware');
+const { isRequestValidated,validateSingupRequest}=require("./../../lib/validationuser")
 
 let  Storage=multer.diskStorage({
     destination:function(req,res,cb){
@@ -16,7 +17,8 @@ let  Storage=multer.diskStorage({
 })
  let  upload = multer({storage:Storage}).single("image");
 
-userRoutes.post('/insertUser',userController.register);
+userRoutes.post('/insertUser',validateSingupRequest,isRequestValidated,userController.register);
+// userRoutes.post('/insertUser',userController.register);
 userRoutes.post('/mobileLogin', userController.login);
 userRoutes.post('/emailLogin', userController.emaillogin);
 userRoutes.post('/verifyMobile', userController.verify);
@@ -24,5 +26,7 @@ userRoutes.post('/resendOTP', userController.resendOtp);
 
 userRoutes.get('/getProfile/:id', userController.getProfile);
 userRoutes.put('/updateProfile/:id',auth,upload,userController.updateprofile);
+userRoutes.post('/mobileRegistration', userController.mobileregistration);
+
 
 exports.userRoutes = userRoutes;
