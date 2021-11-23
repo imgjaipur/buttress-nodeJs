@@ -19,6 +19,9 @@ background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
 background-position: top;
 width: 100%;
 height: 80%;
+overflow: -moz-scrollbars-vertical;
+overflow-x: hidden;
+overflow-y: auto;
 }
 .nav{
 font-size: large;
@@ -29,11 +32,12 @@ padding-left: 5px;
     box-shadow: 0 0 8px rgb(156, 153, 153), 0 0 8px rgb(71, 70, 69), 0 0 8px rgb(221, 221, 221);
 }
 .card{
-background:rgb(250, 246, 246);
+background:rgb(245, 229, 212);
 border-radius: 3px !important;
 padding: 20px;
 margin-bottom: 2% !important;
 box-shadow: 0 0 8px tomato, 0 0 8px rgb(236, 76, 48), 0 0 8px tomato;
+align-items: center;
 }
 .card:hover{
 background:rgb(255, 255, 255);
@@ -105,7 +109,8 @@ margin-left: 6%;
                 </div>
                 <div class="card-body">
                     <h4 class="text-primary m-auto" ></h4>
-                    <span class="text-primary">users</span><br>
+                   <a href="/users-datatable" style="text-decoration: none;">users</a><br>
+                   <a href="/site-insert" style="text-decoration: none;">Add site information</a><br>
                 </div>
             </div>
         </div>

@@ -1,39 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>admin_insert</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Train+One&display=swap" rel="stylesheet">
-  {{!-- <link rel="stylesheet" href="admin/views/partials/index.css"> --}}
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
-  
-  {{!-- {{>index}} --}}
+    <title>Edit User</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Train+One&display=swap"
+        rel="stylesheet">
+    {{!--
+    <link rel="stylesheet" href="admin/views/partials/index.css"> --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+        integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+        integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+        crossorigin="anonymous"></script>
+
+
 </head>
 <style>
-    body{
+    body {
         font: 400 15px/1.8 Lato, sans-serif;
-        background: url("../../img/truso_bg.png");
+        background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
         width: 100%;
         height: 80%;
+        position: fixed;
     }
-    .card{
+
+    .card {
         background: transparent;
         background-position: center;
-        margin-top: 5% !important;
+        margin-top: 1% !important;
         margin-bottom: 3% !important;
+        margin-left: 16%;
         border-radius: 2% !important;
+        box-shadow: 1px 1px 2px rgb(255, 187, 1), 0 0 10px rgb(247, 105, 11), 0 0 5px rgb(238, 116, 59);
+
     }
-    .btn{
-        background-color: rgb(255, 102, 0);
+
+    .btn {
+        background-color: rgb(36, 35, 34);
         padding-left: 152px;
         padding-right: 152px;
         text-align: center;
@@ -41,94 +57,138 @@
         font-weight: bold;
         letter-spacing: 5px;
     }
+
     .btn:hover {
-        background-color: rgb(248, 241, 232); 
+        background-color: rgb(248, 241, 232);
         color: rgb(255, 123, 0) !important;
         border: 1px solid rgb(240, 100, 18);
     }
-    .card-title{
+
+    .card-title {
         color: rgb(255, 255, 255);
         font-weight: bold;
         letter-spacing: 2px;
         transition-duration: 0.5s;
     }
-    .card-title:hover{
-        color: rgb(247, 145, 12) !important;
+
+    .card-title:hover {
+        color: rgb(238, 81, 9) !important;
 
     }
-    .heigth{
-        height:50px
+
+    .heigth {
+        height: 50px
     }
-    .imgphone{
+
+    .imgphone {
         margin-top: 18% !important;
         margin-left: 28% !important;
         width: 550px;
     }
 </style>
+
 <body>
-<div class="login-img">
-    <div class="container">
-        <div class="logo">
-            <img src="../../img/Truso_logo.png" style="width: 23%; margin-top:10px;">
-        </div>
-        <div class="row">
-            <div class="card col-lg-5 text-center " style="">
-                <div class="card-body">
-                    <h4 class="card-title">Edit User</h4>
-                    {{#if data}}
-                    <form class="form-group card-text  pt-2" action="/admin/edituser/{{data.uid}}" method="POST" enctype="multipart/form-data">
-                        <div class="form-row mb-1">
+    <div class="login-img">
+        <div class="container">
+            <div class="logo">
+                <img src="Users/fahad/Desktop/" style="width: 23%; margin-top:10px;">
+            </div>
+            <div class="row">
+                <div class="card col-lg-8 text-center " style="">
+                    <div class="card-body">
+                        <h4 class="card-title">Edit User</h4>
+                        <form class="form-group card-text  pt-2" action="/edit-user" method="POST">
+                            {{#if user}}
                             <div class="form-group col-md-12 col-sm-12 mb-3">
-                            <input type="text1" class="form-control heigth" id="fname" name="firstName"
-                                placeholder="First Name" value="{{data.firstName}}">
+                                <input type="hidden" class="form-control heigth" name="id" value="{{user.id}}"
+                                    placeholder="id is here">
                             </div>
+                            {{/if}}
+                            <div class="form row mb-1">
+                                <div class="col-6">
+                                    {{#if user}}
+                                    <div class="form-group col-md-12 col-sm-12 mb-3">
+                                        <input type="text1" class="form-control heigth" name="firstname"
+                                            value="{{user.firstanme}}" placeholder="Enter Your First name">
+                                    </div>
+                                    {{/if}}
+                                </div>
+                                <div class="col-6">
+                                    {{#if user}}
+                                    <div class="form-group col-md-12 col-sm-12 mb-3">
+                                        <input type="text1" class="form-control heigth" name="lastname"
+                                            value="{{user.lastname}}" placeholder="Enter Your Last name">
+                                    </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="form row">
+                                <div class="col-6">
+                                    {{#if user}}
+                                    <div class="form-group col-md-12 col-sm-12 mb-3">
+                                        <input type="number" class="form-control heigth" name="mobile"
+                                            value="{{user.mobile}}">
+                                    </div>
+                                    {{/if}}
+                                </div>
+                                <div class="col-6">
+                                    {{#if user}}
+                                    <div class="form-group col-md-12 col-sm-12 mb-3">
+                                        <input type="email" class="form-control heigth" name="email"
+                                            value="{{user.email}}">
+                                    </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="form row">
+                                <div class="col-4">
+                                    <div class="form  col-md-12 col-sm-12 mb-3">
+                                        <input type="text" class="form-control heigth" name="xcompanyname"
+                                            value="{{user.xcompanyname}}" placeholder="Enter your Ex-Compant name">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group col-md-12 col-sm-12 mb-3">
+                                        <input type="text" class="form-control heigth" name="xabn"
+                                            placeholder="Enter xanbn" value="{{user.xabn}}">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group col-md-12 col-sm-12 mb-3">
+                                        <input type="text" class="form-control heigth"
+                                            placeholder="Enter your Ex-Qualification" name="xqualifications"
+                                            value="{{user.xqualifications}}">
+                                    </div>
+                                </div>
+
+                            </div>
+
                             <div class="form-group col-md-12 col-sm-12 mb-3">
-                            <input type="text1" class="form-control heigth" id="lname" placeholder="Last Name" name="lastName" value="{{data.lastName}}">
+                                <input type="text1" class="form-control heigth" placeholder="Enter your Ex-Whitecard"
+                                    name="xwhitecard" value="{{user.xwhitecard}}">
                             </div>
-                        </div>
-                        <div class="form-row">
+                            {{#if user}}
                             <div class="form-group col-md-12 col-sm-12 mb-3">
-                            <input type="email" class="form-control heigth" id="email" placeholder="Email" name="email" value="{{data.email}}">
+                                <input type="text1" class="form-control heigth" name="blocked" value="{{user.blocked}}"
+                                    placeholder="Enter blocked status">
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12 col-sm-12 mb-3">
-                            <input type="text" class="form-control heigth" required id="phone" name="phone" onkeypress="return isNumberKey(event)" value="{{data.phone}}" placeholder="Phone Number">
+                            {{/if}}
+
+                            <div class="p-2 mt-2">
+                                <button type="submit" class="btn text-white">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                        class="far fa-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;</button>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12 col-sm-12 mb-3">
-                                <input type="file" class="form-control heigth" required name="image">
-                            </div>
-                        </div>
-                        {{/if}}
-                        <div class="p-2 mt-2">
-                            <button type="submit" class="btn text-white">&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;</button>
-                        </div>
-                        
-                    </form>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-5 dsf">
+                    <img src="../../img/app_screen.png" alt="" class="imgphone">
                 </div>
             </div>
-            <div class="col-lg-5 dsf">
-                <img src="../../img/app_screen.png" alt="" class="imgphone">
-            </div>
+
         </div>
-        
     </div>
-</div>
-<script src="../../js/imageUploadPreview.js"></script>
-         <script>
-        function isNumberKey(evt){
-            <!--Function to accept only numeric values-->
-            //var e = evt || window.event;
-
-            var charCode = (evt.which) ? evt.which : evt.keyCode
-            if (charCode != 46 && charCode > 31
-                    && (charCode < 48 || charCode > 57))
-
-                return false;
-            else  return true;
-        }
-    </script>
 </body>
+
 </html>

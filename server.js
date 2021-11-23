@@ -24,6 +24,12 @@ const dotenv = require('dotenv').config();
 
 const fs = require('fs');
 
+
+
+
+app.use(express.static(path.join(__dirname,'/uploads')));
+
+
 app.use(express.json());
 
 app.use(
@@ -31,6 +37,8 @@ app.use(
         extended: true,
     })
 );
+
+app.use(express.static(path.join(__dirname, '/src/admin')));
 
 
 app.set('views', path.join(__dirname, 'src/admin/views'))

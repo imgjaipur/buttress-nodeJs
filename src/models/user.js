@@ -56,9 +56,6 @@ const userSchema= new mongoose.Schema({
     otp:{
         type:String
     }
-
-
-
 },{versionKey:false,timestamps:true})
 
 
