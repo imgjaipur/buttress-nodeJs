@@ -1,4 +1,5 @@
 const mongoose=require("mongoose");
+const validator = require("validator")
 
 // const jwt = require("jsonwebtoken");
 const registerSchema= new mongoose.Schema({
@@ -22,17 +23,23 @@ const registerSchema= new mongoose.Schema({
     },
     email:{
         type:String,
-        // required:true
-        default:""
+        
+        required:true,
+      
+
     },
     password:{
         type:String,
-        // required:true
-        default:""
-    },
+        required:true,
+        minlength:7,
+       },
+
+
+    
+
     image:{
         type:String,
-        required:true,
+        // required:true,
         default:""
     },
     xabn:{
@@ -65,16 +72,14 @@ const registerSchema= new mongoose.Schema({
     otp:{
         type:String
     },
-    tokens:[{
-        token:{
-            type:String,
-            required:true
+    token:{
+        type:String,
+        // required:true
 
-        }
-    }]
-
-
-
+    },
+    tempmobile:{
+        type:String
+    }
 },{versionKey:false,timestamps:true})
 
 
