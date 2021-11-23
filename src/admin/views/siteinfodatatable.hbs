@@ -34,31 +34,25 @@
                     "serverSide": true,
                     "searching": false,
                     ajax: {
-                         url: '/usersdatatable',
+                         url: "/siteinfo-data",
                          type: 'GET',
                          dataSrc: 'data'
                     },
                     "lengthMenu": [5, 8, 10, 50],
                     columns: [
-                         { data: 'name' },
-                         { data: 'mobile' },
-                         { data: 'email' },
-                         { data: "xcompanyname" },
-                         { data: "status" },
-                         { data: "blocked" },
-                         { data: "profilestatus" },
-                         { data: "actions" }
+                         { data: 'sitename' },
+                         { data: 'constructionmanager' },
+                         { data: 'siteaddress' },
+                         { data: "sitecode" },
+                         { data: "location" },
+                         { data: "date" },
+                         { data: "actions" },
+
 
                     ]
                });
           });
      </script>
-     {{!-- <script>
-          let oTable = $('#example').DataTable();   //using Capital D, which is mandatory to retrieve "api" datatables' object, latest jquery Datatable
-          $('#name').keyup(function () {
-               oTable.search($(this).val()).draw();
-          })
-     </script> --}}
 </head>
 <style>
      .abc {
@@ -69,18 +63,18 @@
 <body style="background: url('http://svmr.apphb.com/assets/img/backgrounds/1.jpg');">
      <div class="  col-lg-12 mt-4 p-3">
           <div class="text-center">
-               <header class="text-white" style="font-size: 30px; font-weight:bold;">User's Data-Table</header>
+               <header class="text-white" style="font-size: 30px; font-weight:bold;">Site's information Data-Table
+               </header>
           </div>
           <table id="example" class="table mt-3 col-lg-8 table-dark table-hover" style="width:100%">
                <thead>
-                    <tr class="">
-                         <th>Name</th>
-                         <th>Mobile</th>
-                         <th>Email</th>
-                         <th>Xcomapnyname</th>
-                         <th>status</th>
-                         <th>blocked</th>
-                         <th>profilestatus</th>
+                    <tr>
+                         <th>Site Name</th>
+                         <th>Construction Manager</th>
+                         <th>Site Address</th>
+                         <th>Site Code </th>
+                         <th>Location</th>
+                         <th>Start-End  Date</th>
                          <th>Actions</th>
                     </tr>
                </thead>
@@ -89,19 +83,6 @@
                <tfoot>
                </tfoot>
           </table>
-          {{!-- <form class="form-inline">
-               <div class="form-inline">
-                    <div class="col-1">
-                         <input type="text" class="form-control" id="name" placeholder="Name">
-                    </div><br>
-                    <div class="col-3">
-                         <input type="text" class="form-control" id="email" placeholder="Email">
-                    </div><br>
-                    <div class="col-1">
-                         <input type="text" class="form-control" id="status" placeholder="Status">
-                    </div><br>
-               </div>
-          </form> --}}
 </body>
 
 </html>
