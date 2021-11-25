@@ -1,4 +1,5 @@
-const User = require("../../models/usermodel.js");
+const User = require("../../models/user.js");
+// const User = require("../../models/usermodel.js");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -38,40 +39,100 @@ let userController = {
       return ErrorResponse(res, "Something went wrong! Please try again!");
     }
   },
-  login: async (req, res) => {
-    try {
-      const data = await User.findOne({ mobile: req.body.mobile });
-    //   console.log(data);
-      if (!data) {
-        return ErrorResponse(res, "go to registration page");
-      }
-      // const responsetype={}
+  // login: async (req, res) => {
+  //   try {
+  //     const data = await User.findOne({ mobile: req.body.mobile });
+  //   //   console.log(data);
+  //     if (!data) {
+  //       return ErrorResponse(res, "go to registration page");
+  //     }
+  //     // const responsetype={}
 
-      // let otpcode =Math.floor((Math.random()*10000)+1)
-      let otpcode = 1234;
+  //     // let otpcode =Math.floor((Math.random()*10000)+1)
+  //     let otpcode = 1234;
 
-      await User.findOneAndUpdate({ mobile: data.mobile }, { otp: otpcode });
-      // await userDao.login(req);
+  //     await User.findOneAndUpdate({ mobile: data.mobile }, { otp: otpcode });
+  //     // await userDao.login(req);
 
-      return successResponseWithData(res, "Success");
-      // res.send(data)
-    } catch (e) {
-      console.log(e);
-      return ErrorResponse(res, "Something is wrong!");
-    }
-  },
+  //     return successResponseWithData(res, "Success");
+  //     // res.send(data)
+  //   } catch (e) {
+  //     console.log(e);
+  //     return ErrorResponse(res, "Something is wrong!");
+  //   }
+  // },
   verify: async (req, res) => {
     try {
       const user = await User.findOne({ mobile: req.body.mobile });
-      if(!user) return ErrorResponse(res, "invalid mobile number");
-    
-      const otp = req.body.otp
-      if(user){
-         const OTP = await User.findOne({otp:req.body.otp})
-      !OTP && ErrorResponse(res, "otp not matched");
-      }
+      // const use = await User.findOne({ tempmobile: req.body.mobile });
+      // const OTP = await User.findOne({ otp: req.body.otp });
+      if(!user){
+        const use = await User.findOne({ tempmobile: req.body.mobile });
+        const OTP = await User.findOneAndUpdate(
+          { otp: req.body.otp },
+          { $set: { otp: ""}},
+          { new: true }
+        );
+        const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
 
-      const token = jwt.sign({ _id: user._id.toString() }, "this is my");
+        return successResponseWithData(res, "Success",token)
+
+      }else{
+     if (user.otp === user.otp) {
+        const OTP = await User.findOneAndUpdate(
+          { otp: req.body.otp },
+          { $set: { otp: ""}},
+          { new: true }
+        );
+        const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
+
+        return successResponseWithData(res, "Success",token)
+     }
+     }
+
+    //  }else{
+    //   const use = await User.findOne({ tempmobile: req.body.mobile });
+    //   if(use.otp===use.otp){
+    //     // const use = await User.findOne({ tempmobile: req.body.mobile });
+    //     const OTP = await User.findOneAndUpdate(
+    //       { otp: req.body.otp },
+    //       { $set: { otp: ""}},
+    //       { new: true }
+    //     );
+    //     const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
+
+    //     return successResponseWithData(res, "Success",token)
+
+    //   }
+    //  }
+ 
+
+      // const token = jwt.sign({ _id: user._id.toString() }, "this is my");
+      // return successResponseWithData(res, "Success",token)
+
+
+      // if(user){
+      //   const check = await User.findOne({tempmobile:req.body.mobile})
+      //   const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
+      // }
+
+      // }else{
+      // if (!user)
+      // return ErrorResponse(res, "invalid mobile number");
+      
+      // }
+    
+      // const otp = req.body.otp
+      // const OTP = await User.findOne({otp:req.body.otp})
+      // !OTP && ErrorResponse(res, "otp not matched");
+      // if(OTP){
+      //   //  const OTP = await User.findOne({otp:req.body.otp})
+      // // !OTP && ErrorResponse(res, "otp not matched");
+      // const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
+      // return successResponseWithData(res, "Success",token);
+      // }
+
+      // const token = jwt.sign({ _id: user._id.toString() }, "this is my");
 
       // if (user.otp == 1234) {
       //   await User.findOneAndUpdate(
@@ -84,7 +145,7 @@ let userController = {
     
         // return successResponseWithData(res, "Success");
       
-      return successResponseWithData(res, "Success",token);
+        
     }catch (e) {
       console.log(e);
       return ErrorResponse(res, "Something is wrong!");
@@ -94,6 +155,7 @@ let userController = {
     try {
       // console.log(req.params.id);
       // let _id= req.params.id;
+      let user = req.user;
       let {
         firstname,
         lastname,
@@ -103,15 +165,14 @@ let userController = {
         xqualifications,
         xwhitecard,
         xsafetyrating,
-        tempmobile
       } = req.body;
-      let filename = req.file && req.file.filename ? req.file.filename : "";
+      let filename = req.file && req.file.filename ? req.file.filename : "https://i.postimg.cc/XqJrTnxq/default-pic.jpg";
       let dataToSet = {};
       firstname ? (dataToSet.firstname = firstname) : true;
       lastname ? (dataToSet.lastname = lastname) : true;
       filename ? (dataToSet.image = filename) : true;
       mobile ? (dataToSet.mobile = mobile) : true;
-       tempmobile? (dataToSet.tempmobile = tempmobile) : true;
+      //  tempmobile? (dataToSet.tempmobile = tempmobile) : true;
 
       // email ? dataToSet.email = email : true;
       xcompanyname ? (dataToSet.xcompanyname = xcompanyname) : true;
@@ -121,13 +182,14 @@ let userController = {
       xsafetyrating ? (dataToSet.xsafetyratin = xsafetyrating) : true;
 
       await User.findOneAndUpdate(
-        { _id: req.params.id },
+        {_id: user._id  },
         { $set: dataToSet },
         { new: true }
       );
       // console.log(update);
-      return successResponseWithData(res, "Success");
+      return successResponseWithData(res, "Success",filename);
     } catch (e) {
+      console.log(e);
       return ErrorResponse(res, "Something is wrong!");
     }
   },
@@ -150,12 +212,11 @@ let userController = {
   },
   getProfile: async (req, res) => {
     try {
-      const _id = req.params.id;
-      const user = await User.findById(
-        { _id },
-        { firstname: 1 ,  lastname: 1,mobile:1 }
-      );
-      return successResponseWithData(res, "Success", user);
+      const user = req.user
+      const dat = await User.find({_id: user._id },{firstname:1,lastname:2,mobile:3,email:4,image:5,xcompanyname:6,xabn:7,xqualifications:8,xwhitecard:9,xsafetyrating:10});
+        
+    
+      return successResponseWithData(res, "Success", dat);
     } catch (e) {
       console.log(e);
       return ErrorResponse(res, "Something is wrong!");
@@ -181,7 +242,7 @@ let userController = {
       return ErrorResponse(res, "Something is wrong!");
     }
   },
-  mobileregistration:async(req,res)=>{
+  login:async(req,res)=>{
     try{
  
      const mob = await User.findOne({mobile:req.body.mobile})
@@ -189,21 +250,30 @@ let userController = {
       let otpcode = 1234;
   
         const th = await User.findOneAndUpdate({ mobile:mob.mobile }, { otp: otpcode });
+        return successResponseWithData(res, "Success");
+
      }
-      
-        if(!mob){
-          const mobo = await User.findOne({tempmobile:req.body.tempmobile})
-          let otpcode = 1234;
+    else{
+      const mobo = await User.findOne({tempmobile:req.body.mobile})
+     if(mobo){
+      let otpcode = 1234;
   
-          const th = await User.findOneAndUpdate({ mobile:mobo.mobile }, { otp: otpcode });
-          
-
-        }
-
-
-     
-    
-    return successResponseWithData(res, "Success");
+        const th = await User.findOneAndUpdate({ tempmobile:mobo.tempmobile }, { otp: otpcode });
+        return successResponseWithData(res, "Success");
+     }
+     else{
+      const mobi = await User({
+        tempmobile:req.body.mobile
+      })
+      await mobi.save()
+      let otpcode = 1234;
+  
+        const th = await User.findOneAndUpdate({ tempmobile:mobi.tempmobile }, { otp: otpcode });
+        // await mobi.save()
+      return successResponseWithData(res, "Success");
+     }
+    }
+    // return successResponseWithData(res, "Success",mob);
    
   
 
@@ -214,7 +284,39 @@ let userController = {
       return ErrorResponse(res, "Something is wrong!");
 
     }
+  },
+  sociallogin:async(req,res)=>{
+    try {
+      const mail = await User.findOne({email:req.body.email})
+      if(mail){
+        const token = jwt.sign({ _id: mail._id.toString() }, "this is my");
+        return successResponseWithData(res, "Success",token);
+
+      }
+      if(!mail){
+        const data = await User({
+          email:req.body.email
+          
+        })
+        await data.save()
+        const toke = jwt.sign({ _id: data._id.toString() }, "this is my");
+        return successResponseWithData(res, "Success",toke);
+
+      }
+      // return successResponseWithData(res, "Success",token,toke);
+
+      
+    } catch (e) {
+      console.log(e);
+      return ErrorResponse(res, "Something is wrong!");
+      
+      
+    }
+
   }
-};
+  
+}
+
+
 
 module.exports = userController;

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const { successResponseWithData, ErrorResponse } = require("./apiresponse");
 
 
-const User = require('../models/usermodel')
+const User = require('../models/user.js')
 const auth = async (req, res, next) => {
  try {
  const token = req.header('Authorization').replace('Bearer ', '')

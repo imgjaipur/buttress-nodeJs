@@ -11,6 +11,17 @@ exports.validateSingupRequest=[
 
 
 ];
+exports.validateverify=[
+    check('mobile')
+    .isEmail()
+    .withMessage("valid email is required"),
+    check('password')
+    .notEmpty()
+    .isLength({min:6})
+    .withMessage("password must be atleast 6 character long"),
+
+
+];
 
 
 exports.isRequestValidated=(req,res,next)=>{
