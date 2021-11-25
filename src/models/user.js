@@ -6,41 +6,27 @@ const registerSchema= new mongoose.Schema({
     firstname:{
         type:String,
         default:""
-
     },
     lastname:{
         type:String,
         default:""
-    
-
     },
     mobile:{
         type:String,
-        // required:true,
-        unique:true,
         default:""
-
     },
     email:{
         type:String,
-        
-        required:true,
-      
-
+        unique:false,
+        default:""
     },
     password:{
         type:String,
-        required:true,
-        minlength:7,
-       },
-
-
-    
-
+    },
     image:{
         type:String,
-        // required:true,
-        default:""
+        default:"",
+        // required:true        
     },
     xabn:{
         type:String,
@@ -51,7 +37,8 @@ const registerSchema= new mongoose.Schema({
         default:""
     },
     xwhitecard:{
-        type:String
+        type:String,
+        default:""
     },
     xsafetyrating:{
         type:String,
@@ -73,9 +60,7 @@ const registerSchema= new mongoose.Schema({
         type:String
     },
     token:{
-        type:String,
-        // required:true
-
+        type:String
     },
     tempmobile:{
         type:String
@@ -84,5 +69,5 @@ const registerSchema= new mongoose.Schema({
 
 
 
-let registerUsers= new mongoose.model("register", registerSchema);
+let registerUsers= new mongoose.model("user", registerSchema);
 module.exports = registerUsers;
