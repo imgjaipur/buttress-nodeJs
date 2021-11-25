@@ -33,10 +33,6 @@ const registerSchema= new mongoose.Schema({
         required:true,
         minlength:7,
        },
-
-
-    
-
     image:{
         type:String,
         // required:true,
@@ -84,5 +80,5 @@ const registerSchema= new mongoose.Schema({
 
 
 
-let registerUsers= new mongoose.model("register", registerSchema);
+let registerUsers= new mongoose.model("user", registerSchema);
 module.exports = registerUsers;
