@@ -68,16 +68,15 @@
 <body>
     <div class="login-img">
         <div class="container">
-            <div class="logo">
-                <img src="../img/Truso_logo.png" style="width: 20%; margin-top:10px">
-            </div>
+
             <br>
             <div class="card col-lg-4 text-center m-auto" style="">
+
                 <div class="card-body">
-                    {{#if dataF}}
-                    <span class="text-danger">**{{dataF}}**</span>
-                    {{/if}}
                     <h4 class="card-title text-white text-bold">Login-Page</h4>
+                    {{#if data}}
+                    <span class="text-danger">{{data}}</span>
+                    {{/if}}
                     <form class="form-group card-text  pt-2" method="POST" action="/login">
                         <div class="p-3">
                             <input class="form-control" type="email" name="email" placeholder="Email">
@@ -85,14 +84,18 @@
                         <div class="p-3">
                             <input class="form-control" type="password" name="password" placeholder="Password">
                         </div><br>
-                        {{#if data_incorrect}}
-                        <span class="text-danger">**{{data_incorrect}}**</span>
+                        {{#if data_val}}
+                        <span class="text-danger"> {{data_val}} </span>
+                        {{/if}}
+                        {{#if pass}}
+                        <span class="text-danger"> {{pass}} </span>
                         {{/if}}
                         <div class="p-3 mt-1">
                             <button type="submit" class=" btn text-white">Login</button>
                         </div>
                     </form>
                 </div>
+                \
             </div>
         </div>
     </div>
