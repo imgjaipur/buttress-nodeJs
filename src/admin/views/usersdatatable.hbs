@@ -27,38 +27,7 @@
           src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
      {{!--
      <script src="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"></script> --}}
-     <script type="text/javascript">
-          $(document).ready(function () {
-               $('#example').DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "searching": false,
-                    ajax: {
-                         url: '/usersdatatable',
-                         type: 'GET',
-                         dataSrc: 'data'
-                    },
-                    "lengthMenu": [5, 8, 10, 50],
-                    columns: [
-                         { data: 'name' },
-                         { data: 'mobile' },
-                         { data: 'email' },
-                         { data: "xcompanyname" },
-                         { data: "status" },
-                         { data: "blocked" },
-                         { data: "profilestatus" },
-                         { data: "actions" }
 
-                    ]
-               });
-          });
-     </script>
-     {{!-- <script>
-          let oTable = $('#example').DataTable();   //using Capital D, which is mandatory to retrieve "api" datatables' object, latest jquery Datatable
-          $('#name').keyup(function () {
-               oTable.search($(this).val()).draw();
-          })
-     </script> --}}
 </head>
 <style>
      .abc {
@@ -77,10 +46,10 @@
                          <th>Name</th>
                          <th>Mobile</th>
                          <th>Email</th>
-                         <th>Xcomapnyname</th>
                          <th>status</th>
                          <th>blocked</th>
                          <th>profilestatus</th>
+                         <th>xcompanyname</th>
                          <th>Actions</th>
                     </tr>
                </thead>
@@ -89,19 +58,32 @@
                <tfoot>
                </tfoot>
           </table>
-          {{!-- <form class="form-inline">
-               <div class="form-inline">
-                    <div class="col-1">
-                         <input type="text" class="form-control" id="name" placeholder="Name">
-                    </div><br>
-                    <div class="col-3">
-                         <input type="text" class="form-control" id="email" placeholder="Email">
-                    </div><br>
-                    <div class="col-1">
-                         <input type="text" class="form-control" id="status" placeholder="Status">
-                    </div><br>
-               </div>
-          </form> --}}
+          <script type="text/javascript">
+               $(document).ready(function () {
+                    $('#example').DataTable({
+                         "processing": true,
+                         "serverSide": true,
+                         "searching": false,
+                         ajax: {
+                              url: '/usersdatatable',
+                              type: 'GET',
+                              dataSrc: 'data'
+                         },
+                         "lengthMenu": [5, 8, 10, 50],
+                         columns: [
+                              { data: 'name' },
+                              { data: 'mobile' },
+                              { data: 'email' },
+                              { data: "status" },
+                              { data: "blocked" },
+                              { data: "profilestatus"},
+                              { data: "xcompanyname"},
+                              { data: "actions" }
+
+                         ]
+                    });
+               });
+          </script>
 </body>
 
 </html>

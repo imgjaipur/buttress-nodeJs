@@ -92,18 +92,14 @@ let adminController = {
     },
     users_datatable: async (req, res) => {
         let columns = [
-            "firstname",
-            "lastname",
+            "name",
             "mobile",
             "email",
-            "xcompanyname",
-            "xabn",
-            "xqualifications",
-            "xwhitecard",
             "status",
             "blocked",
             "profilestatus",
-            "Profile",
+            "xcompanyname",
+            "actions"
         ];
         let limit1 = req.query.length;
         let start = req.query.start;
@@ -129,26 +125,27 @@ let adminController = {
                 // console.log("data----", rows1);
                 if (err) console.log(err);
                 rows1.forEach((index) => {
+                // console.log("company--------------",index.xcompanyname);
+                // console.log("coemail--------------",index.email);
+                // console.log("mob--------------",index.mobile);
                     let user;
                     if (index.blocked == false) {
                         user = `<button  class="btn btn-outline-danger" btn-sm text-white" type="button" aria-expanded="true">
-                        <a class="text-white" href="/blockuser/true/${index.id}" style="text-decoration: none;">Block u
-                        ser</a>
+                        <a class="text-white" href="/blockuser/true/${index.id}" style="text-decoration: none;">Block</a>
                         </button>`;
                     } else {
                         user = `<button class="btn btn-outline-success btn-sm text-success" type="button" aria-expanded="false">
-                        <a class="text-white" href="/blockuser/false/${index.id}" style="text-decoration: none;">Unblock user</a>
+                        <a class="text-white" href="/blockuser/false/${index.id}" style="text-decoration: none;">Unblock</a>
                         </button>`
                     }
                     data.push({
                         "name": `${index.firstname} ${index.lastname}`,
                         "mobile": index.mobile,
                         "email": index.email,
-                        "xcompanyname": index.xcompanyname,
                         "status": index.status,
-                        "blocked": user,
+                        "blocked": index.blocked,
                         "profilestatus": index.profilestatus,
-                        "Profile": index.profile,
+                        "xcompanyname": index.xcompanyname,
                         "actions": `<a href="/edit/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-success"><i class="fas fa-edit"></i></button></a>` + "   " + `<a href="/delete/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-danger"><i class="fas fa-trash-alt"></i></button></a>` + "  " + `<a href="/view/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-primary"><i class="fas fa-eye"></i></button></a>`
                     });
                     count++;
@@ -309,12 +306,12 @@ let adminController = {
     },
     site_info_view: async (req, res) => {
         let site_info = await site_Data.findOne({ _id: req.query.id });
-        res.render("siteinfocard" , {info: site_info })
+        res.render("siteinfocard", { info: site_info })
     },
-    site_info_update_view: async (req , res) => {
-        let site_info = await site_Data.findOne({_id:req.query.id})
+    site_info_update_view: async (req, res) => {
+        let site_info = await site_Data.findOne({ _id: req.query.id })
         // console.log("abc---------", site_info);
-        res.render("editsiteinfo" , {info_data: site_info})
+        res.render("editsiteinfo", { info_data: site_info })
     },
     site_info_update: async (req, res) => {
         try {
