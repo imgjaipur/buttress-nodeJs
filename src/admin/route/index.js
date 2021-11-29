@@ -11,13 +11,13 @@ const path = require('path');
 
 const auth = require('../middleware/auth');
 
-
+// console.log(path.join(__dirname,'uploads/adminuploads');
 
 // file uploading  with multer
 
 var storage1 = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, 'C:/NodeJs/buttress-nodeJs/uploads/adminuploads/')
+        cb(null, 'F:/IMG/buttress-nodeJs/uploads/adminuploads')
     },
     filename: function(req, file, cb) {
         let ext = path.extname(file.originalname)

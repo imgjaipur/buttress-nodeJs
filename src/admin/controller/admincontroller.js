@@ -8,7 +8,7 @@ const multer = require('multer');
 
 const upload = multer({ dest: 'src/admin/adminUploads/' });
 
-const registerUsers = require('../../models/usermodel');
+const registerUsers = require('../../models/user');
 
 const moment = require('moment');
 
