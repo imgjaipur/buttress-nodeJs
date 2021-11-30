@@ -1,46 +1,66 @@
-require("dotenv").load();
+const express = require('express');
 
-const http = require("http");
-const path = require("path");
-const express = require("express");
-const session = require('express-session');
-const cors = require("cors");
-const hbs = require('hbs');
-const adminroutes = require('./src/adminPanel/route/index').router;
-
-// Create Express webapp
-let key = 'imgglobalinfotech';
 const app = express();
 
-app.use(express.static(path.join(__dirname, "/public")));
+const hbs = require('hbs');
 
-app.use(cors());
+const mongoose = require('mongoose');
+
+const path = require('path');
+
+const mongodb = require('./src/lib/connecton');
+
+const route = require('./src/admin/route/index');
+
+const multer = require('multer');
+
+const session = require('express-session');
+
+const cookieParser = require('cookie-parser');
+
+const auth = require('../buttress-nodeJs/src/admin/middleware/auth');
+
+const dotenv = require('dotenv').config();
+
+const fs = require('fs');
+
+
+
+
+app.use(express.static(path.join(__dirname,'/uploads')));
+
+
 app.use(express.json());
-app.use(
-    express.urlencoded({
-        extended: true,
-    })
-);
+
+app.use(express.static(path.join(__dirname, '/src/admin')));
+
+hbs.registerPartials(path.join(__dirname, 'src/admin/partials'))
+// console.log("path---------",__dirname)
+app.set('views', path.join(__dirname, 'src/admin/views'))
+app.set('view engine',"hbs");
+
+
+
+
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
+let privateKey = fs.readFileSync('./private.key',"utf8");
 
 app.use(session({
-    secret: key,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 60000 * 60 }
-}));
+     secret: privateKey,
+     resave: false,
+     saveUninitialized: false,
+     cookie: { maxAge: 24000000 }
+ }));
+app.use(cookieParser())
+app.use(route);
 
-app.set('views', path.join(__dirname, './src/adminPanel/views'));
-app.set('view engine', 'hbs');
-hbs.registerPartials(__dirname + './src/adminPanel/views')
-    // Routes 
-app.use('/admin', adminroutes);
-app.use('/', (req, res, next) => {
-    res.redirect('/admin/');
-});
-
-// Create an http server and run it
-const server = http.createServer(app);
-const port = process.env.PORT || 4000;
-server.listen(port, function() {
-    console.log("Express server running on *:" + port);
-});
+const port = 8080;
+app.listen(port , (err) => {if (err)
+    {
+    console.log(err); process.exit(0)}
+    else{
+        console.log(`Connected Successfully to this  ${port}.`)
+    }});   
