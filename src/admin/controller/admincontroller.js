@@ -20,7 +20,7 @@ const site_Data = require('./../../models/siteModel');
 
 let adminController = {
     register_Admin_view: (req, res) => {
-        res.render('adminRegister');
+        res.render('adminRegistration');
     },
     registerAdmin: async (req, res) => {
         // console.log('i am in here');
@@ -37,7 +37,7 @@ let adminController = {
                 });
                 let admin_Doc = await admin.save();
                 // console.log("admin_doc", admin_Doc);
-                res.render('login');
+                res.render('adminLogin');
             }
         } catch (error) {
             res.status(400).send(error);
@@ -49,17 +49,18 @@ let adminController = {
         res.send(json_data);
     },
     login_View: async (req, res) => {
-        res.render('login');
+        res.render('adminLogin');
     },
     log_in: async (req, res) => {
+        if(req.method == 'POST')
         try {
             let admin_data = await registerAdmin.find({ email: req.body.email });
             // console.log(admin_data);
-            // console.log("data ------", admin_data.length);
+            // console.log("email & pass ------", req.body.email ,"pasword----", req.body.password);
             if (req.body.email == "" && req.body.password == "") {
-                res.render("login", { data: "Credentials can not be empty" });
+                res.render("adminLogin");
             } else if (admin_data.length !== 1) {
-                res.render("login", { data_val: "check your Email again" });
+                res.render("adminLogin", {data: " please check your email again!"});
             } else if (admin_data.length > 0) {
                 let matchPassword = await bcrypt.compare(
                     req.body.password,
@@ -69,10 +70,10 @@ let adminController = {
                     req.session.regenerate(function () {
                         req.session.user = admin_data;
                         req.session.user = true;
-                        return res.redirect('/dashbord');
+                        return res.render('admindashbord');
                     })
                 } else {
-                    res.render("login", { pass: "Incorrect Password" });
+                    res.redirect('/adminLogin');
                 }
             }
         } catch (error) {
@@ -80,7 +81,7 @@ let adminController = {
         }
     },
     dashbord: async (req, res) => {
-        res.render('dashbord');
+        res.render('admindashbord');
     },
     users_data: async (req, res) => {
         let users = await registerUsers.find();

@@ -29,109 +29,61 @@
 </head>
 <style>
      body {
-          font: 400 15px/1.8 Lato, sans-serif;
-          background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
-          width: 100%;
-          height: 100%;
-     }
-
-     .card {
-          background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
-          background-position: center;
-          margin-top: 5% !important;
-          border-radius: 3% !important;
-          box-shadow: 1px 1px 2px rgb(255, 212, 93), 0 0 10px rgb(243, 181, 139), 0 0 5px rgb(238, 116, 59);
-     }
-
-     .btn {
-          background-color: rgb(247, 144, 10);
-          padding-left: 85px;
-          padding-right: 85px;
-          text-align: center;
-          font-size: 18px;
-          font-weight: bold;
-          letter-spacing: 5px;
-     }
-
-     .btn:hover {
-          background-color: hsla(34, 94%, 51%, 0.637);
-          color: rgb(247, 144, 10);
-          border: 2px solid rgb(240, 100, 18);
-          opacity: 1;
-     }
-
-     .card-title {
-          color: rgb(253, 253, 253);
-          font-weight: bold;
-          letter-spacing: 2px;
-          transition-duration: 0.5s;
-     }
-
-     .card-title:hover {
-          color: hsl(34, 94%, 51%) !important;
-
+          background: rgba(64, 224, 208, 0.02);
      }
 </style>
 
 <body>
-     <div class="login-img">
-          <div class="container">
-               <div class="card col-lg-4 text-center m-auto" style="">
-                    <div class="card-body">
-                         <h4 class="card-title">Site Info Details</h4>
-                         <form class="form-group card-text  pt-2" action="/site-insert" method="POST">
-                              <div class="p-3">
-                                   <input class="form-control" type="text" name="site" placeholder="Enter Site Name">
-                              </div>
-                              <div class="p-3">
-                                   <input class="form-control" type="text" name="siteAddress"
-                                        placeholder="Enter Site Address">
-                              </div>
-                              <div class="p-3">
-                                   <input class="form-control" type="text" name="cmanager"
-                                        placeholder="Enter Construction Manager">
-                              </div>
-                              <div class="p-3">
-                                   <input class="form-control" type="text" name="sitecode"
-                                        placeholder="Enter Site Code ">
-                              </div>
-                              <div class="form row mb-1">
-                                   <div class="col-6">
-                                        <div class="p-3">
-                                             <input class="form-control" type="text" step="any" name="longitude"
-                                                  placeholder="Enter Longitude">
-                                        </div>
-                                   </div>
-                                   <div class="col-6">
-                                        <div class="p-3">
-                                             <input class="form-control" type="text" step="any" name="latitude"
-                                                  placeholder="Enter  Latitude">
-                                        </div>
-                                   </div>
+     {{>header}}
+     <div class="col-lg-12">
+          <div class="card">
+               <div class="card-body">
+                    <h3 class="card-title" style="text-align: center;">Add Site Information</h5>
+                    <!-- Vertical Form -->
+                    <form class="row g-3">
+                         <div class="col-12">
+                              <label for="inputNanme4" class="form-label">Site Name</label>
+                              <input type="text" name = 'site' placeholder="Enter Site Name" class="form-control">
+                         </div>
+                         <div class="col-12">
+                              <label for="inputEmail4" class="form-label">Site Address</label>
+                              <input type="text" name = 'siteAddress' class="form-control"  placeholder="Enter Site Address" id="inputEmail4">
+                         </div>
+                         <div class="col-12">
+                              <label for="inputPassword4" class="form-label">Construction Manager</label>
+                              <input type="text" name = 'cmanager' class="form-control" placeholder="Construction Manager">
+                         </div>
+                         <div class="col-12">
+                              <label for="inputAddress" class="form-label">Site code </label>
+                              <input type="text" name = 'sitecode' class="form-control"  placeholder="Enter Site code">
+                         </div>
+                          <div class="col-12">
+                              <label for="inputAddress" class="form-label">Location</label>
+                              <input type="text" name = 'longitude' class="form-control"  placeholder="longitude"><br>
+                              <input type="text" name ='latitude' class="form-control"  placeholder="latitude">
 
-                              </div>
+                         </div>
+                          <div class="col-12">
+                              <label for="inputAddress" class="form-label">Site Start Date</label>
+                              <input type="date" name = 'startdate' class="form-control" >
+                         </div>
+                          <div class="col-12">
+                              <label for="inputAddress" class="form-label">Site End Date</label>
+                              <input type="date" name = 'enddate' class="form-control" >
+                         </div>
+                          <div class="col-12">
+                              <label for="inputAddress" class="form-label">Users</label>
+                              <input type="text" name = 'users' class="form-control" >
+                         </div>
+                         <div class="text-center">
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                              <button type="reset" class="btn btn-secondary">Reset</button>
+                         </div>
+                         
+                    </form><!-- Vertical Form -->
 
-                              <div class="p-3">
-                                   <input class="form-control" type="date" name="startdate" data-toggle="tooltip"
-                                        data-placement="top" title="Enter Start Date" placeholder="Enter Start Date">
-                              </div>
-                              <div class="p-3">
-                                   <input data-toggle="tooltip" data-placement="top" title="Enter End Date"
-                                        class="form-control" type="date" name="enddate" placeholder="Enter End Date">
-
-                              </div>
-                              <div class="p-3">
-                                   <input class="form-control" type="text" name="users" placeholder="Enter Users">
-                              </div>
-                              <div class="p-3 mt-2">
-                                   <button type="submit" class="btn text-white"> <i class="fas fa-plus"></i> ADD
-                                        INFO</button>
-                              </div>
-                         </form>
-                    </div>
                </div>
           </div>
-     </div>
 </body>
 
 </html>

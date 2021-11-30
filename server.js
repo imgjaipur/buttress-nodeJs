@@ -34,9 +34,12 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '/src/admin')));
 
-
+hbs.registerPartials(path.join(__dirname, 'src/admin/partials'))
+// console.log("path---------",__dirname)
 app.set('views', path.join(__dirname, 'src/admin/views'))
 app.set('view engine',"hbs");
+
+
 
 
 app.use(express.json());
@@ -49,7 +52,7 @@ app.use(session({
      secret: privateKey,
      resave: false,
      saveUninitialized: false,
-     cookie: { maxAge: 60000 }
+     cookie: { maxAge: 24000000 }
  }));
 app.use(cookieParser())
 app.use(route);
