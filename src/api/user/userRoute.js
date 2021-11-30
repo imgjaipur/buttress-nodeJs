@@ -2,20 +2,43 @@ const {Router} = require('express');
 
 const multer = require("multer");
 const userRoutes = Router();
+const path=require("path");
+const fileExtension=require("file-extension")
+const crypto=require("crypto")
 
 const userController = require('./userController');
 const auth =require('./../../lib/authmiddleware');
 const { isRequestValidated,validateSingupRequest}=require("./../../lib/validationuser")
-
-let  Storage=multer.diskStorage({
-    destination:function(req,res,cb){
-        cb(null,'uploads/userupload');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/userupload');
     },
-    filename:function(req,file,cb){
-        cb(null,Date.now()+file.originalname);
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, fileName)
     }
-})
- let  upload = multer({storage:Storage}).single("image");
+});
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg" || file.mimetype == "image/gif") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Allowed only .png, .jpg, .jpeg and .gif'));
+        }
+    }
+});
+
+// let  Storage=multer.diskStorage({
+//     destination:function(req,res,cb){
+//         cb(null,'uploads/userupload');
+//     },
+//     filename:function(req,file,cb){
+//         cb(null,Date.now()+file.originalname);
+//     }
+// })
+//  let  upload = multer({storage:Storage}).single("image");
 
 userRoutes.post('/insertUser',validateSingupRequest,isRequestValidated,userController.register);
 // userRoutes.post('/insertUser',userController.register);
@@ -24,9 +47,10 @@ userRoutes.post('/emailLogin', userController.emaillogin);
 userRoutes.post('/verifyMobile', userController.verify);
 userRoutes.post('/resendOTP', userController.resendOtp);
 
-userRoutes.get('/getProfile/:id', userController.getProfile);
-userRoutes.put('/updateProfile/:id',auth,upload,userController.updateprofile);
-userRoutes.post('/mobileRegistration', userController.mobileregistration);
+userRoutes.get('/getProfile', auth,userController.getProfile);
+userRoutes.put('/updateProfile',auth,upload.single("image"),userController.updateprofile);
+// userRoutes.post('/mobileRegistration', userController.mobileregistration);
+userRoutes.post('/socialLogin', userController.sociallogin);
 
 
 exports.userRoutes = userRoutes;
