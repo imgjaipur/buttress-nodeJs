@@ -25,7 +25,7 @@ exports.successResponse = function (res, msg) {
       responseCode:400,
       message: msg,
     };
-    return res.status(400).json(data);
+    return res.status(200).json(data);
   };
 
   

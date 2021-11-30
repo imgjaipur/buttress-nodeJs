@@ -64,88 +64,41 @@ let userController = {
   verify: async (req, res) => {
     try {
       const user = await User.findOne({ mobile: req.body.mobile });
-      const use = await User.findOne({ tempmobile: req.body.mobile });
-      // const OTP = await User.findOne({ otp: req.body.otp });
       if(!user){
         const use = await User.findOne({ tempmobile: req.body.mobile });
-        const OTP = await User.findOneAndUpdate(
-          { otp: req.body.otp },
-          { $set: { otp: ""}},
-          { new: true }
-        );
-        const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
-
-        return successResponseWithData(res, "Success",token)
-
+        if(use){
+          if (use.otp == req.body.otp) {
+            const OTP = await User.findOneAndUpdate(
+              { tempmobile: req.body.mobile },
+              { $set: { otp: "",tempmobile: "",mobile :use.tempmobile }},
+              { new: true }
+              );
+              const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
+              return successResponseWithData(res, "Success",token)
+          }
+          else{
+            return ErrorResponse(res, "OTP Dosn't Matched!");
+          }
+          
+        }
+        else{
+          return ErrorResponse(res, "Mobile No. Not Found!");
+        }
       }else{
-     if (user.otp === user.otp) {
-        const OTP = await User.findOneAndUpdate(
-          { otp: req.body.otp },
-          { $set: { otp: ""}},
-          { new: true }
-        );
-        const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
+        if (user.otp === req.body.otp) {
+            const OTP = await User.findOneAndUpdate(
+              { mobile: req.body.mobile },
+              { $set: { otp: ""}},
+              { new: true }
+            );
+            const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
 
-        return successResponseWithData(res, "Success",token)
-     }
-     }
-
-    //  }else{
-    //   const use = await User.findOne({ tempmobile: req.body.mobile });
-    //   if(use.otp===use.otp){
-    //     // const use = await User.findOne({ tempmobile: req.body.mobile });
-    //     const OTP = await User.findOneAndUpdate(
-    //       { otp: req.body.otp },
-    //       { $set: { otp: ""}},
-    //       { new: true }
-    //     );
-    //     const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
-
-    //     return successResponseWithData(res, "Success",token)
-
-    //   }
-    //  }
- 
-
-      // const token = jwt.sign({ _id: user._id.toString() }, "this is my");
-      // return successResponseWithData(res, "Success",token)
-
-
-      // if(user){
-      //   const check = await User.findOne({tempmobile:req.body.mobile})
-      //   const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
-      // }
-
-      // }else{
-      // if (!user)
-      // return ErrorResponse(res, "invalid mobile number");
-      
-      // }
-    
-      // const otp = req.body.otp
-      // const OTP = await User.findOne({otp:req.body.otp})
-      // !OTP && ErrorResponse(res, "otp not matched");
-      // if(OTP){
-      //   //  const OTP = await User.findOne({otp:req.body.otp})
-      // // !OTP && ErrorResponse(res, "otp not matched");
-      // const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
-      // return successResponseWithData(res, "Success",token);
-      // }
-
-      // const token = jwt.sign({ _id: user._id.toString() }, "this is my");
-
-      // if (user.otp == 1234) {
-      //   await User.findOneAndUpdate(
-      //     { mobile: req.body.mobile },
-      //     { $set: { otp: "",tokens : token}},
-      //     { new: true }
-      //   );
-
-        
-    
-        // return successResponseWithData(res, "Success");
-      
-        
+            return successResponseWithData(res, "Success",token)
+        }
+        else{
+          return ErrorResponse(res, "OTP Dosn't Matched!");
+        }
+      }
     }catch (e) {
       console.log(e);
       return ErrorResponse(res, "Something is wrong!");
