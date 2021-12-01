@@ -14,6 +14,8 @@ const moment = require('moment');
 
 const btoau = require('b2a');
 
+const QRCode = require('qrcode');
+
 const site_Data = require('./../../models/siteModel');
 
 // const express = require('');
@@ -52,7 +54,6 @@ let adminController = {
         res.render('adminLogin');
     },
     log_in: async (req, res) => {
-        if(req.method == 'POST')
         try {
             let admin_data = await registerAdmin.find({ email: req.body.email });
             // console.log(admin_data);
@@ -60,28 +61,37 @@ let adminController = {
             if (req.body.email == "" && req.body.password == "") {
                 res.render("adminLogin");
             } else if (admin_data.length !== 1) {
-                res.render("adminLogin", {data: " please check your email again!"});
+                res.render("adminLogin", { data: "please check your email again!" });
             } else if (admin_data.length > 0) {
                 let matchPassword = await bcrypt.compare(
                     req.body.password,
                     admin_data[0].password
                 );
                 if (matchPassword) {
+
                     req.session.regenerate(function () {
                         req.session.user = admin_data;
                         req.session.user = true;
-                        return res.render('admindashbord');
+                        return res.redirect('/dashbord');
                     })
-                } else {
-                    res.redirect('/adminLogin');
+                }
+
+                else {
+                    res.render('adminLogin', { data_pass: "please check your password again!" });
                 }
             }
         } catch (error) {
             res.status(400).send(error);
         }
+
     },
     dashbord: async (req, res) => {
-        res.render('admindashbord');
+        let users_data = await registerUsers.find();
+        let site_data = await site_Data.find({working_status: true});
+        let qr_data = await site_Data.find();
+        // console.log('site data length--' , site_data.length);
+        // console.log("user---" , users_data.length);
+        res.render('admindashbord' , {users: (users_data.length) , sites: (site_data.length) , qr: (qr_data.length)});
     },
     users_data: async (req, res) => {
         let users = await registerUsers.find();
@@ -99,7 +109,6 @@ let adminController = {
             "status",
             "blocked",
             "profilestatus",
-            "xcompanyname",
             "actions"
         ];
         let limit1 = req.query.length;
@@ -126,17 +135,17 @@ let adminController = {
                 // console.log("data----", rows1);
                 if (err) console.log(err);
                 rows1.forEach((index) => {
-                // console.log("company--------------",index.xcompanyname);
-                // console.log("coemail--------------",index.email);
-                // console.log("mob--------------",index.mobile);
-                    let user;
+                    // console.log("company--------------",index.xcompanyname);
+                    // console.log("coemail--------------",index.email);
+                    // console.log("mob--------------",index.mobile);
+                    let btn;
                     if (index.blocked == false) {
-                        user = `<button  class="btn btn-outline-danger" btn-sm text-white" type="button" aria-expanded="true">
-                        <a class="text-white" href="/blockuser/true/${index.id}" style="text-decoration: none;">Block</a>
+                        btn = `<button  class="btn btn-outline-danger" btn-sm text-white" type="button" aria-expanded="true">
+                        <a class="text-dark" href="/blockuser/true/${index.id}" style="text-decoration: none;">Block</a>
                         </button>`;
                     } else {
-                        user = `<button class="btn btn-outline-success btn-sm text-success" type="button" aria-expanded="false">
-                        <a class="text-white" href="/blockuser/false/${index.id}" style="text-decoration: none;">Unblock</a>
+                        btn = `<button class="btn btn-outline-success btn-sm text-success" type="button" aria-expanded="false">
+                        <a class="text-dark" href="/blockuser/false/${index.id}" style="text-decoration: none;">Unblock</a>
                         </button>`
                     }
                     data.push({
@@ -144,10 +153,9 @@ let adminController = {
                         "mobile": index.mobile,
                         "email": index.email,
                         "status": index.status,
-                        "blocked": index.blocked,
+                        "blocked": btn,
                         "profilestatus": index.profilestatus,
-                        "xcompanyname": index.xcompanyname,
-                        "actions": `<a href="/edit/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-success"><i class="fas fa-edit"></i></button></a>` + "   " + `<a href="/delete/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-danger"><i class="fas fa-trash-alt"></i></button></a>` + "  " + `<a href="/view/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-primary"><i class="fas fa-eye"></i></button></a>`
+                        "actions": `<a href="/edit/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-success" title = "Edit"><i class="fas fa-edit"></i></button></a>` + "   " + `<a href="/delete/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-danger" title = "Delete"><i class="fas fa-trash-alt"></i></button></a>` + "  " + `<a href="/view/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-primary" title = "View"><i class="fas fa-eye"></i></button></a>`
                     });
                     count++;
                     if (count > rows1.length) {
@@ -176,7 +184,7 @@ let adminController = {
     },
     edit_user: async (req, res) => {
         try {
-            let data = await registerUsers.update({ _id: req.body.id }, {
+            let data = await registerUsers.updateMany({ _id: req.body.id }, {
                 $set: {
                     firstname: req.body.firstname,
                     lastname: req.body.lastname,
@@ -197,7 +205,7 @@ let adminController = {
     },
     view_user: async (req, res) => {
         let user_data = await registerUsers.findOne({ _id: req.query.id });
-        console.log(user_data);
+        // console.log(user_data);
         res.render("usercard", { info: user_data })
     },
     update_block_status: async (req, res) => {
@@ -221,25 +229,24 @@ let adminController = {
         res.render('siteView');
     },
     insert_site_info: async (req, res) => {
-        if (req.method == 'POST')
-            try {
-                console.log("longitude-----", [parseFloat(req.body.longitude)], "latitude", [parseFloat(req.body.latitude)])
-                // console.log("sit amne-----" , req.body.site , "latitude" , req.body.siteAddress)
-                let site_info = new site_Data({
-                    site_name: req.body.site,
-                    site_address: req.body.siteAddress,
-                    construction_manager: req.body.cmanager,
-                    site_code: req.body.sitecode,
-                    location: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)],
-                    site_start_date: req.body.startdate,
-                    site_end_date: req.body.enddate,
-                    users: req.body.users
-                })
-                let site_Document = await site_info.save();
-                res.redirect('/login')
-            } catch (err) {
-                console.log(err);
-            }
+
+        try {
+            // console.log("longitude-----", [parseFloat(req.body.longitude)], "latitude", [parseFloat(req.body.latitude)])
+            // console.log("sit amne-----" , req.body.site , "latitude" , req.body.siteAddress)
+            let site_info = new site_Data({
+                site_name: req.body.site,
+                site_address: req.body.siteAddress,
+                construction_manager: req.body.cmanager,
+                site_code: req.body.sitecode,
+                location: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)],
+                working_status: req.body.status
+            })
+            let site_Document = await site_info.save();
+            // console.log("site_data -----", site_Document)
+            res.redirect('/siteinfo')
+        } catch (err) {
+            console.log(err);
+        }
     },
     site_info_datatable_view: async (req, res) => {
         res.render("siteinfodatatable")
@@ -251,7 +258,7 @@ let adminController = {
             "siteaddress",
             "sitecode",
             "location",
-            "date",
+            "status",
             "actions"
         ];
         let limit1 = req.query.length;
@@ -285,6 +292,7 @@ let adminController = {
                         "sitecode": index.site_code,
                         "location": `${index.location}`,
                         "date": `${moment(index.site_start_date).format("DD-MM-YYYY") + "  -  " + moment(index.site_end_date).format("DD-MM-YYYY")}`,
+                        "status": index.working_status,
                         "actions": `<a href="/siteinfo-edit-view/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-success"><i class="fas fa-edit"></i></button></a>` + "   " + `<a href="/siteinfo-delete/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-danger"><i class="fas fa-trash-alt"></i></button></a>` + "  " + `<a href="/siteinfo-view/?id=${index.id}"><button class = "btn btn-outline-light btn-sm text-primary"><i class="fas fa-eye"></i></button></a>`
                     });
                     count++;
@@ -307,7 +315,12 @@ let adminController = {
     },
     site_info_view: async (req, res) => {
         let site_info = await site_Data.findOne({ _id: req.query.id });
-        res.render("siteinfocard", { info: site_info })
+        // console.log("code ----",site_info.site_code);
+        let site_data = site_info.site_code
+        let stringdata = JSON.stringify(site_data);
+        let data = await QRCode.toDataURL(stringdata);
+        // console.log(data);
+        res.render("siteinfocard", { info: site_info, qr: data })
     },
     site_info_update_view: async (req, res) => {
         let site_info = await site_Data.findOne({ _id: req.query.id })
@@ -316,15 +329,14 @@ let adminController = {
     },
     site_info_update: async (req, res) => {
         try {
-            let site_data = await site_Data.update({ _id: req.body.id }, {
+            let site_data = await site_Data.updateMany({ _id: req.body.id }, {
                 $set: {
                     site_name: req.body.site,
                     site_address: req.body.siteAddress,
                     construction_manager: req.body.cmanager,
                     site_code: req.body.sitecode,
                     location: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)],
-                    site_start_date: req.body.startdate,
-                    site_end_date: req.body.enddate,
+                    working_status: req.body.status,
                     users: req.body.users
                 }
             });

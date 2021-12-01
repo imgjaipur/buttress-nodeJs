@@ -51,6 +51,7 @@ userRoutes.get('/getProfile', auth,userController.getProfile);
 userRoutes.put('/updateProfile',auth,upload.single("image"),userController.updateprofile);
 // userRoutes.post('/mobileRegistration', userController.mobileregistration);
 userRoutes.post('/socialLogin', userController.sociallogin);
+userRoutes.get('/qrcode' , userController.Qr_Code);
 
 
 exports.userRoutes = userRoutes;

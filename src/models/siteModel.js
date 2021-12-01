@@ -16,20 +16,12 @@ const siteSchema = new mongoose.Schema({
      location: [{
           type: Number,
      }],
-     site_start_date: {
-          type: Date
-     },
-     site_end_date: {
-          type: Date
-
-     },
-     users_id: [{
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'user'
-     }]
+    working_status:{
+          type: Boolean
+     }
 }, { timestamps: true, versionKey: false });
 
-siteSchema.index({ 'location': '2dsphere' });
+// siteSchema.index({ 'location': '2dsphere' });
 let site_Data = new mongoose.model("siteinfo", siteSchema);
 
 

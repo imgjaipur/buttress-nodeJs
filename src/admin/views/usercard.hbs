@@ -11,112 +11,72 @@
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
           </script>
+
      <style>
-          .card {
-               box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-               max-width: 800px;
-               max-height: 800px;
-               margin: auto;
-               margin-bottom: 10px;
-               text-align: center;
-               font-family: arial;
-               background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
-               box-shadow: 1px 1px 2px rgba(255, 187, 1, 0.787), 0 0 10px rgba(247, 106, 11, 0.479), 0 0 5px rgb(238, 116, 59);
-               border-radius: 40px;
-
-          }
-
-          body {
-               font: 400 15px/1.8 Lato, sans-serif;
-               background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
-               width: 100%;
-               height: 80%;
-               position: relative;
-          }
-
-          .title {
-               color: rgba(255, 255, 255, 0.623);
-               font-size: 18px;
-               margin-left: 5px;
-          }
-
-          button {
-               border: none;
-               outline: 0;
-               display: inline-block;
-               padding: 8px;
-               color: white;
-               background-color: #000;
-               text-align: center;
-               cursor: pointer;
-               width: 100%;
-               font-size: 18px;
-          }
-
-          a {
-               text-decoration: none;
-               font-size: 22px;
-               color: black;
-          }
-
-          button:hover,
-          a:hover {
-               opacity: 0.7;
-          }
-
-          .name {
-               font-weight: bold;
-
-          }
-
-          .titl {
-               color: rgba(255, 182, 87, 0.623);
-          }
-
-          h3,
-          h2 {
-               color: rgba(196, 83, 7, 0.582);
-
-          }
-
           .img {
-               border-radius: 20%;
-               margin-left: 35%;
+               text-align: center;
+               box-shadow: rgb(20, 20, 20);
+               border-radius: 30px;
+               margin-top: 10px;
+          }
+
+          .circular--square {
+               border-radius: 80%;
+
+          }
+
+          .circular--landscape {
+               display: inline-block;
+               position: relative;
+               width: 100px;
+               height: 100px;
+               overflow: hidden;
+               border-radius: 50%;
+          }
+
+          .circular--landscape img {
+               width: auto;
+               height: 100%;
+               margin-left: -50px;
           }
      </style>
+
 </head>
 
 <body>
-     <h2 style="text-align:center">User Profile Card</h2><br>
+     {{>header}}
      {{#if info}}
      <div class="card">
-          <img class="img" src="/user/{{info.image}}" alt="John" style="width:30%" style="text-align:center"><br>
-
-          <h3>
-               Name -
-               <small class="text-muted">{{info.firstname}} {{info.lastname}}</small>
-          </h3><br>
-          <h3>
-               Mobile -
-               <small class="text-muted">{{info.mobile}}</small>
-          </h3><br>
-          <h3>
-               Email -
-               <small class="text-muted">{{info.email}}</small>
-          </h3><br>
-          <h3>
-               Ex-Company Name -
-               <small class="text-muted">{{info.xcompanyname}}</small>
-          </h3><br>
-          <h3>
-               Ex-abn -
-               <small class="text-muted">{{info.xabn}}</small>
-          </h3><br>
-          <h3>
-               Blocked Status -
-               <small class="text-muted">{{info.blocked}}</small>
-          </h3><br>
-     </div>
+          <div class="card-body">
+               <div class="img">
+                    <img class="circular--landscape" src="/user/{{info.image}}" alt="John" ><br>
+               </div>
+               <h5>
+                    Name -
+                    <small class="text-muted">{{info.firstname}} {{info.lastname}}</small>
+               </h5><br>
+               <h5>
+                    Mobile -
+                    <small class="text-muted">{{info.mobile}}</small>
+               </h5><br>
+               <h5>
+                    Email -
+                    <small class="text-muted">{{info.email}}</small>
+               </h5><br>
+               <h5>
+                    ABN -
+                    <small class="text-muted">{{info.xabn}}</small>
+               </h5><br>
+               <h5>
+                    Blocked Status -
+                    <small class="text-muted">{{info.blocked}}</small>
+               </h5><br>
+               <h5>
+                    White-card -
+                    <small class="text-muted">{{info.xwhitecard}}</small>
+               </h5><br>
+          </div><br>
+     </div><br>
      {{/if}}
 
 </body>
