@@ -1,7 +1,9 @@
 const User = require("../../models/user.js");
 // const User = require("../../models/usermodel.js");
 const { validationResult } = require("express-validator");
+const workingStatusSchema=require("../../models/workerStatus");
 const bcrypt = require("bcrypt");
+const moment = require('moment');
 const jwt = require("jsonwebtoken");
 const {
   successResponseWithData,
@@ -177,19 +179,19 @@ let userController = {
   },
   resendOtp: async (req, res) => {
     try {
+      
       const data = await User.findOne({ mobile: req.body.mobile });
-      //   console.log(data);
+      // let otpcode =Math.floor((Math.random()*10000)+1)
+      let otpcode = 1234;
         if (!data) {
-          return ErrorResponse(res, "go to registration page");
+          const value = await User.findOne({tempmobile : req.body.mobile});
+          if(!value){
+            return ErrorResponse(res, "Mobile Number not found!");
+          }
+          await User.findOneAndUpdate({ tempmobile: value.mobile }, { otp: otpcode });
+          return successResponseWithData(res, "Success");
         }
-        // const responsetype={}
-  
-        // let otpcode =Math.floor((Math.random()*10000)+1)
-        let otpcode = 1234;
-  
         await User.findOneAndUpdate({ mobile: data.mobile }, { otp: otpcode });
-        // await userDao.login(req);
-  
         return successResponseWithData(res, "Success");
     } catch (e) {
       return ErrorResponse(res, "Something is wrong!");
@@ -266,6 +268,49 @@ let userController = {
       
     }
 
+  },
+  add_workerStatus:async(req,res)=>{
+    try{
+      let  myworking=new workingStatusSchema({
+        worker_id:req.user._id,
+        constructionSite_id:req.body.constructionSite_id,
+        start_time:moment().format("YYYY-MM-DDThh:mm:ss"),
+        status:'Working',
+        note:req.body.note
+      });
+      myworkSave=myworking.save();
+      return successResponseWithData(res, "Success");
+
+    }catch(error){
+      console.log(error);
+      return ErrorResponse(res, "Something is wrong!");
+    }
+  },
+  end_workerStatus:async(req,res)=>{
+    try{
+      let dataToSet= {};
+      const workerStatusData = await workingStatusSchema.findOne({_id:req.body.workStatus_id});
+      console.log(workerStatusData.start_time.split("T")[1]);
+      let end_time = moment().format("YYYY-MM-DDThh:mm:ss");
+      let hrs = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1],"hh-mm-ss"))).format("HH");
+      let min = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1],"hh-mm-ss"))).format("mm");
+      let sec = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1],"hh-mm-ss"))).format("ss");
+      let total_working_hours = [hrs, min, sec].join(':');
+      dataToSet.total_working_hours = total_working_hours;
+      dataToSet.end_time = end_time;
+      dataToSet.status = 'Completed';
+      if(req.body.note){
+        dataToSet['note'] = req.body.note;
+      }
+      const workerStatusLogout = await workingStatusSchema.findOneAndUpdate(
+        {_id: req.body.workStatus_id },
+        { $set: dataToSet }
+      );
+      return successResponseWithData(res, "Success");
+    }catch(error){
+      console.log(error);
+      return ErrorResponse(res, "Something is wrong!");
+    }
   }
   
 }
