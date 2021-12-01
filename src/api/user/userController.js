@@ -134,7 +134,7 @@ let userController = {
       xabn ? (dataToSet.xabn = xabn) : true;
       xqualifications ? (dataToSet.xqualifications = xqualifications) : true;
       xwhitecard ? (dataToSet.xwhitecard = xwhitecard) : true;
-      xsafetyrating ? (dataToSet.xsafetyratin = xsafetyrating) : true;
+      xsafetyrating ? (dataToSet.xsafetyrating = xsafetyrating) : true;
 
       await User.findOneAndUpdate(
         {_id: user._id  },
