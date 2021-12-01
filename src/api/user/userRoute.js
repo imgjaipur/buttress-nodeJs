@@ -51,7 +51,10 @@ userRoutes.get('/getProfile', auth,userController.getProfile);
 userRoutes.put('/updateProfile',auth,upload.single("image"),userController.updateprofile);
 // userRoutes.post('/mobileRegistration', userController.mobileregistration);
 userRoutes.post('/socialLogin', userController.sociallogin);
-userRoutes.get('/qrcode' , userController.Qr_Code);
+// userRoutes.get('/qrcode' , userController.Qr_Code);
+userRoutes.post('/workerStatus',auth,userController.add_workerStatus);
+userRoutes.put('/endworkingStatus',auth,userController.end_workerStatus);
+// userRoutes.post('/uploadsImage',auth,userController.uploadsImg)
 
 
 exports.userRoutes = userRoutes;
