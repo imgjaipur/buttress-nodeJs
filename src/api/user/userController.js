@@ -170,7 +170,7 @@ let userController = {
   getProfile: async (req, res) => {
     try {
       const user = req.user
-      const dat = await User.find({_id: user._id },{firstname:1,lastname:2,mobile:3,email:4,image:5,xcompanyname:6,xabn:7,xqualifications:8,xwhitecard:9,xsafetyrating:10});
+      const dat = await User.find({_id: user._id },{otp:0,token:0,password:0,tempmobile:0,blocked:0,status:0,_id:0});
         
     
       return successResponseWithData(res, "Success", dat);
@@ -314,13 +314,13 @@ let userController = {
       return ErrorResponse(res, "Something is wrong!");
     }
   },
-  // uploadsImg:async(req,res)=>{
-  //   const uploadsImg=new User({
-  //     image:
-  //   })
+  uploadsImg:async(req,res)=>{
+    const uploadsImg=new User({
+      
+    })
 
 
-  // }
+  }
   
 }
 
