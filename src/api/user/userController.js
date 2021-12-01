@@ -120,6 +120,7 @@ let userController = {
         xqualifications,
         xwhitecard,
         xsafetyrating,
+        companyName
       } = req.body;
       let filename = req.file && req.file.filename ? req.file.filename : "https://i.postimg.cc/XqJrTnxq/default-pic.jpg";
       let dataToSet = {};
@@ -135,6 +136,7 @@ let userController = {
       xqualifications ? (dataToSet.xqualifications = xqualifications) : true;
       xwhitecard ? (dataToSet.xwhitecard = xwhitecard) : true;
       xsafetyrating ? (dataToSet.xsafetyrating = xsafetyrating) : true;
+      companyName ? (dataToSet.companyName = companyName) : true;
 
       await User.findOneAndUpdate(
         {_id: user._id  },
@@ -311,7 +313,14 @@ let userController = {
       console.log(error);
       return ErrorResponse(res, "Something is wrong!");
     }
-  }
+  },
+  // uploadsImg:async(req,res)=>{
+  //   const uploadsImg=new User({
+  //     image:
+  //   })
+
+
+  // }
   
 }
 

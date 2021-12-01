@@ -43,6 +43,10 @@ const registerSchema=new mongoose.Schema({
         type:String,
         default:""
     },
+    companyName:{
+        type:String,
+        default:""
+    },
     profilestatus:{
         type:Boolean,
         default:false
