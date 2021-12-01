@@ -27,56 +27,12 @@
           crossorigin="anonymous"></script>
 
 </head>
-<style>
-     body {
-          font: 400 15px/1.8 Lato, sans-serif;
-          background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
-          width: 100%;
-          height: 100%;
-     }
-
-     .card {
-          background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
-          background-position: center;
-          margin-top: 5% !important;
-          border-radius: 3% !important;
-          box-shadow: 1px 1px 2px rgb(255, 212, 93), 0 0 10px rgb(243, 181, 139), 0 0 5px rgb(238, 116, 59);
-     }
-
-     .btn {
-          background-color: rgb(247, 144, 10);
-          padding-left: 85px;
-          padding-right: 85px;
-          text-align: center;
-          font-size: 18px;
-          font-weight: bold;
-          letter-spacing: 5px;
-     }
-
-     .btn:hover {
-          background-color: hsla(34, 94%, 51%, 0.637);
-          color: rgb(247, 144, 10);
-          border: 2px solid rgb(240, 100, 18);
-          opacity: 1;
-     }
-
-     .card-title {
-          color: rgb(253, 253, 253);
-          font-weight: bold;
-          letter-spacing: 2px;
-          transition-duration: 0.5s;
-     }
-
-     .card-title:hover {
-          color: hsl(34, 94%, 51%) !important;
-
-     }
-</style>
 
 <body>
+     {{>header}}
      <div class="login-img">
           <div class="container">
-               <div class="card col-lg-4 text-center m-auto" style="">
+               <div class="card col-lg-12 text-center m-auto" style="">
                     <div class="card-body">
                          <h4 class="card-title">Site Info Update</h4>
 
@@ -87,31 +43,33 @@
                                         placeholder="Enter Site Name">
                               </div>
                               <div class="p-3">
-                                   <input class="form-control" value="{{info_data.site_name}}"" type="text" name="site" placeholder="Enter Site Name">
+                                   <input class="form-control" value="{{info_data.site_name}}" type="text" name="site"
+                                        placeholder="Enter Site Name">
                               </div>
                               <div class="p-3">
-                                   <input class="form-control" type="text" value="{{info_data.site_address}}" name="siteAddress"
-                                        placeholder="Enter Site Address">
+                                   <input class="form-control" type="text" value="{{info_data.site_address}}"
+                                        name="siteAddress" placeholder="update Site Address">
                               </div>
                               <div class="p-3">
-                                   <input class="form-control" type="text" name="cmanager" value="{{info_data.construction_manager}}"
+                                   <input class="form-control" type="text" name="cmanager"
+                                        value="{{info_data.construction_manager}}"
                                         placeholder="Enter Construction Manager">
                               </div>
                               <div class="p-3">
                                    <input class="form-control" type="text" name="sitecode"
-                                       value="{{info_data.site_code}}" placeholder="Enter Site Code ">
+                                        value="{{info_data.site_code}}" placeholder="Enter Site Code ">
                               </div>
                               <div class="form row mb-1">
                                    <div class="col-6">
                                         <div class="p-3">
                                              <input class="form-control" type="text" step="any" name="longitude"
-                                                value="{{info_data.location}}"  placeholder="Enter Longitude">
+                                                  placeholder="Edit Longitude">
                                         </div>
                                    </div>
                                    <div class="col-6">
                                         <div class="p-3">
                                              <input class="form-control" type="text" step="any" name="latitude"
-                                               value="{{info_data.location}}"   placeholder="Enter  Latitude">
+                                                  placeholder="Edit   Latitude">
                                         </div>
                                    </div>
 
@@ -119,25 +77,31 @@
 
                               <div class="p-3">
                                    <input class="form-control" type="date" name="startdate" data-toggle="tooltip"
-                                        data-placement="top" title="Enter Start Date" value="{{info_data.site_start_date}}">
+                                        data-placement="top" title="Enter Start Date"
+                                        value="{{info_data.site_start_date}}">
                               </div>
                               <div class="p-3">
                                    <input data-toggle="tooltip" data-placement="top" title="Enter End Date"
-                                        class="form-control" type="date" name="enddate" value='{{info_data.site_end_date}}'>
+                                        class="form-control" type="date" name="enddate"
+                                        value='{{info_data.site_end_date}}'>
 
+                              </div>
+                              <div class="p-3">
+                                   <input class="form-control" type="text"  value = "{{info_data.working_status}}" name="status" placeholder="Enter status">
                               </div>
                               <div class="p-3">
                                    <input class="form-control" type="text" name="users" placeholder="Enter Users">
                               </div>
                               {{/if}}
-                              <div class="p-3 mt-2">
-                                   <button type="submit" class="btn text-white"> <i class="fas fa-plus"></i> UPDATE</button>
+                              <div class="text-center">
+                                   <button type="submit" class="btn btn-primary">Update</button>
+                                   <button type="reset" class="btn btn-secondary">Reset</button>
                               </div>
                          </form>
                     </div>
                </div>
           </div>
      </div>
-</body>
+</body><br>
 
 </html>

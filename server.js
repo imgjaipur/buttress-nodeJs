@@ -52,7 +52,7 @@ app.use(session({
      secret: privateKey,
      resave: false,
      saveUninitialized: false,
-     cookie: { maxAge: 24000000 }
+     cookie: { maxAge: 70000, httpOnly: true } 
  }));
 app.use(cookieParser())
 app.use(route);

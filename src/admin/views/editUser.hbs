@@ -31,7 +31,6 @@
 <style>
     body {
         font: 400 15px/1.8 Lato, sans-serif;
-        background: url("http://svmr.apphb.com/assets/img/backgrounds/1.jpg");
         width: 100%;
         height: 80%;
         position: fixed;
@@ -60,8 +59,8 @@
 
     .btn:hover {
         background-color: rgb(248, 241, 232);
-        color: rgb(255, 123, 0) !important;
-        border: 1px solid rgb(240, 100, 18);
+        color: rgb(238, 240, 245) !important;
+        border: 1px solid rgb(225, 226, 255);
     }
 
     .card-title {
@@ -88,11 +87,9 @@
 </style>
 
 <body>
+    {{>header}}
     <div class="login-img">
         <div class="container">
-            <div class="logo">
-                <img src="Users/fahad/Desktop/" style="width: 23%; margin-top:10px;">
-            </div>
             <div class="row">
                 <div class="card col-lg-8 text-center " style="">
                     <div class="card-body">
@@ -105,11 +102,11 @@
                             </div>
                             {{/if}}
                             <div class="form row mb-1">
-                                <div class="col-6">
+                                <div class="col-6 ">
                                     {{#if user}}
                                     <div class="form-group col-md-12 col-sm-12 mb-3">
                                         <input type="text1" class="form-control heigth" name="firstname"
-                                            value="{{user.firstanme}}" placeholder="Enter Your First name">
+                                            value="{{user.firstname}}" placeholder="Enter Your First name">
                                     </div>
                                     {{/if}}
                                 </div>
@@ -144,13 +141,13 @@
                                 <div class="col-4">
                                     <div class="form  col-md-12 col-sm-12 mb-3">
                                         <input type="text" class="form-control heigth" name="xcompanyname"
-                                            value="{{user.xcompanyname}}" placeholder="Enter your Ex-Compant name">
+                                            value="{{user.xcompanyname}}" placeholder="Enter your Company name">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group col-md-12 col-sm-12 mb-3">
                                         <input type="text" class="form-control heigth" name="xabn"
-                                            placeholder="Enter xanbn" value="{{user.xabn}}">
+                                            placeholder="ABN" value="{{user.xabn}}">
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -173,10 +170,9 @@
                                     placeholder="Enter blocked status">
                             </div>
                             {{/if}}
-
-                            <div class="p-2 mt-2">
-                                <button type="submit" class="btn text-white">&nbsp;&nbsp;&nbsp;&nbsp;<i
-                                        class="far fa-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                
                             </div>
 
                         </form>

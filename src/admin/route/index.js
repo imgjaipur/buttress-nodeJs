@@ -34,12 +34,13 @@ router.get('/' , auth ,   async(req , res )=>{
     res.send("buttress project setup")
 })
 
-router.post('/login',adminController.log_in);
+
 router.get('/login',adminController.login_View);
+router.post('/login',adminController.log_in);
 router.get('/register',adminController.register_Admin_view);
 router.post('/register',upload.single('profile'), adminController.registerAdmin);
 router.get('/api',auth,adminController.admindata);
-router.get('/dashbord',adminController.dashbord);
+router.get('/dashbord',auth,adminController.dashbord);
 router.get('/users-datatable',auth,adminController.users_datatable_view);
 router.get('/usersdatatable',auth,adminController.users_datatable);
 router.get('/delete',auth,adminController.delete_user);
