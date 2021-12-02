@@ -323,10 +323,13 @@ let userController = {
   uploadsImg:async(req,res)=>{
     console.log(req.user)
     console.log("file---",req.file.path)
-    // console.log(Process.env.LOCAL_URL.LOCAL_API_PORT);
+   let localurl=process.env.LOCAL_URL;
+   let port=process.env.LOCAL_API_PORT;
+    let envUrl=`${localurl}${port}`;
+    console.log(envUrl);
     const imgupload=await User.update({_id:req.user._id},{
       $set:{
-        image:`http://localhost:3030/userupload/${req.file.filename}`
+        image:`${envUrl}/userupload/${req.file.filename}`
       },
     },{new:true})
     return successResponseWithData(res, "Successfully updated the image");
