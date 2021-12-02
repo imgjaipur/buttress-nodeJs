@@ -184,6 +184,8 @@ let adminController = {
     },
     edit_user: async (req, res) => {
         try {
+            console.log(req.files)
+            console.log('b',req.file)
             let data = await registerUsers.updateMany({ _id: req.body.id }, {
                 $set: {
                     firstname: req.body.firstname,
@@ -195,7 +197,7 @@ let adminController = {
                     xqualifications: req.body.xqualifications,
                     xwhitecard: req.body.xwhitecard,
                     profilestatus: req.body.profilestatus,
-                    status: req.body.status,
+                    status: req.body.status
                 }
             });
             res.redirect('/users-datatable');
