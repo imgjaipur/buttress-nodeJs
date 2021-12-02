@@ -14,13 +14,13 @@ const siteSchema = new mongoose.Schema({
           type: String
      },
      location: [{
-          type: Number,
+          type: Number
      }],
     working_status:{
           type: Boolean
      },
      qr_code:{
-          type: String,
+          type: String
      }
 }, { timestamps: true, versionKey: false });
 
