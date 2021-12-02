@@ -53,7 +53,7 @@ userRoutes.put('/updateProfile',auth,upload.single("image"),userController.updat
 userRoutes.post('/socialLogin', userController.sociallogin);
 userRoutes.post('/workerStatus',auth,userController.add_workerStatus);
 userRoutes.put('/endworkingStatus',auth,userController.end_workerStatus);
-// userRoutes.post('/uploadsImage',auth,userController.uploadsImg)
+userRoutes.post('/uploadsImage',auth,upload.single("image"),userController.uploadsImg);
 
 
 exports.userRoutes = userRoutes;
