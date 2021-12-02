@@ -37,8 +37,8 @@ router.get('/' , auth ,   async(req , res )=>{
 
 router.get('/login',adminController.login_View);
 router.post('/login',adminController.log_in);
-router.get('/register',adminController.register_Admin_view);
-router.post('/register',upload.single('profile'), adminController.registerAdmin);
+// router.get('/register',adminController.register_Admin_view);
+// router.post('/register',upload.single('profile'), adminController.registerAdmin);
 router.get('/api',auth,adminController.admindata);
 router.get('/dashbord',auth,adminController.dashbord);
 router.get('/users-datatable',auth,adminController.users_datatable_view);

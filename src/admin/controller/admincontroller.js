@@ -21,30 +21,30 @@ const site_Data = require('./../../models/siteModel');
 // const express = require('');
 
 let adminController = {
-    register_Admin_view: (req, res) => {
-        res.render('adminRegistration');
-    },
-    registerAdmin: async (req, res) => {
-        // console.log('i am in here');
-        try {
-            if (req.method == "POST") {
-                // console.log(req.file)
-                let hashPassword = await bcrypt.hash(req.body.password, 10);
-                let admin = new registerAdmin({
-                    name: req.body.name,
-                    email: req.body.email,
-                    mobile: req.body.mobile,
-                    password: hashPassword,
-                    profile: req.file.originalname
-                });
-                let admin_Doc = await admin.save();
-                // console.log("admin_doc", admin_Doc);
-                res.render('adminLogin');
-            }
-        } catch (error) {
-            res.status(400).send(error);
-        }
-    },
+    // register_Admin_view: (req, res) => {
+    //     res.render('adminRegistration');
+    // },
+    // registerAdmin: async (req, res) => {
+    //     // console.log('i am in here');
+    //     try {
+    //         if (req.method == "POST") {
+    //             // console.log(req.file)
+    //             let hashPassword = await bcrypt.hash(req.body.password, 10);
+    //             let admin = new registerAdmin({
+    //                 name: req.body.name,
+    //                 email: req.body.email,
+    //                 mobile: req.body.mobile,
+    //                 password: hashPassword,
+    //                 profile: req.file.originalname
+    //             });
+    //             let admin_Doc = await admin.save();
+    //             // console.log("admin_doc", admin_Doc);
+    //             res.render('adminLogin');
+    //         }
+    //     } catch (error) {
+    //         res.status(400).send(error);
+    //     }
+    // },
     admindata: async (req, res) => {
         let data = await registerAdmin.find();
         let json_data = JSON.stringify(data);
@@ -184,6 +184,8 @@ let adminController = {
     },
     edit_user: async (req, res) => {
         try {
+            console.log(req.files)
+            console.log('b',req.file)
             let data = await registerUsers.updateMany({ _id: req.body.id }, {
                 $set: {
                     firstname: req.body.firstname,
@@ -195,7 +197,7 @@ let adminController = {
                     xqualifications: req.body.xqualifications,
                     xwhitecard: req.body.xwhitecard,
                     profilestatus: req.body.profilestatus,
-                    status: req.body.status,
+                    status: req.body.status
                 }
             });
             res.redirect('/users-datatable');
