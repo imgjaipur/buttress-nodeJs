@@ -7,7 +7,7 @@ const fileExtension=require("file-extension")
 const crypto=require("crypto")
 
 const userController = require('./userController');
-const auth =require('./../../lib/authmiddleware');
+const auth =require('./../../lib/authmiddleware').authUser;
 const { isRequestValidated,validateSingupRequest}=require("./../../lib/validationuser")
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
