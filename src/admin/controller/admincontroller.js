@@ -231,8 +231,6 @@ let adminController = {
     insert_site_info: async (req, res) => {
 
         try {
-            
-            
             let data = await QRCode.toDataURL(req.body.sitecode);
             // console.log("longitude-----", [parseFloat(req.body.longitude)], "latitude", [parseFloat(req.body.latitude)])
             // console.log("sit amne-----" , req.body.site , "latitude" , req.body.siteAddress)
@@ -319,7 +317,7 @@ let adminController = {
     },
     site_info_view: async (req, res) => {
         let site_info = await site_Data.findOne({ _id: req.query.id });
-        // console.log("code ----",site_info.site_code);
+        console.log("Qrcode ----",site_info.qr_code);
         let site_data = site_info.site_code
         let stringdata = JSON.stringify(site_data);
         let data = await QRCode.toDataURL(stringdata);
