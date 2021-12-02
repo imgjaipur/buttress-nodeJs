@@ -8,7 +8,7 @@ const crypto=require("crypto")
 
 const userController = require('./userController');
 const auth =require('./../../lib/authmiddleware').authUser;
-const { isRequestValidated,validateSingupRequest}=require("./../../lib/validationuser")
+const { isRequestValidated,validateSingupRequest,validatemobile}=require("./../../lib/validationuser")
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/userupload');
@@ -45,7 +45,7 @@ const upload = multer({
 
 userRoutes.post('/insertUser',validateSingupRequest,isRequestValidated,userController.register);
 // userRoutes.post('/insertUser',userController.register);
-userRoutes.post('/mobileLogin', userController.login);
+userRoutes.post('/mobileLogin',validatemobile,isRequestValidated, userController.login);
 userRoutes.post('/emailLogin', userController.emaillogin);
 userRoutes.post('/verifyMobile', userController.verify);
 userRoutes.post('/resendOTP', userController.resendOtp);

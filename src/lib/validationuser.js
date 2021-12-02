@@ -22,6 +22,10 @@ exports.validateverify=[
 
 
 ];
+exports.validatemobile=[
+    check('mobile')
+    .notEmpty()
+] 
 
 
 exports.isRequestValidated=(req,res,next)=>{

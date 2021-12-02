@@ -2,6 +2,7 @@ const User = require("../../models/user.js");
 // const User = require("../../models/usermodel.js");
 const { validationResult } = require("express-validator");
 const workingStatusSchema=require("../../models/workerStatus");
+
 const bcrypt = require("bcrypt");
 const moment = require('moment');
 const jwt = require("jsonwebtoken");
@@ -341,6 +342,7 @@ let userController = {
         image:`${envUrl}/userupload/${req.file.filename}`
       },
     },{new:true})
+    
     return successResponseWithData(res, "Successfully updated the image");
   },
   deleteImage:async(req,res)=>{
