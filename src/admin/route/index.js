@@ -17,7 +17,7 @@ const auth = require('../middleware/auth');
 
 var storage1 = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, 'F:/IMG/buttress-nodeJs/uploads/adminuploads')
+        cb(null, 'uploads/adminuploads')
     },
     filename: function(req, file, cb) {
         let ext = path.extname(file.originalname)
