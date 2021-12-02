@@ -14,7 +14,10 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/userupload');
     },
     filename: (req, file, cb) => {
-        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        const fileexce=(file.originalname).split('.').pop();
+        const filenemo=Date.now();
+        const fileName=`${filenemo}.${fileexce}`;
+        // const fileName = file.originalname.toLowerCase().split(' ').join('-');
         cb(null, fileName)
     }
 });

@@ -5,6 +5,8 @@ const workingStatusSchema=require("../../models/workerStatus");
 const bcrypt = require("bcrypt");
 const moment = require('moment');
 const jwt = require("jsonwebtoken");
+const fs=require("fs");
+require('dotenv').config();
 const {
   successResponseWithData,
   ErrorResponse,
@@ -282,7 +284,8 @@ let userController = {
         note:req.body.note
       });
       myworkSave=myworking.save();
-      return successResponseWithData(res, "Success");
+      let workStatus_id = {workStatus_id:myworking._id};
+      return successResponseWithData(res, "Success",workStatus_id);
 
     }catch(error){
       console.log(error);
@@ -305,11 +308,13 @@ let userController = {
       if(req.body.note){
         dataToSet['note'] = req.body.note;
       }
-      const workerStatusLogout = await workingStatusSchema.findOneAndUpdate(
+      let documents = await workingStatusSchema.findOneAndUpdate(
         {_id: req.body.workStatus_id },
-        { $set: dataToSet }
+        { $set: dataToSet },
+        { returnOriginal: false }
       );
-      return successResponseWithData(res, "Success");
+      console.log(documents);
+          return successResponseWithData(res, "Success",documents);
     }catch(error){
       console.log(error);
       return ErrorResponse(res, "Something is wrong!");
@@ -317,9 +322,11 @@ let userController = {
   },
   uploadsImg:async(req,res)=>{
     console.log(req.user)
+    console.log("file---",req.file.path)
+    // console.log(Process.env.LOCAL_URL.LOCAL_API_PORT);
     const imgupload=await User.update({_id:req.user._id},{
       $set:{
-        image:req.file.filename
+        image:`http://localhost:3030/userupload/${req.file.filename}`
       },
     },{new:true})
     return successResponseWithData(res, "Successfully updated the image");
