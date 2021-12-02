@@ -3,11 +3,11 @@
 const express = require("express");
 const cors = require("cors");
 require('./src/lib/connecton');
-
+const path=require("path");
 // Create Express webapp
 const app = express();
 
-// app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname,'/uploads')));
 
 app.use(cors());
 app.use(express.json());
