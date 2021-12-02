@@ -18,6 +18,9 @@ const siteSchema = new mongoose.Schema({
      }],
     working_status:{
           type: Boolean
+     },
+     qr_code:{
+          type: String,
      }
 }, { timestamps: true, versionKey: false });
 

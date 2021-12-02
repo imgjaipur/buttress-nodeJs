@@ -87,11 +87,11 @@ let adminController = {
     },
     dashbord: async (req, res) => {
         let users_data = await registerUsers.find();
-        let site_data = await site_Data.find({working_status: true});
+        let site_data = await site_Data.find({ working_status: true });
         let qr_data = await site_Data.find();
         // console.log('site data length--' , site_data.length);
         // console.log("user---" , users_data.length);
-        res.render('admindashbord' , {users: (users_data.length) , sites: (site_data.length) , qr: (qr_data.length)});
+        res.render('admindashbord', { users: (users_data.length), sites: (site_data.length), qr: (qr_data.length) });
     },
     users_data: async (req, res) => {
         let users = await registerUsers.find();
@@ -190,7 +190,7 @@ let adminController = {
                     lastname: req.body.lastname,
                     mobile: req.body.mobile,
                     email: req.body.email,
-                    xcompanyname: req.body.xcompanyname,
+                    companyName: req.body.xcompanyname,
                     xabn: req.body.xabn,
                     xqualifications: req.body.xqualifications,
                     xwhitecard: req.body.xwhitecard,
@@ -231,6 +231,9 @@ let adminController = {
     insert_site_info: async (req, res) => {
 
         try {
+            
+            
+            let data = await QRCode.toDataURL(req.body.sitecode);
             // console.log("longitude-----", [parseFloat(req.body.longitude)], "latitude", [parseFloat(req.body.latitude)])
             // console.log("sit amne-----" , req.body.site , "latitude" , req.body.siteAddress)
             let site_info = new site_Data({
@@ -239,7 +242,8 @@ let adminController = {
                 construction_manager: req.body.cmanager,
                 site_code: req.body.sitecode,
                 location: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)],
-                working_status: req.body.status
+                working_status: req.body.status,
+                qr_code: data
             })
             let site_Document = await site_info.save();
             // console.log("site_data -----", site_Document)
