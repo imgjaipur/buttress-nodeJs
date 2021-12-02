@@ -10,6 +10,7 @@ const {
   ErrorResponse,
 } = require("./../../lib/apiresponse");
 const { model } = require("mongoose");
+const { update } = require("../../models/workerStatus");
 
 let userController = {
   register: async (req, res) => {
@@ -170,7 +171,7 @@ let userController = {
   getProfile: async (req, res) => {
     try {
       const user = req.user
-      const dat = await User.find({_id: user._id },{otp:0,token:0,password:0,tempmobile:0,blocked:0,status:0,_id:0});
+      const dat = await User.find({_id: user._id },{otp:0,token:0,password:0,tempmobile:0 ,blocked:0,status:0,_id:0});
         
     
       return successResponseWithData(res, "Success", dat);
@@ -315,11 +316,13 @@ let userController = {
     }
   },
   uploadsImg:async(req,res)=>{
-    const uploadsImg=new User({
-      
-    })
-
-
+    console.log(req.user)
+    const imgupload=await User.update({_id:req.user._id},{
+      $set:{
+        image:req.file.filename
+      },
+    },{new:true})
+    return successResponseWithData(res, "Successfully updated the image");
   }
   
 }
