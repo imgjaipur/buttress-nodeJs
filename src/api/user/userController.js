@@ -12,7 +12,7 @@ const {
   ErrorResponse,
 } = require("./../../lib/apiresponse");
 const { model } = require("mongoose");
-const { update } = require("../../models/workerStatus");
+const { update, find } = require("../../models/workerStatus");
 
 let userController = {
   register: async (req, res) => {
@@ -327,12 +327,36 @@ let userController = {
    let port=process.env.LOCAL_API_PORT;
     let envUrl=`${localurl}${port}`;
     console.log(envUrl);
+    const deleteOld=await User.findOne({_id:req.user._id})
+      if(deleteOld.image){
+          filepath="uploads/userupload/"+deleteOld.image;
+          console.log(filepath)
+          fs.unlink(filepath,(err)=>{
+            console.log(err)
+          });
+          
+      }
     const imgupload=await User.update({_id:req.user._id},{
       $set:{
         image:`${envUrl}/userupload/${req.file.filename}`
       },
     },{new:true})
     return successResponseWithData(res, "Successfully updated the image");
+  },
+  deleteImage:async(req,res)=>{
+    const userImg=await User.find({_id:req.user._id});
+    console.log(userImg);
+    if(!userImg){
+      console.log(error)
+    }else{
+      let filepath="uploads/userupload/"+userImg.image;
+      console.log(filepath);
+      await fs.unlink(filepath,(err)=>{
+        console.log(err);
+      });
+    }
+    console.log(filepath);
+    return successResponseWithData(res, "image delete successfull");
   }
   
 }
