@@ -1,4 +1,5 @@
 const User = require("../../models/user.js");
+const Working = require("../../models/workerStatus")
 // const User = require("../../models/usermodel.js");
 const { validationResult } = require("express-validator");
 const workingStatusSchema=require("../../models/workerStatus");
@@ -359,6 +360,25 @@ let userController = {
     }
     console.log(filepath);
     return successResponseWithData(res, "image delete successfull");
+  },
+  timesheet:async(req,res)=>{
+    try{
+      let Obj = {
+        status:"Completed"
+    }
+    // console.log(obj);
+  
+    // console.log(whereObj);
+     const site = await Working.find(Obj)
+     const data = await Working.find({start_time:{ $gte:("2021-12-02T11:42:22"), $lt:("2021-12-02T11:46:31") }})
+     console.log(data);
+    // res.send({site,data}) 
+    res.send(data)
+
+    }catch(e){
+      console.log(e);
+      res.send(e)
+    }
   }
   
 }
