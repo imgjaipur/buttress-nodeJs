@@ -6,6 +6,8 @@ const hbs = require('hbs');
 
 const mongoose = require('mongoose');
 
+// mongoose.set('debug' , true);
+
 const path = require('path');
 
 const mongodb = require('./src/lib/connecton');
@@ -28,6 +30,7 @@ const fs = require('fs');
 
 
 app.use(express.static(path.join(__dirname,'/uploads')));
+
 
 
 app.use(express.json());
