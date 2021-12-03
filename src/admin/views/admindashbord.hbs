@@ -1312,39 +1312,56 @@
       white-space: nowrap;
       margin: 0px auto;
     }
- 
+
+    ,
+    .btn-outline-primary {
+      background-color: #000203;
+      color: rgb(11, 7, 44);
+      border-color: #2F3E48;
+
+    }
+    .btn-outline-primary:hover,
+    .btn-outline-primary:focus,
+    .btn-outline-primary:active,
+    .btn-default.active,
+    .open .dropdown-toggle.btn-outline-primary {
+      background-color: #0d357eea;
+      color: #FFF;
+      border-color: #13143d;
+    }
   </style>
 </head>
 
 <body>
   <nav>
     <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top d-flex align-items-center">
+    <header id="header" class="header fixed-top d-flex align-items-center justify-content-between"
+      style="margin-right: 5px;">
 
       <div class="d-flex align-items-center justify-content-between">
         <a href="/dashbord" class="logo d-flex align-items-center">
           <img src="assets/img/logo.png" alt="">
-          <span class="d-none d-lg-block"> ButtressAdmin</span>
+          <span class="d-none d-lg-block"> ButtressAdmin </span>
         </a>
-        <i class="bi bi-list toggle-sidebar-btn"></i>
       </div><!-- End Logo -->
-      <div class="btn">
-        <a href="/login" id='set-cookie'><button class="btn btn-outline-primary" type="submit">Sign
-            Out</button></a>
+      <div class="dropdown">
+        <button style="margin-right: 15px;" class="btn btn-outline-primary dropdown-toggle-sm" type="button"
+          id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user"></i>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="/logout">Sign Out</a></li>
+        </ul>
       </div>
-
-
-
-
-
-
+      {{!-- <div class="btn pull-right">
+        <a href="/logout"><button class="btn btn-outline-primary" style="margin-right: 5px;" type="submit">Sign
+            Out</button></a>
+      </div> --}}
     </header><!-- End Header -->
-
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
-
       <ul class="sidebar-nav" id="sidebar-nav">
-
         <li class="nav-item">
           <a class="nav-link " href="/dashbord">
             <i class="fas fa-columns"></i>
@@ -1418,7 +1435,7 @@
 
                     <div class="d-flex align-items-center">
                       <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-address-card"></i>
                       </div>
 
                       <div class="ps-3">
