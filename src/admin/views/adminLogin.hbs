@@ -49,6 +49,22 @@
           h3 {
                padding-right: 10px;
           }
+
+          .h {
+               padding-left: 11%;
+          }
+
+          .btn-primary {
+               color: #0d357e;
+               background-color: #0d357eea;
+               border-color: #5bc2c2
+          }
+
+          .btn-primary:hover {
+               color: #212529;
+               background-color: #6087cfea;
+               border-color: #8ad3d3
+          }
      </style>
 </head>
 
@@ -62,56 +78,51 @@
                     <div class="container">
                          <div class="row justify-content-center">
                               <div
-                                   class="col-lg-6 col-md-8 d-flex flex-column align-items-center justify-content-center">
-                                   <h3 style="color: royalblue;font-size: 40px;font-weight: bold; padding-right:15px;">
-                                        AdminLogin</h3>
-                                   <div class="card mb-5">
+                                   class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
+                                   <div class="card mb-4">
+                                        <div class="h">
+                                             <h3 style="color: #0d357eea;font-size: 30px;font-weight: bold; ">
+                                                  Admin Panel Login </h3>
+                                        </div>
                                         <div class="card-body">
-
-                                             <div class="pt-4 pb-2">
-                                                  <h5 class="card-title text-center pb-0 fs-4">Login to Your Account
-                                                  </h5>
-                                                  <p class="text-center small">Enter your Email & password to login
-                                                  </p>
+                                             <div class="pt-2 pb-2">
                                                   {{#if data}}
-
                                                   <p class="text-danger text-center"><i class="fas fa-ban"></i> {{data}}
                                                   </p>
                                                   {{/if}}
                                                   {{#if data_pass}}
-
                                                   <p class="text-danger text-center"><i class="fas fa-ban"></i>
                                                        {{data_pass}} </p>
                                                   {{/if}}
                                              </div>
-
-                                             <form class="row g-5 needs-validation" method="POST" action="/login">
-
+                                             <form class="row g-4 needs-validation" method="POST" action="/login">
                                                   <div class="col-12">
-                                                       <label for="yourUsername" class="form-label">Email</label>
-                                                       <div class="input-group has-validation">
-
-                                                            <input type="email" name="email"
-                                                                 placeholder="Enter your Email" class="form-control"
-                                                                 id="yourUsername" required>
-
-                                                            <div class="invalid-feedback">Please enter your email.
+                                                       <div class="input-group input-group-sm mb-3">
+                                                            <div class="input-group-prepend">
+                                                                 <span class="input-group-text"
+                                                                      id="inputGroup-sizing-sm"><i
+                                                                           class="fas fa-envelope"></i></span>
                                                             </div>
+                                                            <input type="text" class="form-control" name='email'
+                                                                 aria-label="Small"
+                                                                 aria-describedby="inputGroup-sizing-sm"
+                                                                 placeholder="Email" required>
                                                        </div>
 
                                                   </div>
-
-                                                  <div class="col-12">
-                                                       <label for="yourPassword" class="form-label">Password</label>
-                                                       <input type="password" placeholder="Enter your Password"
-                                                            name="password" class="form-control" id="yourPassword"
-                                                            required>
-
+                                                  <div class="input-group input-group-sm mb-3">
+                                                       <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm">
+                                                                 <i class="fa fa-key" aria-hidden="true"></i> </span>
+                                                       </div>
+                                                       <input type="password" class="form-control" name='password'
+                                                            aria-label="Small" placeholder="Password"
+                                                            aria-describedby="inputGroup-sizing-sm" required>
                                                   </div>
                                                   <div class="col-12">
                                                        <button class="btn btn-primary w-100 text-center"
-                                                            type="submit">Login</button>
+                                                           style="color: rgb(195, 194, 194);" type="submit">Login</button>
                                                   </div>
                                              </form>
 

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Edit User</title>
+    <title>Edir User Information</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
@@ -26,165 +26,79 @@
         integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
         crossorigin="anonymous"></script>
 
+    {{!-- ---------------Google Map JS API Integration------------ --}}
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrX7x7ViVdh2H_ILf8vqS7s-nH57_ESZc&libraries=places"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrX7x7ViVdh2H_ILf8vqS7s-nH57_ESZc&callback=initMap&libraries=places&v=weekly"
+        async></script>
+    <script>
+        function initialize() {
+            var input = document.getElementById('searchTextField');
+            new google.maps.places.Autocomplete(input);
+        }
 
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
 </head>
 <style>
     body {
-        font: 400 15px/1.8 Lato, sans-serif;
-        width: 100%;
-        height: 80%;
-        position: fixed;
-    }
-
-    .card {
-        background: transparent;
-        background-position: center;
-        margin-top: 1% !important;
-        margin-bottom: 3% !important;
-        margin-left: 16%;
-        border-radius: 2% !important;
-        box-shadow: 1px 1px 2px rgb(255, 187, 1), 0 0 10px rgb(247, 105, 11), 0 0 5px rgb(238, 116, 59);
-
-    }
-
-    .btn {
-        background-color: rgb(36, 35, 34);
-        padding-left: 152px;
-        padding-right: 152px;
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-        letter-spacing: 5px;
-    }
-
-    .btn:hover {
-        background-color: rgb(248, 241, 232);
-        color: rgb(238, 240, 245) !important;
-        border: 1px solid rgb(225, 226, 255);
-    }
-
-    .card-title {
-        color: rgb(255, 255, 255);
-        font-weight: bold;
-        letter-spacing: 2px;
-        transition-duration: 0.5s;
-    }
-
-    .card-title:hover {
-        color: rgb(238, 81, 9) !important;
-
-    }
-
-    .heigth {
-        height: 50px
-    }
-
-    .imgphone {
-        margin-top: 18% !important;
-        margin-left: 28% !important;
-        width: 550px;
+        background: rgba(64, 224, 208, 0.02);
     }
 </style>
 
 <body>
     {{>header}}
-    <div class="login-img">
-        <div class="container">
-            <div class="row">
-                <div class="card col-lg-8 text-center " style="">
-                    <div class="card-body">
-                        <h4 class="card-title">Edit User</h4>
-                        <form class="form-group card-text  pt-2" action="/edit-user" method="POST">
-                            {{#if user}}
-                            <div class="form-group col-md-12 col-sm-12 mb-3">
-                                <input type="hidden" class="form-control heigth" name="id" value="{{user.id}}"
-                                    placeholder="id is here">
-                            </div>
-                            {{/if}}
-                            <div class="form row mb-1">
-                                <div class="col-6 ">
-                                    {{#if user}}
-                                    <div class="form-group col-md-12 col-sm-12 mb-3">
-                                        <input type="text1" class="form-control heigth" name="firstname"
-                                            value="{{user.firstname}}" placeholder="Enter Your First name">
-                                    </div>
-                                    {{/if}}
-                                </div>
-                                <div class="col-6">
-                                    {{#if user}}
-                                    <div class="form-group col-md-12 col-sm-12 mb-3">
-                                        <input type="text1" class="form-control heigth" name="lastname"
-                                            value="{{user.lastname}}" placeholder="Enter Your Last name">
-                                    </div>
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="form row">
-                                <div class="col-6">
-                                    {{#if user}}
-                                    <div class="form-group col-md-12 col-sm-12 mb-3">
-                                        <input type="number" class="form-control heigth" name="mobile"
-                                            value="{{user.mobile}}">
-                                    </div>
-                                    {{/if}}
-                                </div>
-                                <div class="col-6">
-                                    {{#if user}}
-                                    <div class="form-group col-md-12 col-sm-12 mb-3">
-                                        <input type="email" class="form-control heigth" name="email"
-                                            value="{{user.email}}">
-                                    </div>
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="form row">
-                                <div class="col-4">
-                                    <div class="form  col-md-12 col-sm-12 mb-3">
-                                        <input type="text" class="form-control heigth" name="xcompanyname"
-                                            value="{{user.companyName}}" placeholder="Enter your Company name">
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group col-md-12 col-sm-12 mb-3">
-                                        <input type="text" class="form-control heigth" name="xabn"
-                                            placeholder="ABN" value="{{user.xabn}}">
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group col-md-12 col-sm-12 mb-3">
-                                        <input type="text" class="form-control heigth"
-                                            placeholder="Enter your Ex-Qualification" name="xqualifications"
-                                            value="{{user.xqualifications}}">
-                                    </div>
-                                </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title" style="text-align: center; font-size:25px;">Edit User Information</h5>
+                    <!-- Vertical Form -->
+                    <form class="row g-3" method="POST" action="/edit-user">
+                    {{#if user}}
+                     <div class="col-12">
+                            {{!-- <label for="inputNanme4" class="form-label">First Name</label> --}}
+                            <input type="hidden" value="{{user.id}}" name='id' class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputNanme4" class="form-label">First Name</label>
+                            <input type="text" value="{{user.firstname}}" name='firstname' class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputPassword4" class="form-label">Last Name</label>
+                            <input type="text" value="{{user.lastname}}" name='lastname' class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputPassword4" class="form-label">Mobile</label>
+                            <input type="text" value="{{user.mobile}}" name='mobile' class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">Email</label>
+                            <input type="text" value="{{user.email}}" name='email' class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">Company Name</label>
+                            <input type="text" value="{{user.companyName}}" name = "xcompanyname" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">Abn</label>
+                            <input type="text" name='xabn' value="{{user.xabn}}" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">Profile status</label>
+                            <input type="text" value="{{user.profilestatus}}" name='profilestatus' class="form-control" required>
+                        </div><br>
+                        {{/if}}
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </div>
 
-                            </div>
+                    </form><br><!-- Vertical Form -->
 
-                            <div class="form-group col-md-12 col-sm-12 mb-3">
-                                <input type="text1" class="form-control heigth" placeholder="Enter your Ex-Whitecard"
-                                    name="xwhitecard" value="{{user.xwhitecard}}">
-                            </div>
-                            {{#if user}}
-                            <div class="form-group col-md-12 col-sm-12 mb-3">
-                                <input type="text1" class="form-control heigth" name="blocked" value="{{user.blocked}}"
-                                    placeholder="Enter blocked status">
-                            </div>
-                            {{/if}}
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-                <div class="col-lg-5 dsf">
-                    <img src="../../img/app_screen.png" alt="" class="imgphone">
-                </div>
             </div>
-
         </div>
-    </div>
 </body>
 
 </html>

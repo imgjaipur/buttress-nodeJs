@@ -26,6 +26,21 @@
           integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
           crossorigin="anonymous"></script>
 
+     {{!-- ---------------Google Map JS API Integration------------ --}}
+     <script type="text/javascript"
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrX7x7ViVdh2H_ILf8vqS7s-nH57_ESZc&libraries=places"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrX7x7ViVdh2H_ILf8vqS7s-nH57_ESZc&callback=initMap&libraries=places&v=weekly"
+          async></script>
+     <script>
+          function initialize() {
+               var input = document.getElementById('searchTextField');
+               new google.maps.places.Autocomplete(input);
+          }
+
+          google.maps.event.addDomListener(window, 'load', initialize);
+     </script>
 </head>
 <style>
      body {
@@ -43,12 +58,13 @@
                          <form class="row g-3" method="POST" action="/site-insert">
                               <div class="col-12">
                                    <label for="inputNanme4" class="form-label">Site Name</label>
-                                   <input type="text" name='site' placeholder="Enter Site Name" class="form-control" required>
+                                   <input type="text" name='site' placeholder="Enter Site Name" class="form-control"
+                                        required>
                               </div>
                               <div class="col-12">
-                                   <label for="inputEmail4" class="form-label">Site Address</label>
+                                   <label for="inputPassword4" class="form-label">Site Address</label>
                                    <input type="text" name='siteAddress' class="form-control"
-                                        placeholder="Enter Site Address" id="inputEmail4" required>
+                                       id="searchTextField" placeholder="Enter Site Adress" required>
                               </div>
                               <div class="col-12">
                                    <label for="inputPassword4" class="form-label">Construction Manager</label>
@@ -57,8 +73,8 @@
                               </div>
                               <div class="col-12">
                                    <label for="inputAddress" class="form-label">Site code </label>
-                                   <input type="text" name='sitecode' class="form-control"
-                                        placeholder="Enter Site code" required>
+                                   <input type="text" name='sitecode' class="form-control" placeholder="Enter Site code"
+                                        required>
                               </div>
                               <div class="col-12">
                                    <label for="inputAddress" class="form-label">Location</label>
@@ -70,8 +86,8 @@
                               <div class="col-12">
                                    <label for="inputAddress" class="form-label">Working status</label>
                                    <select class="form-select" name='status' aria-label="Default select example">
-                                        <option >true</option>
-                                        <option >false</option>
+                                        <option>true</option>
+                                        <option>false</option>
                                    </select>
                               </div>
                               <div class="text-center">
