@@ -374,7 +374,7 @@ let userController = {
   
     // console.log(whereObj);
      const site = await Working.find(Obj)
-     const data = await Working.find({start_time:{ $gte:("2021-12-02T11:42:22"), $lt:("2021-12-02T11:46:31") }})
+     const data = await Working.find({"start_time":{ $gte:("2021-12-02T11:42:22"), $lt:("2021-12-02T11:46:31") }})
      console.log(data);
     // res.send({site,data}) 
     res.send(data)
