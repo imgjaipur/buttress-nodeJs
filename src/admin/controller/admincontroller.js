@@ -184,8 +184,8 @@ let adminController = {
     },
     edit_user: async (req, res) => {
         try {
-            console.log(req.files)
-            console.log('b',req.file)
+            // console.log(req.files)
+            // console.log('b',req.file)
             let data = await registerUsers.updateMany({ _id: req.body.id }, {
                 $set: {
                     firstname: req.body.firstname,
@@ -319,7 +319,7 @@ let adminController = {
     },
     site_info_view: async (req, res) => {
         let site_info = await site_Data.findOne({ _id: req.query.id });
-        console.log("Qrcode ----",site_info.qr_code);
+        // console.log("Qrcode ----",site_info.qr_code);
         let site_data = site_info.site_code
         let stringdata = JSON.stringify(site_data);
         let data = await QRCode.toDataURL(stringdata);
