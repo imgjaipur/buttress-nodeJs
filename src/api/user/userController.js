@@ -2,12 +2,11 @@ const User = require("../../models/user.js");
 const Working = require("../../models/workerStatus")
 // const User = require("../../models/usermodel.js");
 const { validationResult } = require("express-validator");
-const workingStatusSchema=require("../../models/workerStatus");
-
+const workingStatusSchema = require("../../models/workerStatus");
 const bcrypt = require("bcrypt");
 const moment = require('moment');
 const jwt = require("jsonwebtoken");
-const fs=require("fs");
+const fs = require("fs");
 require('dotenv').config();
 const {
   successResponseWithData,
@@ -30,15 +29,15 @@ let userController = {
       const { email } = req.body;
       // const data = await User.findOne({ mobile: mobile })
       // if (data) return ErrorResponse(res, "mobile allready exits !")
-      const mail = await User.findOne({ email:email });
+      const mail = await User.findOne({ email: email });
       if (mail) return ErrorResponse(res, "email allready exits !");
 
       const newuser = new User({
-        email:email,
+        email: email,
         password: req.body.password,
       });
 
-       await newuser.save();
+      await newuser.save();
 
       return successResponseWithData(res, "Success");
     } catch (e) {
@@ -71,42 +70,42 @@ let userController = {
   verify: async (req, res) => {
     try {
       const user = await User.findOne({ mobile: req.body.mobile });
-      if(!user){
+      if (!user) {
         const use = await User.findOne({ tempmobile: req.body.mobile });
-        if(use){
+        if (use) {
           if (use.otp == req.body.otp) {
             const OTP = await User.findOneAndUpdate(
               { tempmobile: req.body.mobile },
-              { $set: { otp: "",tempmobile: "",mobile :use.tempmobile }},
-              { new: true }
-              );
-              const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
-              return successResponseWithData(res, "Success",token)
-          }
-          else{
-            return ErrorResponse(res, "OTP Dosn't Matched!");
-          }
-          
-        }
-        else{
-          return ErrorResponse(res, "Mobile No. Not Found!");
-        }
-      }else{
-        if (user.otp === req.body.otp) {
-            const OTP = await User.findOneAndUpdate(
-              { mobile: req.body.mobile },
-              { $set: { otp: ""}},
+              { $set: { otp: "", tempmobile: "", mobile: use.tempmobile } },
               { new: true }
             );
             const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
+            return successResponseWithData(res, "Success", token)
+          }
+          else {
+            return ErrorResponse(res, "OTP Dosn't Matched!");
+          }
 
-            return successResponseWithData(res, "Success",token)
         }
-        else{
+        else {
+          return ErrorResponse(res, "Mobile No. Not Found!");
+        }
+      } else {
+        if (user.otp === req.body.otp) {
+          const OTP = await User.findOneAndUpdate(
+            { mobile: req.body.mobile },
+            { $set: { otp: "" } },
+            { new: true }
+          );
+          const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
+
+          return successResponseWithData(res, "Success", token)
+        }
+        else {
           return ErrorResponse(res, "OTP Dosn't Matched!");
         }
       }
-    }catch (e) {
+    } catch (e) {
       console.log(e);
       return ErrorResponse(res, "Something is wrong!");
     }
@@ -144,12 +143,12 @@ let userController = {
       companyName ? (dataToSet.companyName = companyName) : true;
 
       await User.findOneAndUpdate(
-        {_id: user._id  },
+        { _id: user._id },
         { $set: dataToSet },
         { new: true }
       );
       // console.log(update);
-      return successResponseWithData(res, "Success",filename);
+      return successResponseWithData(res, "Success", filename);
     } catch (e) {
       console.log(e);
       return ErrorResponse(res, "Something is wrong!");
@@ -175,9 +174,9 @@ let userController = {
   getProfile: async (req, res) => {
     try {
       const user = req.user
-      const dat = await User.find({_id: user._id },{otp:0,token:0,password:0,tempmobile:0 ,blocked:0,status:0,_id:0});
-        
-    
+      const dat = await User.find({ _id: user._id }, { otp: 0, token: 0, password: 0, tempmobile: 0, blocked: 0, status: 0, _id: 0 });
+
+
       return successResponseWithData(res, "Success", dat);
     } catch (e) {
       console.log(e);
@@ -186,177 +185,182 @@ let userController = {
   },
   resendOtp: async (req, res) => {
     try {
-      
+
       const data = await User.findOne({ mobile: req.body.mobile });
       // let otpcode =Math.floor((Math.random()*10000)+1)
       let otpcode = 1234;
-        if (!data) {
-          const value = await User.findOne({tempmobile : req.body.mobile});
-          if(!value){
-            return ErrorResponse(res, "Mobile Number not found!");
-          }
-          await User.findOneAndUpdate({ tempmobile: value.mobile }, { otp: otpcode });
-          return successResponseWithData(res, "Success");
+      if (!data) {
+        const value = await User.findOne({ tempmobile: req.body.mobile });
+        if (!value) {
+          return ErrorResponse(res, "Mobile Number not found!");
         }
-        await User.findOneAndUpdate({ mobile: data.mobile }, { otp: otpcode });
+        await User.findOneAndUpdate({ tempmobile: value.mobile }, { otp: otpcode });
         return successResponseWithData(res, "Success");
+      }
+      await User.findOneAndUpdate({ mobile: data.mobile }, { otp: otpcode });
+      return successResponseWithData(res, "Success");
     } catch (e) {
       return ErrorResponse(res, "Something is wrong!");
     }
   },
-  login:async(req,res)=>{
-    try{
- 
-     const mob = await User.findOne({mobile:req.body.mobile})
-     if(mob){
-      let otpcode = 1234;
-  
-        const th = await User.findOneAndUpdate({ mobile:mob.mobile }, { otp: otpcode });
+  login: async (req, res) => {
+    try {
+
+      const mob = await User.findOne({ mobile: req.body.mobile })
+      if (mob) {
+        let otpcode = 1234;
+
+        const th = await User.findOneAndUpdate({ mobile: mob.mobile }, { otp: otpcode });
         return successResponseWithData(res, "Success");
 
-     }
-    else{
-      const mobo = await User.findOne({tempmobile:req.body.mobile})
-     if(mobo){
-      let otpcode = 1234;
-  
-        const th = await User.findOneAndUpdate({ tempmobile:mobo.tempmobile }, { otp: otpcode });
-        return successResponseWithData(res, "Success");
-     }
-     else{
-      const mobi = await User({
-        tempmobile:req.body.mobile
-      })
-      await mobi.save()
-      let otpcode = 1234;
-  
-        const th = await User.findOneAndUpdate({ tempmobile:mobi.tempmobile }, { otp: otpcode });
-        // await mobi.save()
-      return successResponseWithData(res, "Success");
-     }
-    }
-    // return successResponseWithData(res, "Success",mob);
-   
-  
+      }
+      else {
+        const mobo = await User.findOne({ tempmobile: req.body.mobile })
+        if (mobo) {
+          let otpcode = 1234;
+
+          const th = await User.findOneAndUpdate({ tempmobile: mobo.tempmobile }, { otp: otpcode });
+          return successResponseWithData(res, "Success");
+        }
+        else {
+          const mobi = await User({
+            tempmobile: req.body.mobile
+          })
+          await mobi.save()
+          let otpcode = 1234;
+
+          const th = await User.findOneAndUpdate({ tempmobile: mobi.tempmobile }, { otp: otpcode });
+          // await mobi.save()
+          return successResponseWithData(res, "Success");
+        }
+      }
+      // return successResponseWithData(res, "Success",mob);
 
 
 
-    }catch(e){
+
+
+    } catch (e) {
       console.log(e);
       return ErrorResponse(res, "Something is wrong!");
 
     }
   },
-  sociallogin:async(req,res)=>{
+  sociallogin: async (req, res) => {
     try {
-      const mail = await User.findOne({email:req.body.email})
-      if(mail){
+      const mail = await User.findOne({ email: req.body.email })
+      if (mail) {
         const token = jwt.sign({ _id: mail._id.toString() }, "this is my");
-        return successResponseWithData(res, "Success",token);
+        return successResponseWithData(res, "Success", token);
 
       }
-      if(!mail){
+      if (!mail) {
         const data = await User({
-          email:req.body.email
-          
+          email: req.body.email
+
         })
         await data.save()
         const toke = jwt.sign({ _id: data._id.toString() }, "this is my");
-        return successResponseWithData(res, "Success",toke);
+        return successResponseWithData(res, "Success", toke);
 
       }
       // return successResponseWithData(res, "Success",token,toke);
 
-      
+
     } catch (e) {
       console.log(e);
       return ErrorResponse(res, "Something is wrong!");
-      
-      
+
+
     }
 
   },
-  add_workerStatus:async(req,res)=>{
-    try{
-      let  myworking=new workingStatusSchema({
-        worker_id:req.user._id,
-        constructionSite_id:req.body.constructionSite_id,
-        start_time:moment().format("YYYY-MM-DDThh:mm:ss"),
-        status:'Working',
-        note:req.body.note
+  add_workerStatus: async (req, res) => {
+    try {
+      let myworking = new workingStatusSchema({
+        worker_id: req.user._id,
+        constructionSite_id: req.body.constructionSite_id,
+        start_time: moment().format("YYYY-MM-DDThh:mm:ss"),
+        status: 'Working',
+        note: req.body.note
       });
-      myworkSave=myworking.save();
-      let workStatus_id = {workStatus_id:myworking._id};
-      return successResponseWithData(res, "Success",workStatus_id);
+      myworkSave = myworking.save();
+      let workStatus_id = { workStatus_id: myworking._id };
+      return successResponseWithData(res, "Success", workStatus_id);
 
-    }catch(error){
+    } catch (error) {
       console.log(error);
       return ErrorResponse(res, "Something is wrong!");
     }
   },
-  end_workerStatus:async(req,res)=>{
-    try{
-      let dataToSet= {};
-      const workerStatusData = await workingStatusSchema.findOne({_id:req.body.workStatus_id});
+  end_workerStatus: async (req, res) => {
+    try {
+      let dataToSet = {};
+      const workerStatusData = await workingStatusSchema.findOne({ _id: req.body.workStatus_id });
       console.log(workerStatusData.start_time.split("T")[1]);
       let end_time = moment().format("YYYY-MM-DDThh:mm:ss");
-      let hrs = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1],"hh-mm-ss"))).format("HH");
-      let min = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1],"hh-mm-ss"))).format("mm");
-      let sec = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1],"hh-mm-ss"))).format("ss");
+      let hrs = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1], "hh-mm-ss"))).format("HH");
+      let min = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1], "hh-mm-ss"))).format("mm");
+      let sec = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1], "hh-mm-ss"))).format("ss");
       let total_working_hours = [hrs, min, sec].join(':');
       dataToSet.total_working_hours = total_working_hours;
       dataToSet.end_time = end_time;
       dataToSet.status = 'Completed';
-      if(req.body.note){
+      if (req.body.note) {
         dataToSet['note'] = req.body.note;
       }
       let documents = await workingStatusSchema.findOneAndUpdate(
-        {_id: req.body.workStatus_id },
+        { _id: req.body.workStatus_id },
         { $set: dataToSet },
         { returnOriginal: false }
       );
       console.log(documents);
-          return successResponseWithData(res, "Success",documents);
-    }catch(error){
+      return successResponseWithData(res, "Success", documents);
+    } catch (error) {
       console.log(error);
       return ErrorResponse(res, "Something is wrong!");
     }
   },
-  uploadsImg:async(req,res)=>{
-    console.log(req.user)
-    console.log("file---",req.file.path)
-   let localurl=process.env.LOCAL_URL;
-   let port=process.env.LOCAL_API_PORT;
-    let envUrl=`${localurl}${port}`;
-    console.log(envUrl);
-    const deleteOld=await User.findOne({_id:req.user._id})
-      if(deleteOld.image){
-          filepath="uploads/userupload/"+deleteOld.image;
-          console.log(filepath)
-          fs.unlink(filepath,(err)=>{
-            console.log(err)
-          });
-          
+  uploadsImg: async (req, res) => {
+    try {
+      const deleteOld = await User.findOne({ _id: req.user._id })
+      console.log('oldimg======>',deleteOld.image);
+      if (deleteOld.image) {
+        filepath = "uploads/userupload/" + deleteOld.image;
+        console.log(filepath);
+        fs.unlink(filepath, (err) => {
+          console.log(err)
+        });
       }
-    const imgupload=await User.update({_id:req.user._id},{
-      $set:{
-        image:`${envUrl}/userupload/${req.file.filename}`
-      },
-    },{new:true})
-    
-    return successResponseWithData(res, "Successfully updated the image");
+      // ---------------------------------------
+      
+      let localurl = process.env.LOCAL_URL;
+      let port = process.env.LOCAL_API_PORT;
+      let envUrl = `${localurl}${port}`;
+      
+      const imgupload = await User.update({ _id: req.user._id }, {
+        $set: {
+          image: `${envUrl}/userupload/${req.file.filename}`
+        },
+      }, { new: true })
+      return successResponseWithData(res, "Successfully updated the image");
+
+    } catch (error) {
+      console.log(error);
+      return ErrorResponse(res, "Something is wrong!");
+    }
+
   },
-  deleteImage:async(req,res)=>{
-    const userImg=await User.find({_id:req.user._id});
-    console.log(userImg);
-    if(!userImg){
-      console.log(error)
-    }else{
-      let filepath="uploads/userupload/"+userImg.image;
-      console.log(filepath);
-      await fs.unlink(filepath,(err)=>{
-        console.log(err);
-      });
+
+  updateUserNote_page: async (req, res) => {
+    try {
+
+      const noteUpdate = await workingStatusSchema.updateOne({ _id: req.body.workStatus_id ,status:"Completed"}, { $set: { note: req.body.note } });
+      return successResponseWithData(res, "note Success");
+
+    } catch (error) {
+      console.log(error);
+      return ErrorResponse(res, "Something is wrong!");
     }
     console.log(filepath);
     return successResponseWithData(res, "image delete successfull");
