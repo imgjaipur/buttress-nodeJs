@@ -379,6 +379,25 @@ let userController = {
       console.log(error);
       return ErrorResponse(res, "Something is wrong!");
     }
+    console.log(filepath);
+    return successResponseWithData(res, "image delete successfull");
+  },
+  timesheet:async(req,res)=>{
+    try{
+     const site = await Working.find({status:"Completed"});
+      let start_time= moment(req.query.start_time).format('llll');
+      let end_time=  moment(req.query.end_time).add(1,"days").subtract(1,"minutes").format('llll');
+       const data = await Working.find({createdAt: {$gte:new Date(start_time), $lte: new Date(end_time)}})
+    //  console.log(data);
+    res.send(data)
+    // res.send(data)
+     
+    // res.send(data)
+
+    }catch(e){
+      console.log(e);
+      res.send(e)
+    }
   }
 
 }
