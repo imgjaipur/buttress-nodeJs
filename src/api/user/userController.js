@@ -367,17 +367,15 @@ let userController = {
   },
   timesheet:async(req,res)=>{
     try{
-      let Obj = {
-        status:"Completed"
-    }
-    // console.log(obj);
-  
-    // console.log(whereObj);
-     const site = await Working.find(Obj)
-     const data = await Working.find({"start_time":{ $gte:("2021-12-02T11:42:22"), $lt:("2021-12-02T11:46:31") }})
-     console.log(data);
-    // res.send({site,data}) 
+     const site = await Working.find({status:"Completed"});
+      let start_time= moment(req.query.start_time).format('llll');
+      let end_time=  moment(req.query.end_time).add(1,"days").subtract(1,"minutes").format('llll');
+       const data = await Working.find({createdAt: {$gte:new Date(start_time), $lte: new Date(end_time)}})
+    //  console.log(data);
     res.send(data)
+    // res.send(data)
+     
+    // res.send(data)
 
     }catch(e){
       console.log(e);

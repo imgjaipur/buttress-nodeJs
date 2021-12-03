@@ -6,7 +6,8 @@ require('./src/lib/connecton');
 const path=require("path");
 // Create Express webapp
 const app = express();
-
+const mongoose= require('mongoose');
+mongoose.set('debug',true);
 app.use(express.static(path.join(__dirname,'/uploads')));
 
 app.use(cors());
@@ -16,6 +17,8 @@ app.use(
         extended: true,
     })
 );
+
+
 
 // Routes 
 app.use('/', require('./src/api/index').v1routes);
