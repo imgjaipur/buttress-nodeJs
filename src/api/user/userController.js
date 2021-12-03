@@ -1,5 +1,4 @@
 const User = require("../../models/user.js");
-const Working = require("../../models/workerStatus")
 // const User = require("../../models/usermodel.js");
 const { validationResult } = require("express-validator");
 const workingStatusSchema = require("../../models/workerStatus");
@@ -112,6 +111,15 @@ let userController = {
   },
   updateprofile: async (req, res) => {
     try {
+      const deleteOld = await User.findOne({ _id: req.user._id });
+      const imgexc = (deleteOld.image).split("/").pop();
+      let filepath = "uploads/userupload/" + imgexc;
+      if (deleteOld.image) {
+        
+        fs.unlink(filepath, (err) => {
+          console.log(err)
+        });
+      }
       // console.log(req.params.id);
       // let _id= req.params.id;
       let user = req.user;
@@ -141,6 +149,13 @@ let userController = {
       xwhitecard ? (dataToSet.xwhitecard = xwhitecard) : true;
       xsafetyrating ? (dataToSet.xsafetyrating = xsafetyrating) : true;
       companyName ? (dataToSet.companyName = companyName) : true;
+      if(firstname.indexOf("")>-1){
+        dataToSet.profilestatus="true";
+        console.log("false")
+      }else{
+        dataToSet.profilestatus="false";
+        console.log("false");
+      }
 
       await User.findOneAndUpdate(
         { _id: user._id },
@@ -174,6 +189,7 @@ let userController = {
   getProfile: async (req, res) => {
     try {
       const user = req.user
+      console.log('i m in');
       const dat = await User.find({ _id: user._id }, { otp: 0, token: 0, password: 0, tempmobile: 0, blocked: 0, status: 0, _id: 0 });
 
 
@@ -259,7 +275,7 @@ let userController = {
           email: req.body.email
 
         })
-        await data.save()
+        await data.save();
         const toke = jwt.sign({ _id: data._id.toString() }, "this is my");
         return successResponseWithData(res, "Success", toke);
 
@@ -284,8 +300,10 @@ let userController = {
         status: 'Working',
         note: req.body.note
       });
-      myworkSave = myworking.save();
-      let workStatus_id = { workStatus_id: myworking._id };
+      let myworkSave = await myworking.save();
+      
+      let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id};
+      // console.log(myworkSave);
       return successResponseWithData(res, "Success", workStatus_id);
 
     } catch (error) {
@@ -323,21 +341,20 @@ let userController = {
   },
   uploadsImg: async (req, res) => {
     try {
-      const deleteOld = await User.findOne({ _id: req.user._id })
-      console.log('oldimg======>',deleteOld.image);
+      const deleteOld = await User.findOne({ _id: req.user._id });
+      const imgexc = (deleteOld.image).split("/").pop();
+      let filepath = "uploads/userupload/" + imgexc;
       if (deleteOld.image) {
-        filepath = "uploads/userupload/" + deleteOld.image;
-        console.log(filepath);
+        
         fs.unlink(filepath, (err) => {
           console.log(err)
         });
       }
       // ---------------------------------------
-      
       let localurl = process.env.LOCAL_URL;
       let port = process.env.LOCAL_API_PORT;
       let envUrl = `${localurl}${port}`;
-      
+
       const imgupload = await User.update({ _id: req.user._id }, {
         $set: {
           image: `${envUrl}/userupload/${req.file.filename}`
@@ -355,36 +372,15 @@ let userController = {
   updateUserNote_page: async (req, res) => {
     try {
 
-      const noteUpdate = await workingStatusSchema.updateOne({ _id: req.body.workStatus_id ,status:"Completed"}, { $set: { note: req.body.note } });
+      const noteUpdate = await workingStatusSchema.updateOne({ _id: req.body.workStatus_id, status: "Completed" }, { $set: { note: req.body.note } });
       return successResponseWithData(res, "note Success");
 
     } catch (error) {
       console.log(error);
       return ErrorResponse(res, "Something is wrong!");
     }
-    console.log(filepath);
-    return successResponseWithData(res, "image delete successfull");
-  },
-  timesheet:async(req,res)=>{
-    try{
-      let Obj = {
-        status:"Completed"
-    }
-    // console.log(obj);
-  
-    // console.log(whereObj);
-     const site = await Working.find(Obj)
-     const data = await Working.find({"start_time":{ $gte:("2021-12-02T11:42:22"), $lt:("2021-12-02T11:46:31") }})
-     console.log(data);
-    // res.send({site,data}) 
-    res.send(data)
-
-    }catch(e){
-      console.log(e);
-      res.send(e)
-    }
   }
-  
+
 }
 
 
