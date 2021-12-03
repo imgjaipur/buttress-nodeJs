@@ -303,7 +303,7 @@ let userController = {
       let myworkSave = await myworking.save();
       
       let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id};
-      console.log(myworkSave);
+      // console.log(myworkSave);
       return successResponseWithData(res, "Success", workStatus_id);
 
     } catch (error) {

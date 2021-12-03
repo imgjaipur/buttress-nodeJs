@@ -7,7 +7,7 @@ const fileExtension=require("file-extension")
 const crypto=require("crypto")
 
 const userController = require('./userController');
-const auth =require('./../../lib/authmiddleware').authUser;
+const auth =require('./../../lib/authmiddleware');
 const { isRequestValidated,validateSingupRequest,validatemobile}=require("./../../lib/validationuser")
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -59,6 +59,8 @@ userRoutes.post('/workerStatus',auth,userController.add_workerStatus);
 userRoutes.put('/endworkingStatus',auth,userController.end_workerStatus);
 userRoutes.put('/uploadsImage',auth,upload.single("image"),userController.uploadsImg);
 userRoutes.post("/updateUserNote",auth,userController.updateUserNote_page);
+userRoutes.post("/timesheet",userController.timesheet);
+
 
 
 exports.userRoutes = userRoutes;
