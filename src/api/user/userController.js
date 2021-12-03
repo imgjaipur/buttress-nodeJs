@@ -354,7 +354,7 @@ let userController = {
   updateUserNote_page: async (req, res) => {
     try {
 
-      const noteUpdate = await workingStatusSchema.updateOne({ worker_id: req.body.worker_id }, { $set: { note: req.body.note } });
+      const noteUpdate = await workingStatusSchema.updateOne({ _id: req.body.workStatus_id ,status:"Completed"}, { $set: { note: req.body.note } });
       return successResponseWithData(res, "note Success");
 
     } catch (error) {
