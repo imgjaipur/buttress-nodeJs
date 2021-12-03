@@ -58,7 +58,7 @@ userRoutes.post('/socialLogin', userController.sociallogin);
 userRoutes.post('/workerStatus',auth,userController.add_workerStatus);
 userRoutes.put('/endworkingStatus',auth,userController.end_workerStatus);
 userRoutes.post('/uploadsImage',auth,upload.single("image"),userController.uploadsImg);
-userRoutes.post("/deleteOnlyImage",auth,userController.deleteImage)
+userRoutes.post("/updateUserNote",auth,userController.updateUserNote_page);
 
 
 exports.userRoutes = userRoutes;
