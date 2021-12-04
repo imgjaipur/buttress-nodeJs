@@ -298,20 +298,18 @@ let userController = {
     end_workerStatus: async(req, res) => {
         try {
             let dataToSet = {};
-            const workerStatusData = await workingStatusSchema.findOne({ _id: req.body.workStatus_id });
-            console.log(workerStatusData.start_time.split("T")[1]);
-            let end_time = moment().format("YYYY-MM-DDThh:mm:ss");
-            let hrs = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1], "hh-mm-ss"))).format("HH");
-            let min = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1], "hh-mm-ss"))).format("mm");
-            let sec = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1], "hh-mm-ss"))).format("ss");
-            let total_working_hours = [hrs, min, sec].join(':');
-            dataToSet.total_working_hours = total_working_hours;
-            dataToSet.end_time = end_time;
+            // const workerStatusData = await workingStatusSchema.findOne({ worker_id: req.user._id, });
+            // console.log(workerStatusData.start_time.split("T")[1]);
+            // let end_time = moment().format("YYYY-MM-DDThh:mm:ss");
+            // let hrs = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1], "hh-mm-ss"))).format("HH");
+            // let min = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1], "hh-mm-ss"))).format("mm");
+            // let sec = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(workerStatusData.start_time.split("T")[1], "hh-mm-ss"))).format("ss");
+            // let total_working_hours = [hrs, min, sec].join(':');
+            dataToSet.total_working_hours = req.body.total_working_hours; //hh:mm:ss
+            dataToSet.end_time = moment(req.body.end_time).format("YYYY-MM-DDThh:mm:ss");
             dataToSet.status = 'Completed';
-            if (req.body.note) {
-                dataToSet['note'] = req.body.note;
-            }
-            let documents = await workingStatusSchema.findOneAndUpdate({ _id: req.body.workStatus_id }, { $set: dataToSet }, { returnOriginal: false });
+            dataToSet.note = req.body.note;
+            let documents = await workingStatusSchema.findOneAndUpdate({ worker_id: req.user._id, status: 'Working' }, { $set: dataToSet }, { returnOriginal: false });
             console.log(documents);
             return successResponseWithData(res, "Success", documents);
         } catch (error) {
