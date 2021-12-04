@@ -183,9 +183,10 @@ let userController = {
             let whereObj = {};
             if (req.body.address) {
                 whereObj['site_address'] = req.body.address;
-            }
-            if (req.body.code) {
+            } else if (req.body.code) {
                 whereObj['site_code'] = req.body.code;
+            } else {
+                return ErrorResponse(res, "Required at lest one of them address or code");
             }
             let siteDetails = await SiteModel.findOne(whereObj);
             let myworking = new workingStatusSchema({
