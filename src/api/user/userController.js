@@ -183,7 +183,7 @@ let userController = {
             let myworking = new workingStatusSchema({
                 worker_id: req.user._id,
                 constructionSite_id: req.body.constructionSite_id,
-                start_time: moment().format("YYYY-MM-DDThh:mm:ss"),
+                start_time: moment().format("YYYY-MM-DDTHH:mm:ss"),
                 status: 'Working'
             });
             let myworkSave = await myworking.save();
