@@ -189,6 +189,9 @@ let userController = {
                 return ErrorResponse(res, "Required at lest one of them address or code");
             }
             let siteDetails = await SiteModel.findOne(whereObj);
+            if (!siteDetails) {
+                return ErrorResponse(res, "Please Enter Correct Address Or Code For The Construction Site That You Want To Select");
+            }
             let myworking = new workingStatusSchema({
                 worker_id: req.user._id,
                 constructionSite_id: siteDetails._id,
