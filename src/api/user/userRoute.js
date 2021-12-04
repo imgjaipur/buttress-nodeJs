@@ -34,22 +34,18 @@ const upload = multer({
 });
 
 userRoutes.post('/insertUser', validateSingupRequest, isRequestValidated, userController.register);
-// userRoutes.post('/insertUser',userController.register);
 userRoutes.post('/mobileLogin', validatemobile, isRequestValidated, userController.login);
 userRoutes.post('/emailLogin', userController.emaillogin);
 userRoutes.post('/verifyMobile', userController.verify);
 userRoutes.post('/resendOTP', userController.resendOtp);
-
 userRoutes.get('/getProfile', auth, userController.getProfile);
 userRoutes.put('/updateProfile', auth, upload.single("image"), userController.updateprofile);
-// userRoutes.post('/mobileRegistration', userController.mobileregistration);
-userRoutes.post('/socialLogin', userController.sociallogin);
-// userRoutes.get('/qrcode' , userController.Qr_Code);
 userRoutes.post('/workerStatus', auth, userController.add_workerStatus);
 userRoutes.put('/endworkingStatus', auth, userController.end_workerStatus);
 userRoutes.put('/uploadsImage', auth, upload.single("image"), userController.uploadsImg);
 userRoutes.post("/updateUserNote", auth, userController.updateUserNote_page);
 userRoutes.post("/timesheet", userController.timesheet);
+userRoutes.post('/socialLogin', userController.sociallogin);
 
 
 
