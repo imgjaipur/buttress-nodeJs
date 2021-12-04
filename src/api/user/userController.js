@@ -180,16 +180,23 @@ let userController = {
     },
     add_workerStatus: async(req, res) => {
         try {
+            let whereObj = {};
+            if (req.body.address) {
+                whereObj['site_address'] = req.body.address;
+            }
+            if (req.body.code) {
+                whereObj['site_code'] = req.body.code;
+            }
+            let siteDetails = await SiteModel.findOne(whereObj);
             let myworking = new workingStatusSchema({
                 worker_id: req.user._id,
-                constructionSite_id: req.body.constructionSite_id,
+                constructionSite_id: siteDetails._id,
                 start_time: moment().format("YYYY-MM-DDTHH:mm:ss"),
                 status: 'Working'
             });
             let myworkSave = await myworking.save();
-            let siteName = await SiteModel.findOne({ _id: myworkSave.constructionSite_id }, { site_name: 1, _id: 0 });
-            // console.log(`siteName`, siteName);
-            let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id, site_Name: siteName.site_name };
+            // console.log(`siteDetails`, siteDetails);
+            let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id, site_Name: siteDetails.site_name };
             // console.log(myworkSave);
             return successResponseWithData(res, "Success", workStatus_id);
 
