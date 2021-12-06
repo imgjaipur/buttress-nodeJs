@@ -1,22 +1,22 @@
-const {Router} = require('express');
+const { Router } = require('express');
 
 const multer = require("multer");
 const userRoutes = Router();
-const path=require("path");
-const fileExtension=require("file-extension")
-const crypto=require("crypto")
+const path = require("path");
+const fileExtension = require("file-extension")
+const crypto = require("crypto")
 
 const userController = require('./userController');
-const auth =require('./../../lib/authmiddleware');
-const { isRequestValidated,validateSingupRequest,validatemobile}=require("./../../lib/validationuser")
+const auth = require('./../../lib/authmiddleware');
+const { isRequestValidated, validateSingupRequest, validatemobile } = require("./../../lib/validationuser")
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/userupload');
     },
     filename: (req, file, cb) => {
-        const fileexce=(file.originalname).split('.').pop();
-        const filenemo=Date.now();
-        const fileName=`${filenemo}.${fileexce}`;
+        const fileexce = (file.originalname).split('.').pop();
+        const filenemo = Date.now();
+        const fileName = `${filenemo}.${fileexce}`;
         // const fileName = file.originalname.toLowerCase().split(' ').join('-');
         cb(null, fileName)
     }
@@ -33,33 +33,19 @@ const upload = multer({
     }
 });
 
-// let  Storage=multer.diskStorage({
-//     destination:function(req,res,cb){
-//         cb(null,'uploads/userupload');
-//     },
-//     filename:function(req,file,cb){
-//         cb(null,Date.now()+file.originalname);
-//     }
-// })
-//  let  upload = multer({storage:Storage}).single("image");
-
-userRoutes.post('/insertUser',validateSingupRequest,isRequestValidated,userController.register);
-// userRoutes.post('/insertUser',userController.register);
-userRoutes.post('/mobileLogin',validatemobile,isRequestValidated, userController.login);
+userRoutes.post('/insertUser', validateSingupRequest, isRequestValidated, userController.register);
+userRoutes.post('/mobileLogin', validatemobile, isRequestValidated, userController.login);
 userRoutes.post('/emailLogin', userController.emaillogin);
 userRoutes.post('/verifyMobile', userController.verify);
 userRoutes.post('/resendOTP', userController.resendOtp);
-
-userRoutes.get('/getProfile', auth,userController.getProfile);
-userRoutes.put('/updateProfile',auth,upload.single("image"),userController.updateprofile);
-// userRoutes.post('/mobileRegistration', userController.mobileregistration);
+userRoutes.get('/getProfile', auth, userController.getProfile);
+userRoutes.put('/updateProfile', auth, upload.single("image"), userController.updateprofile);
+userRoutes.post('/workerStatus', auth, userController.add_workerStatus);
+userRoutes.put('/endworkingStatus', auth, userController.end_workerStatus);
+userRoutes.put('/uploadsImage', auth, upload.single("image"), userController.uploadsImg);
+userRoutes.post("/updateUserNote", auth, userController.updateUserNote_page);
+userRoutes.post("/timesheet", userController.timesheet);
 userRoutes.post('/socialLogin', userController.sociallogin);
-// userRoutes.get('/qrcode' , userController.Qr_Code);
-userRoutes.post('/workerStatus',auth,userController.add_workerStatus);
-userRoutes.put('/endworkingStatus',auth,userController.end_workerStatus);
-userRoutes.put('/uploadsImage',auth,upload.single("image"),userController.uploadsImg);
-userRoutes.post("/updateUserNote",auth,userController.updateUserNote_page);
-// userRoutes.post("/timesheet",userController.timesheet);
 
 
 
