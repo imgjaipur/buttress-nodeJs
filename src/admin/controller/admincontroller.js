@@ -234,22 +234,29 @@ let adminController = {
     insert_site_info: async (req, res) => {
 
         try {
-            let data = await QRCode.toDataURL(req.body.sitecode);
-            // console.log("longitude-----", [parseFloat(req.body.longitude)], "latitude", [parseFloat(req.body.latitude)])
-            // console.log("sit amne-----" , req.body.site , "latitude" , req.body.siteAddress)
-            let site_info = new site_Data({
-                site_name: req.body.site,
-                site_address: req.body.siteAddress,
-                construction_manager: req.body.cmanager,
-                site_code: req.body.sitecode,
-                location: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)],
-                working_status: req.body.status,
-                qr_code: data
-            })
-            let site_Document = await site_info.save();
-            // console.log("site_data -----", site_Document)
-            res.redirect('/siteinfo')
-        } catch (err) {
+           
+            let data_qr = await QRCode.toDataURL(req.body.sitecode);
+            let site = await site_Data.find({ site_code: req.body.sitecode });
+            // console.log(site, "------------>", site.length);
+            if (site.length > 0) {
+                let data = "Site Code Already Exist.. Please Try Again With New Site Code"
+                res.render('siteView', { data });
+            } else {
+                let site_info = new site_Data({
+                    site_name: req.body.site,
+                    site_address: req.body.siteAddress,
+                    construction_manager: req.body.cmanager,
+                    site_code: req.body.sitecode,
+                    location: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)],
+                    working_status: req.body.status,
+                    qr_code: data_qr
+                })
+                let site_Document = await site_info.save();
+                // console.log("site_data -----", site_Document)
+                res.redirect('/siteinfo')
+            }
+        }
+        catch (err) {
             console.log(err);
         }
     },
@@ -351,9 +358,9 @@ let adminController = {
             console.log(err);
         }
     },
-    log_out: async(req , res) => {
+    log_out: async (req, res) => {
         req.session.destroy(() => {
-             res.redirect('/login')
+            res.redirect('/login')
         })
     },
 }

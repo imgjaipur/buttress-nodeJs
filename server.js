@@ -49,7 +49,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-let privateKey = fs.readFileSync('./private.key',"utf8");
+let privateKey = fs.readFileSync('./session.key',"utf8");
 
 app.use(session({
      secret: privateKey,
