@@ -89,9 +89,9 @@ let adminController = {
         let users_data = await registerUsers.find();
         let site_data = await site_Data.find({ working_status: true });
         let qr_data = await site_Data.find();
-        // console.log('site data length--' , site_data.length);
-        // console.log("user---" , users_data.length);
-        res.render('admindashbord', { users: (users_data.length), sites: (site_data.length), qr: (qr_data.length) });
+        let admin_data = await registerAdmin.find();
+        // console.log("admin_data" , admin_data[0].name)
+        res.render('admindashbord', { users: (users_data.length), sites: (site_data.length), qr: (qr_data.length) , admin: (admin_data[0])});
     },
     users_data: async (req, res) => {
         let users = await registerUsers.find();
@@ -237,7 +237,6 @@ let adminController = {
            
             let data_qr = await QRCode.toDataURL(req.body.sitecode);
             let site = await site_Data.find({ site_code: req.body.sitecode });
-            // console.log(site, "------------>", site.length);
             if (site.length > 0) {
                 let data = "Site Code Already Exist.. Please Try Again With New Site Code"
                 res.render('siteView', { data });
@@ -252,7 +251,6 @@ let adminController = {
                     qr_code: data_qr
                 })
                 let site_Document = await site_info.save();
-                // console.log("site_data -----", site_Document)
                 res.redirect('/siteinfo')
             }
         }
