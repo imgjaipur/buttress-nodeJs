@@ -75,6 +75,9 @@
                                    <label for="inputAddress" class="form-label">Site code </label>
                                    <input type="text" name='sitecode' class="form-control" placeholder="Enter Site code"
                                         required>
+                                        {{#if data}}
+                                        <span class="text-danger"><sup>****</sup> {{data}} <sup>****</sup></span>
+                                        {{/if}}
                               </div>
                               <div class="col-12">
                                    <label for="inputAddress" class="form-label">Location</label>
