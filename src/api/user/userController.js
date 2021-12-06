@@ -275,9 +275,9 @@ let userController = {
         try {
             let start_time = moment(req.query.start_time).format('llll');
             let end_time = moment(req.query.end_time).add(1, "days").subtract(1, "minutes").format('llll');
-            const data = await workingStatusSchema.find({ createdAt: { $gte: new Date(start_time), $lte: new Date(end_time) }, status:{$ne:"Working"}});
+            const data = await workingStatusSchema.find({ createdAt: { $gte: new Date(start_time), $lte: new Date(end_time) }, status: { $ne: "Working" }, worker_id: req.user._id });
             return successResponseWithData(res, "Success", data);
-    
+
         } catch (e) {
             console.log(e);
             return ErrorResponse(res, "Something is wrong!");
