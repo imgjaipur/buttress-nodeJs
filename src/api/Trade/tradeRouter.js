@@ -7,7 +7,8 @@ const tradeController=require("./tradeController");
 
 tradeRoute.get("/getTradeData",auth,tradeController.getTradeDataPage);
 tradeRoute.post("/addSiteTrade",auth,tradeController.addSiteToTrade);
-tradeRoute.post("/addtaskdisc",tradeController.addTaskDisc);
+// tradeRoute.post("/addtaskdisc",tradeController.addTaskDisc);
+
 
 
 
