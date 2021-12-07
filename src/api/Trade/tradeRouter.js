@@ -5,9 +5,10 @@ const tradeController=require("./tradeController");
 
 // tradeRoute
 
-tradeRoute.post("/getTradeData",auth,tradeController.getTradeDataPage);
-tradeRoute.post("/addSiteTrade",tradeController.addSiteToTrade);
+tradeRoute.get("/getTradeData",auth,tradeController.getTradeDataPage);
+tradeRoute.post("/addSiteTrade",auth,tradeController.addSiteToTrade);
 tradeRoute.post("/addtaskdisc",tradeController.addTaskDisc);
+
 
 
 
