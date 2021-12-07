@@ -55,15 +55,16 @@
             <div class="card-body">
                 <h2 class="card-title" style="text-align: center; font-size:25px;">Edit User Information</h5>
                     <!-- Vertical Form -->
-                    <form class="row g-3" method="POST" action="/edit-user">
-                    {{#if user}}
-                     <div class="col-12">
+                    <form class="row g-3" method="POST" action="/edit-user" enctype="multipart/form-data">
+                        {{#if user}}
+                        <div class="col-12">
                             {{!-- <label for="inputNanme4" class="form-label">First Name</label> --}}
                             <input type="hidden" value="{{user.id}}" name='id' class="form-control" required>
                         </div>
                         <div class="col-12">
                             <label for="inputNanme4" class="form-label">First Name</label>
-                            <input type="text" value="{{user.firstname}}" name='firstname' class="form-control" required>
+                            <input type="text" value="{{user.firstname}}" name='firstname' class="form-control"
+                                required>
                         </div>
                         <div class="col-12">
                             <label for="inputPassword4" class="form-label">Last Name</label>
@@ -79,7 +80,8 @@
                         </div>
                         <div class="col-12">
                             <label for="inputAddress" class="form-label">Company Name</label>
-                            <input type="text" value="{{user.companyName}}" name = "xcompanyname" class="form-control" required>
+                            <input type="text" value="{{user.companyName}}" name="xcompanyname" class="form-control"
+                                required>
                         </div>
                         <div class="col-12">
                             <label for="inputAddress" class="form-label">Abn</label>
@@ -87,8 +89,13 @@
                         </div>
                         <div class="col-12">
                             <label for="inputAddress" class="form-label">Profile status</label>
-                            <input type="text" value="{{user.profilestatus}}" name='profilestatus' class="form-control" required>
+                            <input type="text" value="{{user.profilestatus}}" name='profilestatus' class="form-control"
+                                required>
                         </div><br>
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">Update Profile</label>
+                            <input class="form-control" type="file" name ='image'>
+                        </div>
                         {{/if}}
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Update</button>

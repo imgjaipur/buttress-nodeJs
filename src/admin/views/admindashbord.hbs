@@ -1498,9 +1498,7 @@
                         {{/if}}
                         <a class="nav-link collapsed" href="/users-datatable"><span class="text-success large  fw-bold">
                             view all users </span></a>
-
                       </div>
-
                     </div>
                   </div>
 
@@ -1542,6 +1540,8 @@
                   </div>
                 </div>
               </div><!-- End Revenue Card -->
+
+                {{!-- <-- pop up profile card -->  --}}
               <div class="modal fade margin-top" id="exampleModal" tabindex="-1"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -1553,10 +1553,6 @@
                     <div class="modal-body"><br>
                       <div class="container">
                               {{#if admin}}
-                              {{!-- <div class="img">
-                                <img class="circular--landscape" src="{{admin.profile}}" alt="Admin_profile"><br>
-                              </div> --}}
-                              {{!-- {{else}} --}}
                               <div class="img">
                                 <img class="circular--landscape"
                                   src="https://getstream.io/random_svg/?name={{admin.name}}" alt="Admin_profile"><br>

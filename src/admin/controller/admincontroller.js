@@ -91,7 +91,7 @@ let adminController = {
         let qr_data = await site_Data.find();
         let admin_data = await registerAdmin.find();
         // console.log("admin_data" , admin_data[0].name)
-        res.render('admindashbord', { users: (users_data.length), sites: (site_data.length), qr: (qr_data.length) , admin: (admin_data[0])});
+        res.render('admindashbord', { users: (users_data.length), sites: (site_data.length), qr: (qr_data.length), admin: (admin_data[0]) });
     },
     users_data: async (req, res) => {
         let users = await registerUsers.find();
@@ -184,23 +184,45 @@ let adminController = {
     },
     edit_user: async (req, res) => {
         try {
-            // console.log(req.body)
-            // console.log('b',req.file)
-            let data = await registerUsers.updateOne({ _id: req.body.id }, {
-                $set: {
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    mobile: req.body.mobile,
-                    email: req.body.email,
-                    companyName: req.body.xcompanyname,
-                    xabn: req.body.xabn,
-                    xqualifications: req.body.xqualifications,
-                    xwhitecard: req.body.xwhitecard,
-                    profilestatus: req.body.profilestatus,
-                    status: req.body.status
-                }
-            });
-            // console.log("chnages----" , data)
+            // console.log(fileName)
+            let localurl = process.env.LOCAL_URL;
+            let port = process.env.LOCAL_ADMIN_PANEL_PORT;
+            let server_url = `${localurl}${port}`;
+            let localimg = process.env.LOCAL_IMG_PATH;
+            // console.log("image----", req.file.filename)
+            if (req.file) {
+                let data = await registerUsers.updateMany({ _id: req.body.id }, {
+                    $set: {
+                        firstname: req.body.firstname,
+                        lastname: req.body.lastname,
+                        mobile: req.body.mobile,
+                        email: req.body.email,
+                        companyName: req.body.xcompanyname,
+                        xabn: req.body.xabn,
+                        xqualifications: req.body.xqualifications,
+                        xwhitecard: req.body.xwhitecard,
+                        profilestatus: req.body.profilestatus,
+                        status: req.body.status,
+                        image: `${server_url}${localimg}${req.file.filename}`
+                    }
+                });
+            } else {
+                console.log('i m in')
+                let data = await registerUsers.updateOne({ _id: req.body.id }, {
+                    $set: {
+                        firstname: req.body.firstname,
+                        lastname: req.body.lastname,
+                        mobile: req.body.mobile,
+                        email: req.body.email,
+                        companyName: req.body.xcompanyname,
+                        xabn: req.body.xabn,
+                        xqualifications: req.body.xqualifications,
+                        xwhitecard: req.body.xwhitecard,
+                        profilestatus: req.body.profilestatus,
+                        status: req.body.status,
+                    }
+                });
+            }
             res.redirect('/users-datatable');
         } catch (err) {
             console.log(err);
@@ -234,7 +256,7 @@ let adminController = {
     insert_site_info: async (req, res) => {
 
         try {
-           
+
             let data_qr = await QRCode.toDataURL(req.body.sitecode);
             let site = await site_Data.find({ site_code: req.body.sitecode });
             if (site.length > 0) {
