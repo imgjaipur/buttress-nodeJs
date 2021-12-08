@@ -9,9 +9,4 @@ tradeRoute.get("/getTradeData",auth,tradeController.getTradeDataPage);
 tradeRoute.post("/addSiteTrade",auth,tradeController.addSiteToTrade);
 tradeRoute.post("/addtaskdisc",tradeController.addTaskDisc);
 
-
-
-
-
-
 module.exports=tradeRoute;

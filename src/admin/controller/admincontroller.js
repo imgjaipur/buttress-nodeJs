@@ -207,7 +207,7 @@ let adminController = {
                     }
                 });
             } else {
-                console.log('i m in')
+                // console.log('i m in')
                 let data = await registerUsers.updateOne({ _id: req.body.id }, {
                     $set: {
                         firstname: req.body.firstname,
