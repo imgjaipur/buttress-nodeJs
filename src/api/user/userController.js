@@ -326,6 +326,12 @@ let userController = {
         try {
             let time_data = await workingStatusSchema.find({ status: "Completed", worker_id: req.user._id });
             let finalarr = [];
+            for (let member of time_data) {
+                let compareDate = (member.start_time).split("T")[0];
+                if (moment(compareDate).format("YYYY-MM-DD") == moment(req.query.start_date).format("YYYY-MM-DD")) {
+                    finalarr.push(member);
+                }
+            }
             Array.prototype.sum = function(prop) {
                 let sec = 0,
                     min = 0,
@@ -344,13 +350,8 @@ let userController = {
                 console.log(`this[i][prop]`, total);
                 return total;
             }
-            let total_working_hourss = time_data.sum('total_working_hours');
-            for (let member of time_data) {
-                let compareDate = (member.start_time).split("T")[0];
-                if (moment(compareDate).format("YYYY-MM-DD") == moment(req.query.start_date).format("YYYY-MM-DD")) {
-                    finalarr.push(member);
-                }
-            }
+            let total_working_hourss = finalarr.sum('total_working_hours');
+
             return successResponseWithData(res, "Success", { allResult: finalarr, total_hours: total_working_hourss });
         } catch (err) {
             console.log(err);
