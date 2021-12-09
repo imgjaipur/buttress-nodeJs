@@ -290,41 +290,27 @@ let userController = {
                     hour += Number(this[i][prop].split(':')[0]);
 
                 }
-                total = `${hour}:${min}:${sec}`
+                total = moment.utc(((hour * 3600) + (min * 60) + sec) * 1000).format('HH:mm:ss');
                 console.log(`this[i][prop]`, total);
                 return total;
             }
             let groupBy = (data, prop) => {
                 return data.reduce((acc, obj) => {
-                    let Nobj = {};
                     const key = moment(obj[prop]).format('YYYY-MM-DD');
-                    console.log(key);
+                    console.log('--------------------->', obj);
                     if (!acc[key]) {
                         acc[key] = [];
                     }
+                    // obj.Total_Working_HOURS = 
                     acc[key].push(obj);
                     return acc;
                 }, {});
             }
-
-            // let newarr = [];
-            // for (let member of data) {
-            //     let startDate = member.start_time.split('T')[0];
-            //     console.log(`startDate`, startDate);
-            //     member.startDate = startDate;
-            //     newarr.push(member);
-            // }
-            await data.forEach(doc => {
-                let startDat = doc.start_time.split('T')[0];
-                doc.start_date = startDat;
-                return doc;
-            });
             let newarr = Object.values(groupBy(data, 'start_time'));
             let final = newarr.map(doc => {
                 let obj = {};
-                obj.worker_id = newarr[0].worker_id;
+                obj.start_date = doc[0].start_time.split('T')[0];
                 obj.total_working_hours = doc.sum('total_working_hours');
-                // obj.worker_id = newarr[0].worker_id;
                 // obj.worker_id = newarr[0].worker_id;
                 return obj;
 
