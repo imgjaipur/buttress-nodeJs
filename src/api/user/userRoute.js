@@ -46,6 +46,7 @@ userRoutes.put('/endworkingStatus', auth, userController.end_workerStatus);
 userRoutes.put('/uploadsImage', auth, upload.single("image"), userController.uploadsImg);
 userRoutes.post("/updateUserNote", auth, userController.updateUserNote_page);
 userRoutes.get("/timesheet", auth, userController.timesheet);
+userRoutes.get('/timesheet-user',auth, userController.timesheet_user_details);
 
 
 

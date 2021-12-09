@@ -10,9 +10,4 @@ tradeRoute.post("/addSiteTrade",auth,tradeController.addSiteToTrade);
 tradeRoute.post("/addworkstatus-trade",auth,tradeController.addworkstatus_trade);
 
 
-
-
-
-
-
 module.exports=tradeRoute;

@@ -12,7 +12,7 @@ const {
 } = require("./../../lib/apiresponse");
 
 let userController = {
-    register: async(req, res) => {
+    register: async (req, res) => {
         try {
             const salt = await bcrypt.genSalt(10);
             const hash = await bcrypt.hash(req.body.password, salt);
@@ -34,7 +34,7 @@ let userController = {
             return ErrorResponse(res, "Something went wrong! Please try again!");
         }
     },
-    verify: async(req, res) => {
+    verify: async (req, res) => {
         try {
             const user = await User.findOne({ mobile: req.body.mobile });
             if (!user) {
@@ -66,7 +66,7 @@ let userController = {
             return ErrorResponse(res, "Something is wrong!");
         }
     },
-    updateprofile: async(req, res) => {
+    updateprofile: async (req, res) => {
         try {
             let deleteOld = await User.findOne({ _id: req.user._id }, { _id: 0, image: 1, firstname: 1, lastname: 1, mobile: 1, xabn: 1, xqualifications: 1, xwhitecard: 1, xsafetyrating: 1, companyName: 1 });
             let user = req.user;
@@ -87,7 +87,7 @@ let userController = {
             return ErrorResponse(res, "Something is wrong!");
         }
     },
-    emaillogin: async(req, res) => {
+    emaillogin: async (req, res) => {
         try {
             const user = await User.findOne({ email: req.body.email });
             !user && ErrorResponse(res, "email not exist");
@@ -100,7 +100,7 @@ let userController = {
             return ErrorResponse(res, "Something is wrong!");
         }
     },
-    getProfile: async(req, res) => {
+    getProfile: async (req, res) => {
         try {
             const dat = await User.findOne({ _id: req.user._id }, { otp: 0, token: 0, password: 0, tempmobile: 0, blocked: 0, status: 0, _id: 0 });
             dat.image = dat.image && dat.image != "" ? dat.image : "https://i.postimg.cc/XqJrTnxq/default-pic.jpg";
@@ -110,7 +110,7 @@ let userController = {
             return ErrorResponse(res, "Something is wrong!");
         }
     },
-    resendOtp: async(req, res) => {
+    resendOtp: async (req, res) => {
         try {
             const data = await User.findOne({ mobile: req.body.mobile });
             // let otpcode =Math.floor((Math.random()*10000)+1)
@@ -129,7 +129,7 @@ let userController = {
             return ErrorResponse(res, "Something is wrong!");
         }
     },
-    login: async(req, res) => {
+    login: async (req, res) => {
         try {
             const mob = await User.findOne({ mobile: req.body.mobile });
             let otpcode = 1234;
@@ -156,7 +156,7 @@ let userController = {
             return ErrorResponse(res, "Something is wrong!");
         }
     },
-    sociallogin: async(req, res) => {
+    sociallogin: async (req, res) => {
         try {
             const mail = await User.findOne({ email: req.body.email });
             if (mail) {
@@ -178,7 +178,7 @@ let userController = {
         }
 
     },
-    add_workerStatus: async(req, res) => {
+    add_workerStatus: async (req, res) => {
         try {
             let whereObj = {};
             if (req.body.address) {
@@ -209,7 +209,7 @@ let userController = {
             return ErrorResponse(res, "Something is wrong!");
         }
     },
-    end_workerStatus: async(req, res) => {
+    end_workerStatus: async (req, res) => {
         try {
             let dataToSet = {};
             // const workerStatusData = await workingStatusSchema.findOne({ worker_id: req.user._id, });
@@ -231,7 +231,7 @@ let userController = {
             return ErrorResponse(res, "Something is wrong!");
         }
     },
-    uploadsImg: async(req, res) => {
+    uploadsImg: async (req, res) => {
         try {
             const deleteOld = await User.findOne({ _id: req.user._id });
             const imgexc = (deleteOld.image).split("/").pop();
@@ -262,7 +262,7 @@ let userController = {
 
     },
 
-    updateUserNote_page: async(req, res) => {
+    updateUserNote_page: async (req, res) => {
         try {
             const noteUpdate = await workingStatusSchema.updateOne({ _id: req.body.workStatus_id, status: "Completed" }, { $set: { note: req.body.note } });
             return successResponseWithData(res, "Successfully Updated The Note");
@@ -271,7 +271,7 @@ let userController = {
             return ErrorResponse(res, "Something is wrong!");
         }
     },
-    timesheet: async(req, res) => {
+    timesheet: async (req, res) => {
         try {
             let start_time = moment(req.query.start_time).format('llll');
             let end_time = moment(req.query.end_time).add(1, "days").subtract(1, "minutes").format('llll');
@@ -282,10 +282,64 @@ let userController = {
             console.log(e);
             return ErrorResponse(res, "Something is wrong!");
         }
+    },
+    timesheet_user_details: async (req, res) => {
+        try {
+            let start_time = moment(req.query.start_time).format('llll');
+            // let end_time = moment(req.query.start_time).add(1, "days").subtract(1, "minutes").format('llll');
+            let time_data = await workingStatusSchema.find({ status: "Completed", worker_id: req.user._id });
+            // console.log("created---",start_time);
+            let finalarr = [];
+            for (let member of time_data) {
+                // console.log(" All construction_id---" , member.constructionSite_id);
+                let compareDate = (member.start_time).split("T")[0];
+                if (moment(compareDate).format("YYYY-MM-DD") == moment(req.query.start_time).format("YYYY-MM-DD")) {
+                    finalarr.push(member);
+                }
+            }
+            let groupBy = (data, prop) => {
+                console.log(prop);
+                return data.reduce((acc, obj) => {
+                    const key = obj[prop];
+                    //  console.log(obj[prop]);
+                    if (!acc[key]) {
+                        acc[key] = [];
+                    }
+                    acc[key].push(obj);
+                    return acc;
+                }, {});
+            }
+            let same_construction_ids_data = groupBy(finalarr, 'constructionSite_id');
+            let time_con_data = Object.values(same_construction_ids_data);
+            for (let member of (time_con_data).flat()) {
+                // console.log("member times issue---",typeof(member.total_working_hours))
+                let total = { "total_hours": member.total_working_hours };
+                let time = (member.total_working_hours);
+                var hour = 0;
+                var minute = 0;
+                var second = 0;
+
+                var splitTime1 = time1.split(':');
+                var splitTime2 = time2.split(':');
+                var splitTime3 = time3.split(':');
+
+                hour = parseInt(splitTime1[0]) + parseInt(splitTime2[0]) + parseInt(splitTime3[0]);
+                minute = parseInt(splitTime1[1]) + parseInt(splitTime2[1]) + parseInt(splitTime3[1]);
+                hour = hour + minute / 60;
+                minute = minute % 60;
+                second = parseInt(splitTime1[2]) + parseInt(splitTime2[2]) + parseInt(splitTime3[2]);
+                minute = minute + second / 60;
+                second = second % 60;
+
+                alert('sum of above time= ' + hour + ':' + minute + ':' + second);
+
+            }
+            return successResponseWithData(res, "Success", time_con_data);
+        } catch (err) {
+            console.log(err);
+            return ErrorResponse(res, "Something went wrong")
+        }
     }
-
 }
-
-
 
 module.exports = userController;
