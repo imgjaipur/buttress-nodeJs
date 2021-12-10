@@ -327,7 +327,17 @@ let userController = {
             let time_data = await workingStatusSchema.find({ status: "Completed", worker_id: req.user._id });
             let finalarr = [];
             for (let member of time_data) {
+                let siteName = await SiteModel.findOne({ _id: member.constructionSite_id }, { _id: 0, name: 1 });
+                console.log('sitename-------------->', member.constructionSite_id);
+                console.log('sitename-------------->', siteName);
+                let name;
+                if (siteName.site_name) {
+                    name = siteName.site_name;
+                } else {
+                    name = "";
+                }
                 let compareDate = (member.start_time).split("T")[0];
+                member.siteName = name;
                 if (moment(compareDate).format("YYYY-MM-DD") == moment(req.query.start_date).format("YYYY-MM-DD")) {
                     finalarr.push(member);
                 }
