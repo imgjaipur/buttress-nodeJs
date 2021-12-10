@@ -331,7 +331,7 @@ let userController = {
                 console.log('sitename-------------->', member.constructionSite_id);
                 console.log('sitename-------------->', siteName);
                 let name;
-                if (siteName.site_name) {
+                if (siteName.site_name && siteName) {
                     name = siteName.site_name;
                 } else {
                     name = "";
