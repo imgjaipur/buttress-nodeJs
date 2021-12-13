@@ -330,7 +330,7 @@ let userController = {
                     });
                 }
             }
-            return successResponseWithData(res, "Success", [...new Set(...final,...blankDate)]);
+            return successResponseWithData(res, "Success",blankDate]);
 
         } catch (e) {
             console.log(e);
