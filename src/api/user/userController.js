@@ -244,9 +244,9 @@ let userController = {
                 }
             }
             // ---------------------------------------
-            let localurl = process.env.LOCAL_URL;
+            let liveurl = process.env.LIVE_URL;
             let port = process.env.LOCAL_API_PORT;
-            let envUrl = `${localurl}${port}`;
+            let envUrl = `${liveurl}${port}`;
 
             const imgupload = await User.update({ _id: req.user._id }, {
                 $set: {
@@ -315,22 +315,21 @@ let userController = {
                 return obj;
 
             });
-            let difference = (moment(end_time).diff(moment(start_time),"days"));
+            let difference = (moment(end_time).diff(moment(start_time), "days"));
             let startDate = moment(start_time).format("YYYY-MM-DD");
             let blankDate = [];
-            for(let i =0 ; i<= difference; i++){
-                startDate = moment(start_time).add(i,'days').format("YYYY-MM-DD");
-                if(final.some((val)=>{return `${startDate}` == `${val.start_date}`})){
-                    blankDate.push(final.find((val)=>{return `${startDate}` == `${val.start_date}`}));
-                }
-                else{
+            for (let i = 0; i <= difference; i++) {
+                startDate = moment(start_time).add(i, 'days').format("YYYY-MM-DD");
+                if (final.some((val) => { return `${startDate}` == `${val.start_date}` })) {
+                    blankDate.push(final.find((val) => { return `${startDate}` == `${val.start_date}` }));
+                } else {
                     blankDate.push({
-                        start_date : startDate,
-                        total_working_hours : "00:00:00" 
+                        start_date: startDate,
+                        total_working_hours: "00:00:00"
                     });
                 }
             }
-            return successResponseWithData(res, "Success",blankDate);
+            return successResponseWithData(res, "Success", blankDate);
 
         } catch (e) {
             console.log(e);
