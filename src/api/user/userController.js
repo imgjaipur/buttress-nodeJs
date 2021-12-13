@@ -329,7 +329,19 @@ let userController = {
                 return obj;
 
             });
-            return successResponseWithData(res, "Success", final);
+            let difference = (moment(end_time).format("YYYY-MM-DD").diff(moment(start_time).format("YYYY-MM-DD"),"days"));
+            let startDate = moment(start_time).format("YYYY-MM-DD");
+            let blankDate = [];
+            for(let i =0 ; i<= difference; i++){
+                let startDate = moment(start_time).add(i,'days').format("YYYY-MM-DD");
+                if(!final.some((val)=>{startDate == val.start_date})){
+                    blankDate.push({
+                        startDate : startDate,
+                        total_working_hours : "00:00:00" 
+                    });
+                }
+            }
+            return successResponseWithData(res, "Success", [...final,...blankDate]);
 
         } catch (e) {
             console.log(e);
