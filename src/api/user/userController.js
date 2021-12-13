@@ -318,10 +318,10 @@ let userController = {
             let difference = (moment(end_time).diff(moment(start_time),"days"));
             let startDate = moment(start_time).format("YYYY-MM-DD");
             let blankDate = [];
-            for(let i =1 ; i<= difference; i++){
+            for(let i =0 ; i<= difference; i++){
                 startDate = moment(start_time).add(i,'days').format("YYYY-MM-DD");
-                if(final.some((val)=>{startDate == val.start_date})){
-                    blankDate.push(final.find((val)=>{startDate == val.start_date}));
+                if(final.some((val)=>{return `${startDate}` == `${val.start_date}`})){
+                    blankDate.push(final.find((val)=>{return `${startDate}` == `${val.start_date}`}));
                 }
                 else{
                     blankDate.push({
