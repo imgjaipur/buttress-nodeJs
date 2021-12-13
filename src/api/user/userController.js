@@ -315,7 +315,7 @@ let userController = {
                 return obj;
 
             });
-            let difference = (moment(end_time).format("YYYY-MM-DD").diff(moment(start_time).format("YYYY-MM-DD"),"days"));
+            let difference = (moment(end_time).diff(moment(start_time),"days"));
             let startDate = moment(start_time).format("YYYY-MM-DD");
             let blankDate = [];
             for(let i =1 ; i<= difference; i++){
