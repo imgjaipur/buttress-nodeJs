@@ -290,41 +290,27 @@ let userController = {
                     hour += Number(this[i][prop].split(':')[0]);
 
                 }
-                total = `${hour}:${min}:${sec}`
+                total = moment.utc(((hour * 3600) + (min * 60) + sec) * 1000).format('HH:mm:ss');
                 console.log(`this[i][prop]`, total);
                 return total;
             }
             let groupBy = (data, prop) => {
                 return data.reduce((acc, obj) => {
-                    let Nobj = {};
                     const key = moment(obj[prop]).format('YYYY-MM-DD');
-                    console.log(key);
+                    console.log('--------------------->', obj);
                     if (!acc[key]) {
                         acc[key] = [];
                     }
+                    // obj.Total_Working_HOURS = 
                     acc[key].push(obj);
                     return acc;
                 }, {});
             }
-
-            // let newarr = [];
-            // for (let member of data) {
-            //     let startDate = member.start_time.split('T')[0];
-            //     console.log(`startDate`, startDate);
-            //     member.startDate = startDate;
-            //     newarr.push(member);
-            // }
-            await data.forEach(doc => {
-                let startDat = doc.start_time.split('T')[0];
-                doc.start_date = startDat;
-                return doc;
-            });
             let newarr = Object.values(groupBy(data, 'start_time'));
             let final = newarr.map(doc => {
                 let obj = {};
-                obj.worker_id = newarr[0].worker_id;
+                obj.start_date = doc[0].start_time.split('T')[0];
                 obj.total_working_hours = doc.sum('total_working_hours');
-                // obj.worker_id = newarr[0].worker_id;
                 // obj.worker_id = newarr[0].worker_id;
                 return obj;
 
@@ -350,56 +336,45 @@ let userController = {
     },
     timesheet_user_details: async(req, res) => {
         try {
-            let start_time = moment(req.query.start_time).format('llll');
-            // let end_time = moment(req.query.start_time).add(1, "days").subtract(1, "minutes").format('llll');
             let time_data = await workingStatusSchema.find({ status: "Completed", worker_id: req.user._id });
-            // console.log("created---",start_time);
             let finalarr = [];
             for (let member of time_data) {
-                // console.log(" All construction_id---" , member.constructionSite_id);
+                let siteName = await SiteModel.findOne({ _id: member.constructionSite_id }, { _id: 0, name: 1 });
+                console.log('sitename-------------->', member.constructionSite_id);
+                console.log('sitename-------------->', siteName);
+                let name;
+                if (siteName.site_name && siteName) {
+                    name = siteName.site_name;
+                } else {
+                    name = "";
+                }
                 let compareDate = (member.start_time).split("T")[0];
-                if (moment(compareDate).format("YYYY-MM-DD") == moment(req.query.start_time).format("YYYY-MM-DD")) {
+                member.siteName = name;
+                if (moment(compareDate).format("YYYY-MM-DD") == moment(req.query.start_date).format("YYYY-MM-DD")) {
                     finalarr.push(member);
                 }
             }
-            let groupBy = (data, prop) => {
-                console.log(prop);
-                return data.reduce((acc, obj) => {
-                    const key = obj[prop];
-                    //  console.log(obj[prop]);
-                    if (!acc[key]) {
-                        acc[key] = [];
-                    }
-                    acc[key].push(obj);
-                    return acc;
-                }, {});
+            Array.prototype.sum = function(prop) {
+                let sec = 0,
+                    min = 0,
+                    hour = 0,
+                    total;
+                for (let i = 0, _len = this.length; i < _len; i++) {
+                    console.log(`this[i][prop].split(':')[2] ---------->`, this[i][prop].split(':')[2]);
+                    console.log(`this[i][prop].split(':')[1] ---------->`, this[i][prop].split(':')[1]);
+                    console.log(`this[i][prop].split(':')[0] ---------->`, this[i][prop].split(':')[0]);
+                    sec += Number(this[i][prop].split(':')[2]);
+                    min += Number(this[i][prop].split(':')[1]);
+                    hour += Number(this[i][prop].split(':')[0]);
+
+                }
+                total = moment.utc(((hour * 3600) + (min * 60) + sec) * 1000).format('HH:mm:ss');
+                console.log(`this[i][prop]`, total);
+                return total;
             }
-            let same_construction_ids_data = groupBy(finalarr, 'constructionSite_id');
-            let time_con_data = Object.values(same_construction_ids_data);
-            for (let member of(time_con_data).flat()) {
-                // console.log("member times issue---",typeof(member.total_working_hours))
-                let total = { "total_hours": member.total_working_hours };
-                let time = (member.total_working_hours);
-                var hour = 0;
-                var minute = 0;
-                var second = 0;
+            let total_working_hourss = finalarr.sum('total_working_hours');
 
-                var splitTime1 = time1.split(':');
-                var splitTime2 = time2.split(':');
-                var splitTime3 = time3.split(':');
-
-                hour = parseInt(splitTime1[0]) + parseInt(splitTime2[0]) + parseInt(splitTime3[0]);
-                minute = parseInt(splitTime1[1]) + parseInt(splitTime2[1]) + parseInt(splitTime3[1]);
-                hour = hour + minute / 60;
-                minute = minute % 60;
-                second = parseInt(splitTime1[2]) + parseInt(splitTime2[2]) + parseInt(splitTime3[2]);
-                minute = minute + second / 60;
-                second = second % 60;
-
-                alert('sum of above time= ' + hour + ':' + minute + ':' + second);
-
-            }
-            return successResponseWithData(res, "Success", time_con_data);
+            return successResponseWithData(res, "Success", { allResult: finalarr, total_hours: total_working_hourss });
         } catch (err) {
             console.log(err);
             return ErrorResponse(res, "Something went wrong")
