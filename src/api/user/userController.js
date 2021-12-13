@@ -320,14 +320,17 @@ let userController = {
             let blankDate = [];
             for(let i =1 ; i<= difference; i++){
                 startDate = moment(start_time).add(i,'days').format("YYYY-MM-DD");
-                if(!final.some((val)=>{startDate == val.start_date})){
+                if(final.some((val)=>{startDate == val.start_date})){
+                    blankDate.push(final.find((val)=>{startDate == val.start_date}));
+                }
+                else{
                     blankDate.push({
                         start_date : startDate,
                         total_working_hours : "00:00:00" 
                     });
                 }
             }
-            return successResponseWithData(res, "Success", [...new Set([...final,...blankDate])]);
+            return successResponseWithData(res, "Success",blankDate]);
 
         } catch (e) {
             console.log(e);
