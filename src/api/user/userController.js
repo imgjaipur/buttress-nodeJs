@@ -68,7 +68,7 @@ let userController = {
     },
     updateprofile: async(req, res) => {
         try {
-            let deleteOld = await User.findOne({ _id: req.user._id }, { _id: 0, image: 1, firstname: 1, lastname: 1, mobile: 1, xabn: 1, xqualifications: 1, xwhitecard: 1, xsafetyrating: 1, companyName: 1 });
+            let deleteOld = await User.findOne({ _id: req.user._id }, { _id: 0, image: 1, firstname: 1, email: 1, lastname: 1, mobile: 1, xabn: 1, xqualifications: 1, xwhitecard: 1, xsafetyrating: 1, companyName: 1 });
             let user = req.user;
             let dataToSet = req.body;
             dataToSet.profilestatus = true;
