@@ -114,18 +114,38 @@
                                    {{/if}}
                               </div>
                            <div class="col-12">
-                                   <label for="inputAddress" class="form-label">Location</label>
-                                   <input type="number" step="any" name='longitude' class="form-control"
-                                        placeholder="longitude" id="longitude" required readonly><br>
-                                   <input type="number" step="any" name='latitude' class="form-control"
-                                        placeholder="latitude" id="latitude" required readonly>
+                              <label for="inputAddress" class="form-label">Location</label>
+                              <div class="row">
+                                   <div class="col-6">
+                                        <input type="number" step="any" name='longitude' class="form-control"
+                                   placeholder="longitude" id="longitude" required readonly>
+                                   </div>
+                                   <div class="col-6">
+                                        <input type="number" step="any" name='latitude' class="form-control"
+                                   placeholder="latitude" id="latitude" required readonly>
+                                   </div>
                               </div>
+                         </div>
                               <div class="col-12">
                                    <label for="inputAddress" class="form-label">Working status</label>
                                    <select class="form-select" name='status' aria-label="Default select example">
                                         <option>true</option>
                                         <option>false</option>
                                    </select>
+                              </div>
+                              <div class="col-12">
+                                   <div class="row">
+                                        <div class="col-6">
+                                             <label for="inputPassword4" class="form-label">Site Induction</label>
+                                        <textarea name='site_induction' class="form-control"
+                                             placeholder="Construction Manager" required></textarea>
+                                        </div>
+                                        <div class="col-6">
+                                             <label for="inputPassword4" class="form-label">Safety Briefing</label>
+                                        <textarea name='safety_briefing' class="form-control"
+                                             placeholder="Construction Manager" required></textarea>
+                                        </div>
+                                   </div>
                               </div>
                               <div class="text-center">
                                    <button type="submit" class="btn btn-primary">Submit</button>
