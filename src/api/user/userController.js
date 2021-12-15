@@ -46,7 +46,7 @@ let userController = {
                         const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
                         return successResponseWithData(res, "Success", token)
                     } else {
-                        return ErrorResponse(res, "OTP Dosn't Matched!");
+                        return ErrorResponse(res, "OTP Doesn't Matched!");
                     }
 
                 } else {
@@ -93,7 +93,7 @@ let userController = {
             const user = await User.findOne({ email: req.body.email });
             !user && ErrorResponse(res, "email not exist");
             const validate = await bcrypt.compare(req.body.password, user.password);
-            !validate && ErrorResponse(res, "invalid credintials");
+            !validate && ErrorResponse(res, "Invalid Credentials");
             const token = jwt.sign({ _id: user._id.toString() }, "this is my");
             return successResponseWithData(res, "Success", token);
         } catch (e) {
