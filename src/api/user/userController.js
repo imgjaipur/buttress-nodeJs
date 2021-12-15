@@ -59,7 +59,7 @@ let userController = {
 
                     return successResponseWithData(res, "Success", token)
                 } else {
-                    return ErrorResponse(res, "OTP Dosn't Matched!");
+                    return ErrorResponse(res, "OTP Doesn't Matched!");
                 }
             }
         } catch (e) {
