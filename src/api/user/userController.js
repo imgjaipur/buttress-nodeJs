@@ -3,6 +3,7 @@ const workingStatusSchema = require("../../models/workerStatus");
 const SiteModel = require("../../models/siteModel.js");
 const bcrypt = require("bcrypt");
 const moment = require('moment');
+const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 require('dotenv').config();
@@ -45,7 +46,7 @@ let userController = {
                         const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
                         return successResponseWithData(res, "Success", token)
                     } else {
-                        return ErrorResponse(res, "OTP Dosn't Matched!");
+                        return ErrorResponse(res, "OTP Doesn't Matched!");
                     }
 
                 } else {
@@ -58,7 +59,7 @@ let userController = {
 
                     return successResponseWithData(res, "Success", token)
                 } else {
-                    return ErrorResponse(res, "OTP Dosn't Matched!");
+                    return ErrorResponse(res, "OTP Doesn't Matched!");
                 }
             }
         } catch (e) {
@@ -68,7 +69,7 @@ let userController = {
     },
     updateprofile: async(req, res) => {
         try {
-            let deleteOld = await User.findOne({ _id: req.user._id }, { _id: 0, image: 1, firstname: 1, lastname: 1, mobile: 1, xabn: 1, xqualifications: 1, xwhitecard: 1, xsafetyrating: 1, companyName: 1 });
+            let deleteOld = await User.findOne({ _id: req.user._id }, { _id: 0, image: 1, firstname: 1, email: 1, lastname: 1, mobile: 1, xabn: 1, xqualifications: 1, xwhitecard: 1, xsafetyrating: 1, companyName: 1 });
             let user = req.user;
             let dataToSet = req.body;
             dataToSet.profilestatus = true;
@@ -92,7 +93,7 @@ let userController = {
             const user = await User.findOne({ email: req.body.email });
             !user && ErrorResponse(res, "email not exist");
             const validate = await bcrypt.compare(req.body.password, user.password);
-            !validate && ErrorResponse(res, "invalid credintials");
+            !validate && ErrorResponse(res, "Invalid Credentials");
             const token = jwt.sign({ _id: user._id.toString() }, "this is my");
             return successResponseWithData(res, "Success", token);
         } catch (e) {
@@ -244,9 +245,9 @@ let userController = {
                 }
             }
             // ---------------------------------------
-            let localurl = process.env.LOCAL_URL;
+            let liveurl = process.env.LIVE_URL;
             let port = process.env.LOCAL_API_PORT;
-            let envUrl = `${localurl}${port}`;
+            let envUrl = `${liveurl}${port}`;
 
             const imgupload = await User.update({ _id: req.user._id }, {
                 $set: {
@@ -282,22 +283,22 @@ let userController = {
                     hour = 0,
                     total;
                 for (let i = 0, _len = this.length; i < _len; i++) {
-                    console.log(`this[i][prop].split(':')[2] ---------->`, this[i][prop].split(':')[2]);
-                    console.log(`this[i][prop].split(':')[1] ---------->`, this[i][prop].split(':')[1]);
-                    console.log(`this[i][prop].split(':')[0] ---------->`, this[i][prop].split(':')[0]);
+                    // console.log(`this[i][prop].split(':')[2] ---------->`, this[i][prop].split(':')[2]);
+                    // console.log(`this[i][prop].split(':')[1] ---------->`, this[i][prop].split(':')[1]);
+                    // console.log(`this[i][prop].split(':')[0] ---------->`, this[i][prop].split(':')[0]);
                     sec += Number(this[i][prop].split(':')[2]);
                     min += Number(this[i][prop].split(':')[1]);
                     hour += Number(this[i][prop].split(':')[0]);
 
                 }
                 total = moment.utc(((hour * 3600) + (min * 60) + sec) * 1000).format('HH:mm:ss');
-                console.log(`this[i][prop]`, total);
+                // console.log(`this[i][prop]`, total);
                 return total;
             }
             let groupBy = (data, prop) => {
                 return data.reduce((acc, obj) => {
                     const key = moment(obj[prop]).format('YYYY-MM-DD');
-                    console.log('--------------------->', obj);
+                    // console.log('--------------------->', obj);
                     if (!acc[key]) {
                         acc[key] = [];
                     }
@@ -315,7 +316,21 @@ let userController = {
                 return obj;
 
             });
-            return successResponseWithData(res, "Success", final);
+            let difference = (moment(end_time).diff(moment(start_time), "days"));
+            let startDate = moment(start_time).format("YYYY-MM-DD");
+            let blankDate = [];
+            for (let i = 0; i <= difference; i++) {
+                startDate = moment(start_time).add(i, 'days').format("YYYY-MM-DD");
+                if (final.some((val) => { return `${startDate}` == `${val.start_date}` })) {
+                    blankDate.push(final.find((val) => { return `${startDate}` == `${val.start_date}` }));
+                } else {
+                    blankDate.push({
+                        start_date: startDate,
+                        total_working_hours: "00:00:00"
+                    });
+                }
+            }
+            return successResponseWithData(res, "Success", blankDate);
 
         } catch (e) {
             console.log(e);
@@ -324,7 +339,30 @@ let userController = {
     },
     timesheet_user_details: async(req, res) => {
         try {
-            let time_data = await workingStatusSchema.find({ status: "Completed", worker_id: req.user._id });
+            let pipe = [];
+            pipe.push({
+                $match: { status: "Completed", worker_id: mongoose.Types.ObjectId(req.user._id) }
+            });
+            pipe.push({
+                $lookup: { from: "siteinfos", localField: "constructionSite_id", foreignField: "_id", as: "siteName" }
+            });
+            pipe.push({
+                $project: {
+                    site_name: { $arrayElemAt: ['$siteName.site_name', 0] },
+                    _id: 1,
+                    worker_id: 1,
+                    constructionSite_id: 1,
+                    start_time: 1,
+                    status: 1,
+                    note: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    end_time: 1,
+                    total_working_hours: 1
+                }
+            })
+            let time_data = await workingStatusSchema.aggregate(pipe);
+            // console.log("site name...................>",time_data);
             let finalarr = [];
             for (let member of time_data) {
                 let siteName = await SiteModel.findOne({ _id: member.constructionSite_id }, { _id: 0, site_name: 1 });
@@ -348,16 +386,16 @@ let userController = {
                     hour = 0,
                     total;
                 for (let i = 0, _len = this.length; i < _len; i++) {
-                    console.log(`this[i][prop].split(':')[2] ---------->`, this[i][prop].split(':')[2]);
-                    console.log(`this[i][prop].split(':')[1] ---------->`, this[i][prop].split(':')[1]);
-                    console.log(`this[i][prop].split(':')[0] ---------->`, this[i][prop].split(':')[0]);
+                    // console.log(`this[i][prop].split(':')[2] ---------->`, this[i][prop].split(':')[2]);
+                    // console.log(`this[i][prop].split(':')[1] ---------->`, this[i][prop].split(':')[1]);
+                    // console.log(`this[i][prop].split(':')[0] ---------->`, this[i][prop].split(':')[0]);
                     sec += Number(this[i][prop].split(':')[2]);
                     min += Number(this[i][prop].split(':')[1]);
                     hour += Number(this[i][prop].split(':')[0]);
 
                 }
                 total = moment.utc(((hour * 3600) + (min * 60) + sec) * 1000).format('HH:mm:ss');
-                console.log(`this[i][prop]`, total);
+                // console.log(`this[i][prop]`, total);
                 return total;
             }
             let total_working_hourss = finalarr.sum('total_working_hours');
