@@ -231,30 +231,37 @@ let userController = {
     },
     add_workerStatus: async (req, res) => {
         try {
-            let whereObj = {};
-            if (req.body.address) {
-                whereObj['site_address'] = req.body.address;
-            } else if (req.body.code) {
-                whereObj['site_code'] = req.body.code;
-            } else {
-                return ErrorResponse(res, "Required at lest one of them address or code");
+            if(req.body.address||req.body.code){
+                let whereObj = {};
+                if (req.body.address) {
+                    whereObj['site_address'] = req.body.address;
+                } else if (req.body.code) {
+                    whereObj['site_code'] = req.body.code;
+                }
+                let siteDetails = await SiteModel.findOne(whereObj);
+                if (!siteDetails) {
+                    return ErrorResponse(res, "Please Enter Correct Address Or Code For The Construction Site That You Want To Select");
+                }else{
+                    let myworking = new workingStatusSchema({
+                        worker_id: req.user._id,
+                        constructionSite_id: siteDetails._id,
+                        start_time: moment().format("YYYY-MM-DDTHH:mm:ss"),
+                        status: 'Working'
+                    });
+                    let myworkSave = await myworking.save();
+                    let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id, site_Name: siteDetails.site_name };
+                    return successResponseWithData(res, "Success", workStatus_id);
+                }
+            }else{
+                let myworking = new workingStatusSchema({
+                    worker_id: req.user._id,
+                    start_time: moment().format("YYYY-MM-DDTHH:mm:ss"),
+                    status: 'Working'
+                });
+                let myworkSave = await myworking.save();
+                let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time};
+                return successResponseWithData(res, "Success", workStatus_id);
             }
-            let siteDetails = await SiteModel.findOne(whereObj);
-            if (!siteDetails) {
-                return ErrorResponse(res, "Please Enter Correct Address Or Code For The Construction Site That You Want To Select");
-            }
-            let myworking = new workingStatusSchema({
-                worker_id: req.user._id,
-                constructionSite_id: siteDetails._id,
-                start_time: moment().format("YYYY-MM-DDTHH:mm:ss"),
-                status: 'Working'
-            });
-            let myworkSave = await myworking.save();
-            // console.log(`siteDetails`, siteDetails);
-            let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id, site_Name: siteDetails.site_name };
-            // console.log(myworkSave);
-            return successResponseWithData(res, "Success", workStatus_id);
-
         } catch (error) {
             console.log(error);
             return ErrorResponse(res, "Something is wrong!");
