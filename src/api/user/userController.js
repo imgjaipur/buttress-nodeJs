@@ -48,9 +48,10 @@ let userController = {
                 const use = await User.findOne({ tempmobile: req.body.mobile });
                 if (use) {
                     if (use.otp == req.body.otp) {
-                        const OTP = await User.findOneAndUpdate({ tempmobile: req.body.mobile }, { $set: { otp: "", tempmobile: "", mobile: use.tempmobile } }, { new: true });
+                        const OTP = await User.findOneAndUpdate({ tempmobile: req.body.mobile }, { $set: { otp: "", tempmobile: "", mobile: use.tempmobile, insert_new:false } }, { new: true });
+                        // console.log(OTP);
                         const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
-                        return successResponseWithData(res, "Success", token)
+                        return successResponseWithData(res, "Success", {token, insert_new:use.insert_new})
                     } else {
                         return ErrorResponse(res, "OTP Doesn't Matched!");
                     }
@@ -63,7 +64,7 @@ let userController = {
                     const OTP = await User.findOneAndUpdate({ mobile: req.body.mobile }, { $set: { otp: "" } }, { new: true });
                     const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
 
-                    return successResponseWithData(res, "Success", token)
+                    return successResponseWithData(res, "Success", {token, insert_new:OTP.insert_new})
                 } else {
                     return ErrorResponse(res, "OTP Doesn't Matched!");
                 }
@@ -160,7 +161,7 @@ let userController = {
                 //         })
                 //         .then(validation_request => console.log(validation_request.friendlyName));
                 // }
-                return successResponseWithData(res, "Success",{insert_new:mob.insert_new});
+                return successResponseWithData(res, "Success");
             } else {
                 const mobo = await User.findOne({ tempmobile: req.body.mobile });
                 if (mobo) {
@@ -180,14 +181,14 @@ let userController = {
                     //         body: `${otpcode}\nYour One-Time-Passwword (OTP) to login at your BUTTRESS account.\n It is valid for 10 mins.`
                     //     }).then((message) => console.log(message.sid));
                     // }
-                    return successResponseWithData(res, "Success",{insert_new:mobo.insert_new});
+                    return successResponseWithData(res, "Success");
                 } else {
                     const mobi = await User({
                         tempmobile: req.body.mobile,
                         otp: otpcode
                     });
-                   let confirm_user =  await mobi.save();
-                   await User.updateOne({ _id: mongoose.Types.ObjectId(confirm_user._id) }, {$set: { insert_new: false }});
+                   await mobi.save();
+                //    await User.updateOne({ _id: mongoose.Types.ObjectId(confirm_user._id) }, {$set: { insert_new: false }});
                    
                     // if (String(req.body.mobile).length == 10) {
                     //     console.log(`+91${req.body.mobile}`);
@@ -197,7 +198,7 @@ let userController = {
                     //         body: `${otpcode}\nYour One-Time-Passwword (OTP) to login at your BUTTRESS account.\n It is valid for 10 mins.`
                     //     }).then((message) => console.log(message.sid));
                     // }
-                    return successResponseWithData(res, "Success" , {insert_new: confirm_user.insert_new});
+                    return successResponseWithData(res, "Success");
                 }
             }
         } catch (e) {
