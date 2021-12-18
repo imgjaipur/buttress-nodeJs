@@ -33,9 +33,10 @@ let userController = {
                 password: req.body.password,
             });
             let data_newuser = await newuser.save();
+            const token = jwt.sign({ _id: data_newuser._id.toString() }, "this is my");
                 let datasdd = await User.updateOne({ _id: mongoose.Types.ObjectId(data_newuser._id) }, {$set: { insert_new: false }});
-                console.log(datasdd);
-            return successResponseWithData(res, "Success",{insert_new:data_newuser.insert_new});
+                // console.log(datasdd);
+            return successResponseWithData(res, "Success",{token,insert_new:data_newuser.insert_new});
         } catch (e) {
             console.log(e);
             return ErrorResponse(res, "Something went wrong! Please try again!");
