@@ -74,9 +74,13 @@ const registerSchema=new mongoose.Schema({
     tempmobile:{
         type:String,
         default:""
+    },
+    insert_new:{
+        type:Boolean,
+        default:true
     }
 },{versionKey:false,timestamps:true});
 
-let registerUsers=new mongoose.model("user",registerSchema);
+let registerUsers = new mongoose.model("user",registerSchema);
 
 module.exports=registerUsers;
