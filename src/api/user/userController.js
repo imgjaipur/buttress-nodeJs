@@ -479,7 +479,7 @@ let userController = {
             siteName ? dataToSet.siteName = siteName : true;
             
             let updated = await workingStatusSchema.findOneAndUpdate({ _id:req.params.id }, { $set: dataToSet }, { new: true })
-            return successResponseWithData(res, "Success", updated);
+            return successResponseWithData(res, "Success");
  
 
 
