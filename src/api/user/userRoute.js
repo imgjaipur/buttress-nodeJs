@@ -46,7 +46,7 @@ userRoutes.put('/uploadsImage', auth, upload.single("image"), userController.upl
 userRoutes.post("/updateUserNote", auth, userController.updateUserNote_page);
 userRoutes.post("/timesheet", userController.timesheet);
 userRoutes.post('/socialLogin', userController.sociallogin);
-
+userRoutes.put("/edittimesheet/:id",auth, userController.edit_timesheet);
 
 
 exports.userRoutes = userRoutes;
