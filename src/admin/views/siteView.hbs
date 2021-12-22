@@ -37,39 +37,37 @@
      <script
           src="https://maps.googleapis.com/maps/api/js?libraries=places&region=ca&language=en&key=AIzaSyACOTvRgXOv5eWsgzVBWxrLrR4aOC0E_Po&callback=initAutocomplete"
           async defer></script>
-   <script>
-          
+     <script>
           var placeSearch, autocomplete;
-
-
-                    function initAutocomplete() {
-                         // Create the autocomplete object, restricting the search to geographical
-                         // location types.
-                         autocomplete = new google.maps.places.Autocomplete(
+          function initAutocomplete() {
+               // Create the autocomplete object, restricting the search to geographical
+               // location types.
+               autocomplete = new google.maps.places.Autocomplete(
                 /** @type {!HTMLInputElement} */(document.getElementById('address_finder')),
-                              { types: ['geocode', 'establishment'] });
-                         var options = {
-                              types: ['(cities)'],
-                              componentRestrictions: { country: "us" }
-                         };
+                    { types: ['geocode', 'establishment'] });
+               var options = {
+                    types: ['(cities)'],
+                    componentRestrictions: { country: "us" }
+               };
 
 
-                         // When the user selects an address from the dropdown, populate the address
-                         // fields in the form.
-                         autocomplete.addListener('place_changed', fillInAddress);
-                    }
+               // When the user selects an address from the dropdown, populate the address
+               // fields in the form.
+               autocomplete.addListener('place_changed', fillInAddress);
+          }
 
-                    function fillInAddress() {
-                         // Get the place details from the autocomplete object.
-                         var place = autocomplete.getPlace('IN');
+          function fillInAddress() {
+               console.log('hello from inside')
+               // Get the place details from the autocomplete object.
+               var place = autocomplete.getPlace('IN');
 
-                         document.getElementById("longitude").value = place.geometry.location.lng();
-                         document.getElementById("latitude").value = place.geometry.location.lat();
-                         // document.getElementById("monitor_zone_name").value = "";
-                         // document.getElementById("zone_id").value = "";
+               document.getElementById("longitude").value = place.geometry.location.lng();
+               document.getElementById("latitude").value = place.geometry.location.lat();
+               // document.getElementById("monitor_zone_name").value = "";
+               // document.getElementById("zone_id").value = "";
 
-                    }
-     </script> 
+          }
+     </script>
 
      <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"
           type="text/javascript"></script>
@@ -96,7 +94,7 @@
                               </div>
                               <div class="col-12">
                                    <label for="inputPassword4" class="form-label">Site Address</label>
-                                   <input type="text" name='siteAddress' onkeypress= initAutocomplete()
+                                   <input type="text" name='siteAddress' onkeypress=initAutocomplete()
                                         class="form-control" id="address_finder" placeholder="Enter Site Adress"
                                         required>
                               </div>
@@ -113,19 +111,19 @@
                                    <span class="text-danger"><sup>****</sup> {{data}} <sup>****</sup></span>
                                    {{/if}}
                               </div>
-                           <div class="col-12">
-                              <label for="inputAddress" class="form-label">Location</label>
-                              <div class="row">
-                                   <div class="col-6">
-                                        <input type="number" step="any" name='longitude' class="form-control"
-                                   placeholder="longitude" id="longitude" required readonly>
-                                   </div>
-                                   <div class="col-6">
-                                        <input type="number" step="any" name='latitude' class="form-control"
-                                   placeholder="latitude" id="latitude" required readonly>
+                              <div class="col-12">
+                                   <label for="inputAddress" class="form-label">Location</label>
+                                   <div class="row">
+                                        <div class="col-6">
+                                             <input type="number" step="any" name='longitude' class="form-control"
+                                                  placeholder="longitude" id="longitude" required readonly>
+                                        </div>
+                                        <div class="col-6">
+                                             <input type="number" step="any" name='latitude' class="form-control"
+                                                  placeholder="latitude" id="latitude" required readonly>
+                                        </div>
                                    </div>
                               </div>
-                         </div>
                               <div class="col-12">
                                    <label for="inputAddress" class="form-label">Working status</label>
                                    <select class="form-select" name='status' aria-label="Default select example">
@@ -137,13 +135,13 @@
                                    <div class="row">
                                         <div class="col-6">
                                              <label for="inputPassword4" class="form-label">Site Induction</label>
-                                        <textarea name='site_induction' class="form-control"
-                                             placeholder="site induction" required></textarea>
+                                             <textarea name='site_induction' class="form-control"
+                                                  placeholder="site induction" required></textarea>
                                         </div>
                                         <div class="col-6">
                                              <label for="inputPassword4" class="form-label">Safety Briefing</label>
-                                        <textarea name='safety_briefing' class="form-control"
-                                             placeholder="safety Briefings" required></textarea>
+                                             <textarea name='safety_briefing' class="form-control"
+                                                  placeholder="safety Briefings" required></textarea>
                                         </div>
                                    </div>
                               </div>
