@@ -462,6 +462,31 @@ let userController = {
             console.log(err);
             return ErrorResponse(res, "Something went wrong")
         }
+    },
+    edit_timesheet:async(req,res)=>{
+        try{
+   
+            let {start_time,end_time,note,siteName } = req.body;
+             let hrs = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(start_time.split("T")[1], "hh-mm-ss"))).format("HH");
+              let min = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(start_time.split("T")[1], "hh-mm-ss"))).format("mm");
+              let sec = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(start_time.split("T")[1], "hh-mm-ss"))).format("ss");
+             let total_working_hours = [hrs, min, sec].join(':');
+            let dataToSet = {};
+            start_time ? dataToSet.start_time = start_time: true;
+            end_time ? dataToSet.end_time = end_time : true;
+            note ? dataToSet.note = note : true;
+            total_working_hours ? dataToSet.total_working_hours = total_working_hours : true;
+            siteName ? dataToSet.siteName = siteName : true;
+            
+            let updated = await workingStatusSchema.findOneAndUpdate({ _id:req.params.id }, { $set: dataToSet }, { new: true })
+            return successResponseWithData(res, "Success");
+ 
+
+
+        }catch(e){
+            console.log(e);
+            return ErrorResponse(res, "Something went wrong")
+        }
     }
 }
 
