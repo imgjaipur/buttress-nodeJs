@@ -34,9 +34,9 @@ let userController = {
             });
             let data_newuser = await newuser.save();
             const token = jwt.sign({ _id: data_newuser._id.toString() }, "this is my");
-                let datasdd = await User.updateOne({ _id: mongoose.Types.ObjectId(data_newuser._id) }, {$set: { insert_new: false }});
-                // console.log(datasdd);
-            return successResponseWithData(res, "Success",{token,insert_new:data_newuser.insert_new});
+            let datasdd = await User.updateOne({ _id: mongoose.Types.ObjectId(data_newuser._id) }, { $set: { insert_new: false } });
+            // console.log(datasdd);
+            return successResponseWithData(res, "Success", { token, insert_new: data_newuser.insert_new });
         } catch (e) {
             console.log(e);
             return ErrorResponse(res, "Something went wrong! Please try again!");
@@ -49,10 +49,10 @@ let userController = {
                 const use = await User.findOne({ tempmobile: req.body.mobile });
                 if (use) {
                     if (use.otp == req.body.otp) {
-                        const OTP = await User.findOneAndUpdate({ tempmobile: req.body.mobile }, { $set: { otp: "", tempmobile: "", mobile: use.tempmobile, insert_new:false } }, { new: true });
+                        const OTP = await User.findOneAndUpdate({ tempmobile: req.body.mobile }, { $set: { otp: "", tempmobile: "", mobile: use.tempmobile, insert_new: false } }, { new: true });
                         // console.log(OTP);
                         const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
-                        return successResponseWithData(res, "Success", {token, insert_new:use.insert_new})
+                        return successResponseWithData(res, "Success", { token, insert_new: use.insert_new })
                     } else {
                         return ErrorResponse(res, "OTP Doesn't Matched!");
                     }
@@ -65,7 +65,7 @@ let userController = {
                     const OTP = await User.findOneAndUpdate({ mobile: req.body.mobile }, { $set: { otp: "" } }, { new: true });
                     const token = jwt.sign({ _id: OTP._id.toString() }, "this is my");
 
-                    return successResponseWithData(res, "Success", {token, insert_new:OTP.insert_new})
+                    return successResponseWithData(res, "Success", { token, insert_new: OTP.insert_new })
                 } else {
                     return ErrorResponse(res, "OTP Doesn't Matched!");
                 }
@@ -104,7 +104,7 @@ let userController = {
             const validate = await bcrypt.compare(req.body.password, user.password);
             !validate && ErrorResponse(res, "Invalid Credentials");
             const token = jwt.sign({ _id: user._id.toString() }, "this is my");
-            return successResponseWithData(res, "Success", {token,insert_new:user.insert_new});
+            return successResponseWithData(res, "Success", { token, insert_new: user.insert_new });
         } catch (e) {
             console.log(e);
             return ErrorResponse(res, "Something is wrong!");
@@ -188,9 +188,9 @@ let userController = {
                         tempmobile: req.body.mobile,
                         otp: otpcode
                     });
-                   await mobi.save();
-                //    await User.updateOne({ _id: mongoose.Types.ObjectId(confirm_user._id) }, {$set: { insert_new: false }});
-                   
+                    await mobi.save();
+                    //    await User.updateOne({ _id: mongoose.Types.ObjectId(confirm_user._id) }, {$set: { insert_new: false }});
+
                     // if (String(req.body.mobile).length == 10) {
                     //     console.log(`+91${req.body.mobile}`);
                     //     await client.messages.create({
@@ -231,7 +231,7 @@ let userController = {
     },
     add_workerStatus: async (req, res) => {
         try {
-            if(req.body.address||req.body.code){
+            if (req.body.address || req.body.code) {
                 let whereObj = {};
                 if (req.body.address) {
                     whereObj['site_address'] = req.body.address;
@@ -241,7 +241,7 @@ let userController = {
                 let siteDetails = await SiteModel.findOne(whereObj);
                 if (!siteDetails) {
                     return ErrorResponse(res, "Please Enter Correct Address Or Code For The Construction Site That You Want To Select");
-                }else{
+                } else {
                     let myworking = new workingStatusSchema({
                         worker_id: req.user._id,
                         constructionSite_id: siteDetails._id,
@@ -252,14 +252,14 @@ let userController = {
                     let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id, site_Name: siteDetails.site_name };
                     return successResponseWithData(res, "Success", workStatus_id);
                 }
-            }else{
+            } else {
                 let myworking = new workingStatusSchema({
                     worker_id: req.user._id,
                     start_time: moment().format("YYYY-MM-DDTHH:mm:ss"),
                     status: 'Working'
                 });
                 let myworkSave = await myworking.save();
-                let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time};
+                let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time };
                 return successResponseWithData(res, "Success", workStatus_id);
             }
         } catch (error) {
@@ -423,8 +423,8 @@ let userController = {
             let finalarr = [];
             for (let member of time_data) {
                 let siteName = await SiteModel.findOne({ _id: member.constructionSite_id }, { _id: 0, site_name: 1 });
-                console.log('sitename-------------->', member.constructionSite_id);
-                console.log('sitename-------------->', siteName);
+                // console.log('sitename-------------->', member.constructionSite_id);
+                // console.log('sitename-------------->', siteName);
                 let name;
                 if (siteName?.site_name) {
                     name = siteName.site_name;
@@ -463,31 +463,32 @@ let userController = {
             return ErrorResponse(res, "Something went wrong")
         }
     },
-    edit_timesheet:async(req,res)=>{
-        try{
-   
-            let {start_time,end_time,note,siteName } = req.body;
-             let hrs = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(start_time.split("T")[1], "hh-mm-ss"))).format("HH");
-              let min = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(start_time.split("T")[1], "hh-mm-ss"))).format("mm");
-              let sec = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(start_time.split("T")[1], "hh-mm-ss"))).format("ss");
-             let total_working_hours = [hrs, min, sec].join(':');
+    edit_timesheet: async (req, res) => {
+        try {
+
+            let { start_time, end_time, note, siteName } = req.body;
+            let hrs = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(start_time.split("T")[1], "hh-mm-ss"))).format("HH");
+            let min = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(start_time.split("T")[1], "hh-mm-ss"))).format("mm");
+            let sec = moment.utc(moment(end_time.split("T")[1], "hh-mm-ss").diff(moment(start_time.split("T")[1], "hh-mm-ss"))).format("ss");
+            let total_working_hours = [hrs, min, sec].join(':');
             let dataToSet = {};
-            start_time ? dataToSet.start_time = start_time: true;
+            start_time ? dataToSet.start_time = start_time : true;
             end_time ? dataToSet.end_time = end_time : true;
             note ? dataToSet.note = note : true;
             total_working_hours ? dataToSet.total_working_hours = total_working_hours : true;
             siteName ? dataToSet.siteName = siteName : true;
-            
-            let updated = await workingStatusSchema.findOneAndUpdate({ _id:req.params.id }, { $set: dataToSet }, { new: true })
+
+            let updated = await workingStatusSchema.findOneAndUpdate({ _id: req.params.id }, { $set: dataToSet }, { new: true })
             return successResponseWithData(res, "Success");
- 
 
 
-        }catch(e){
+
+        } catch (e) {
             console.log(e);
             return ErrorResponse(res, "Something went wrong")
         }
     }
+
 }
 
 module.exports = userController;

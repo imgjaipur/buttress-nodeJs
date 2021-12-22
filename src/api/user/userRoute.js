@@ -45,9 +45,10 @@ userRoutes.post('/workerStatus', auth, userController.add_workerStatus);
 userRoutes.put('/endworkingStatus', auth, userController.end_workerStatus);
 userRoutes.put('/uploadsImage', auth, upload.single("image"), userController.uploadsImg);
 userRoutes.post("/updateUserNote", auth, userController.updateUserNote_page);
-userRoutes.post("/timesheet", userController.timesheet);
-userRoutes.post('/socialLogin', userController.sociallogin);
+userRoutes.get("/timesheet", auth, userController.timesheet);
+userRoutes.get('/timesheet-user',auth, userController.timesheet_user_details);
 userRoutes.put("/edittimesheet/:id",auth, userController.edit_timesheet);
+
 
 
 exports.userRoutes = userRoutes;
