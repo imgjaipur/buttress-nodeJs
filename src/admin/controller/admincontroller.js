@@ -45,15 +45,15 @@ let adminController = {
     //         res.status(400).send(error);
     //     }
     // },
-    admindata: async (req, res) => {
+    admindata: async(req, res) => {
         let data = await registerAdmin.find();
         let json_data = JSON.stringify(data);
         res.send(json_data);
     },
-    login_View: async (req, res) => {
+    login_View: async(req, res) => {
         res.render('adminLogin');
     },
-    log_in: async (req, res) => {
+    log_in: async(req, res) => {
         try {
             let admin_data = await registerAdmin.find({ email: req.body.email });
             // console.log(admin_data);
@@ -69,14 +69,12 @@ let adminController = {
                 );
                 if (matchPassword) {
 
-                    req.session.regenerate(function () {
+                    req.session.regenerate(function() {
                         req.session.user = admin_data;
                         req.session.user = true;
                         return res.redirect('/dashbord');
                     })
-                }
-
-                else {
+                } else {
                     res.render('adminLogin', { data_pass: "please check your password again!" });
                 }
             }
@@ -85,23 +83,23 @@ let adminController = {
         }
 
     },
-    dashbord: async (req, res) => {
+    dashbord: async(req, res) => {
         let users_data = await registerUsers.find();
         let site_data = await site_Data.find({ working_status: true });
         let qr_data = await site_Data.find();
-        // console.log('site data length--' , site_data.length);
-        // console.log("user---" , users_data.length);
-        res.render('admindashbord', { users: (users_data.length), sites: (site_data.length), qr: (qr_data.length) });
+        let admin_data = await registerAdmin.find();
+        // console.log("admin_data" , admin_data[0].name)
+        res.render('admindashbord', { users: (users_data.length), sites: (site_data.length), qr: (qr_data.length), admin: (admin_data[0]) });
     },
-    users_data: async (req, res) => {
+    users_data: async(req, res) => {
         let users = await registerUsers.find();
         // console.log(users);
         res.send(users);
     },
-    users_datatable_view: async (req, res) => {
+    users_datatable_view: async(req, res) => {
         res.render("usersdatatable")
     },
-    users_datatable: async (req, res) => {
+    users_datatable: async(req, res) => {
         let columns = [
             "name",
             "mobile",
@@ -114,7 +112,8 @@ let adminController = {
         let limit1 = req.query.length;
         let start = req.query.start;
         // console.log(req.query.length);
-        let sortObject = {}, dir, join, conditions = {};
+        let sortObject = {},
+            dir, join, conditions = {};
         if (req.query.order[0].dir == 'asc') {
             dir = 1;
         } else {
@@ -170,48 +169,70 @@ let adminController = {
             });
         });
     },
-    users_datatable_custom_search: async (req, res) => {
+    users_datatable_custom_search: async(req, res) => {
 
     },
-    delete_user: async (req, res) => {
+    delete_user: async(req, res) => {
         let user_delete_data = await registerUsers.deleteOne({ _id: req.query.id })
         res.redirect("/users-datatable")
     },
-    edit_user_view: async (req, res) => {
+    edit_user_view: async(req, res) => {
         let user_data = await registerUsers.findOne({ _id: req.query.id });
         // console.log("clicked user data----", user_data);
         res.render("editUser", { user: user_data })
     },
-    edit_user: async (req, res) => {
+    edit_user: async(req, res) => {
         try {
-            // console.log(req.body)
-            // console.log('b',req.file)
-            let data = await registerUsers.updateOne({ _id: req.body.id }, {
-                $set: {
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    mobile: req.body.mobile,
-                    email: req.body.email,
-                    companyName: req.body.xcompanyname,
-                    xabn: req.body.xabn,
-                    xqualifications: req.body.xqualifications,
-                    xwhitecard: req.body.xwhitecard,
-                    profilestatus: req.body.profilestatus,
-                    status: req.body.status
-                }
-            });
-            // console.log("chnages----" , data)
+            // console.log(fileName)
+            let localurl = process.env.LOCAL_URL;
+            let port = process.env.LOCAL_ADMIN_PANEL_PORT;
+            let server_url = `${localurl}${port}`;
+            let localimg = process.env.LOCAL_IMG_PATH;
+            // console.log("image----", req.file.filename)
+            if (req.file) {
+                let data = await registerUsers.updateMany({ _id: req.body.id }, {
+                    $set: {
+                        firstname: req.body.firstname,
+                        lastname: req.body.lastname,
+                        mobile: req.body.mobile,
+                        email: req.body.email,
+                        companyName: req.body.xcompanyname,
+                        xabn: req.body.xabn,
+                        xqualifications: req.body.xqualifications,
+                        xwhitecard: req.body.xwhitecard,
+                        profilestatus: req.body.profilestatus,
+                        status: req.body.status,
+                        image: `${server_url}${localimg}${req.file.filename}`
+                    }
+                });
+            } else {
+                // console.log('i m in')
+                let data = await registerUsers.updateOne({ _id: req.body.id }, {
+                    $set: {
+                        firstname: req.body.firstname,
+                        lastname: req.body.lastname,
+                        mobile: req.body.mobile,
+                        email: req.body.email,
+                        companyName: req.body.xcompanyname,
+                        xabn: req.body.xabn,
+                        xqualifications: req.body.xqualifications,
+                        xwhitecard: req.body.xwhitecard,
+                        profilestatus: req.body.profilestatus,
+                        status: req.body.status,
+                    }
+                });
+            }
             res.redirect('/users-datatable');
         } catch (err) {
             console.log(err);
         }
     },
-    view_user: async (req, res) => {
+    view_user: async(req, res) => {
         let user_data = await registerUsers.findOne({ _id: req.query.id });
         // console.log(user_data);
         res.render("usercard", { info: user_data })
     },
-    update_block_status: async (req, res) => {
+    update_block_status: async(req, res) => {
         try {
             // console.log("query data----", req.params.status,'sdjvhdkfjgdfjk---->',req.params.id)
             let status_data = await registerUsers.updateOne({ _id: req.params.id }, {
@@ -225,19 +246,17 @@ let adminController = {
         }
 
     },
-    site_insert_view_page: async (req, res) => {
+    site_insert_view_page: async(req, res) => {
         const data = await site_Data.findOne({});
         // console.log('site_start_date',data.site_start_date);
         // console.log('site_start_date with moment',moment(data.site_start_date).format("YYYY-MM-DD"));
         res.render('siteView');
     },
-    insert_site_info: async (req, res) => {
+    insert_site_info: async(req, res) => {
 
         try {
-           
             let data_qr = await QRCode.toDataURL(req.body.sitecode);
             let site = await site_Data.find({ site_code: req.body.sitecode });
-            // console.log(site, "------------>", site.length);
             if (site.length > 0) {
                 let data = "Site Code Already Exist.. Please Try Again With New Site Code"
                 res.render('siteView', { data });
@@ -249,21 +268,21 @@ let adminController = {
                     site_code: req.body.sitecode,
                     location: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)],
                     working_status: req.body.status,
-                    qr_code: data_qr
+                    qr_code: data_qr,
+                    site_induction: req.body.site_induction,
+                    safety_briefing: req.body.safety_briefing
                 })
                 let site_Document = await site_info.save();
-                // console.log("site_data -----", site_Document)
                 res.redirect('/siteinfo')
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     },
-    site_info_datatable_view: async (req, res) => {
+    site_info_datatable_view: async(req, res) => {
         res.render("siteinfodatatable")
     },
-    site_info_datatable: async (req, res) => {
+    site_info_datatable: async(req, res) => {
         let columns = [
             "sitename",
             "constructionmanager",
@@ -276,7 +295,8 @@ let adminController = {
         let limit1 = req.query.length;
         let start = req.query.start;
         // console.log(req.query.length);
-        let sortObject = {}, dir, join, conditions = {};
+        let sortObject = {},
+            dir, join, conditions = {};
         if (req.query.order[0].dir == 'asc') {
             dir = 1;
         } else {
@@ -321,11 +341,11 @@ let adminController = {
             });
         });
     },
-    delete_site_info: async (req, res) => {
+    delete_site_info: async(req, res) => {
         let site_delete_data = await site_Data.deleteOne({ _id: req.query.id });
         res.redirect("/siteinfo");
     },
-    site_info_view: async (req, res) => {
+    site_info_view: async(req, res) => {
         let site_info = await site_Data.findOne({ _id: req.query.id });
         // console.log("Qrcode ----",site_info.qr_code);
         let site_data = site_info.site_code
@@ -334,12 +354,12 @@ let adminController = {
         // console.log(data);
         res.render("siteinfocard", { info: site_info, qr: data })
     },
-    site_info_update_view: async (req, res) => {
+    site_info_update_view: async(req, res) => {
         let site_info = await site_Data.findOne({ _id: req.query.id })
-        // console.log("abc---------", site_info);
+            // console.log("abc---------", site_info);
         res.render("editsiteinfo", { info_data: site_info })
     },
-    site_info_update: async (req, res) => {
+    site_info_update: async(req, res) => {
         try {
             let site_data = await site_Data.updateMany({ _id: req.body.id }, {
                 $set: {
@@ -358,7 +378,7 @@ let adminController = {
             console.log(err);
         }
     },
-    log_out: async (req, res) => {
+    log_out: async(req, res) => {
         req.session.destroy(() => {
             res.redirect('/login')
         })

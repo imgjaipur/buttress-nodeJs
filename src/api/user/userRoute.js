@@ -36,6 +36,7 @@ const upload = multer({
 userRoutes.post('/insertUser', validateSingupRequest, isRequestValidated, userController.register);
 userRoutes.post('/mobileLogin', validatemobile, isRequestValidated, userController.login);
 userRoutes.post('/emailLogin', userController.emaillogin);
+userRoutes.post('/socialLogin', userController.sociallogin);
 userRoutes.post('/verifyMobile', userController.verify);
 userRoutes.post('/resendOTP', userController.resendOtp);
 userRoutes.get('/getProfile', auth, userController.getProfile);

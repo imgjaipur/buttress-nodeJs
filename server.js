@@ -27,7 +27,7 @@ const dotenv = require('dotenv').config();
 const fs = require('fs');
 
 
-
+require('dotenv').config();
 
 app.use(express.static(path.join(__dirname,'/uploads')));
 
@@ -49,10 +49,10 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-let privateKey = fs.readFileSync('./session.key',"utf8");
+// let privateKey = fs.readFileSync('./session.key',"utf8");
 
 app.use(session({
-     secret: privateKey,
+     secret: process.env.privateKey,
      resave: false,
      saveUninitialized: false,
      cookie: { maxAge: 7200000, httpOnly: true } 
@@ -60,7 +60,7 @@ app.use(session({
 app.use(cookieParser())
 app.use(route);
 
-const port = 8080;
+const port = process.env.LOCAL_ADMIN_PANEL_PORT || 8080;
 app.listen(port , (err) => {if (err)
     {
     console.log(err); process.exit(0)}
