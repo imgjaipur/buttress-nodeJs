@@ -249,7 +249,7 @@ let userController = {
                         status: 'Working'
                     });
                     let myworkSave = await myworking.save();
-                    let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id, site_Name: siteDetails.site_name };
+                    let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id, site_Name: siteDetails?.site_name };
                     return successResponseWithData(res, "Success", workStatus_id);
                 }
             } else {
