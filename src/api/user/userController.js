@@ -246,9 +246,12 @@ let userController = {
                         worker_id: req.user._id,
                         constructionSite_id: siteDetails._id,
                         start_time: req.body.start_time,
+                        start_Date:moment(req.body.start_time).format("YYYY-MM-DD"),
+                        time_zone:req.body.time_zone,
                         status: 'Working'
                     });
                     let myworkSave = await myworking.save();
+                    console.log(myworkSave);
                     let workStatus_id = { workStatus_id: myworkSave._id, start_time: myworkSave.start_time, constructionSite_id: myworkSave.constructionSite_id, site_Name: siteDetails?.site_name || '' };
                     return successResponseWithData(res, "Success", workStatus_id);
                 }
@@ -256,6 +259,8 @@ let userController = {
                 let myworking = new workingStatusSchema({
                     worker_id: req.user._id,
                     start_time: req.body.start_time,
+                    start_Date:moment(req.body.start_time).format("YYYY-MM-DD"),
+                    time_zone:req.body.time_zone,
                     status: 'Working'
                 });
                 let myworkSave = await myworking.save();
@@ -331,9 +336,10 @@ let userController = {
     },
     timesheet: async(req, res) => {
         try {
-            let start_time = moment(req.query.start_time).format('llll');
-            let end_time = moment(req.query.end_time).add(1, "days").subtract(1, "minutes").format('llll');
-            const data = await workingStatusSchema.find({ createdAt: { $gte: new Date(start_time), $lte: new Date(end_time) }, status: { $ne: "Working" }, worker_id: req.user._id });
+            let start_time = moment(req.query.start_time).format("YYYY-MM-DD");
+            let end_time = moment(req.query.end_time).add(1, "days").subtract(1, "minutes").format("YYYY-MM-DD");
+            const data = await workingStatusSchema.find({ start_Date: { $gte: start_time, $lte: end_time }, status: { $ne: "Working" }, worker_id: req.user._id });
+            // console.log('----------->',data)
             Array.prototype.sum = function(prop) {
                 let sec = 0,
                     min = 0,
@@ -476,6 +482,9 @@ let userController = {
             start_time ? dataToSet.start_time = start_time : true;
             end_time ? dataToSet.end_time = end_time : true;
             note ? dataToSet.note = note : true;
+            if(start_time){
+                dataToSet.start_Date = moment(start_time).format("YYYY-MM-DD");
+            }
             total_working_hours ? dataToSet.total_working_hours = total_working_hours : true;
             if (req.body.code) {
                 let whereObj = {};

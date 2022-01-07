@@ -23,6 +23,12 @@ let workerStatusSchema= new mongoose.Schema({
     },
     note:{
         type:String
+    },
+    time_zone:{
+        type:String
+    },
+    start_Date:{
+        type:String
     }
 },{versionKey:false,timestamps:true});
 

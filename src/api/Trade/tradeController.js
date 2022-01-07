@@ -50,6 +50,8 @@ const allTradeCategory={
                 worker_id: req.user._id,
                 constructionSite_id: (siteDetails._id).toString(),
                 start_time: moment(req.body.start_time).format("YYYY-MM-DDTHH:mm:ss"),
+                start_Date:moment(req.body.start_time).format("YYYY-MM-DD"),
+                time_zone:req.body.time_zone || "",
                 end_time: end_time,
                 total_working_hours:total_working_hours,
                 status: 'Completed',
