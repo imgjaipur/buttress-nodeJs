@@ -413,6 +413,7 @@ let userController = {
             pipe.push({
                 $project: {
                     site_name: { $arrayElemAt: ['$siteName.site_name', 0] },
+                    site_code:{$arrayElemAt:['$siteName.site_code', 0]},
                     _id: 1,
                     worker_id: 1,
                     constructionSite_id: 1,
