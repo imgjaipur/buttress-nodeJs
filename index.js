@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 require('./src/lib/connecton');
 const path=require("path");
+const moment = require('moment')
 // Create Express webapp
 const app = express();
 const mongoose= require('mongoose');
@@ -17,7 +18,7 @@ app.use(
         extended: true,
     })
 );
-
+console.log(moment().format("YYYY-MM-DDTHH:mm:ss"));
 
 
 // Routes 

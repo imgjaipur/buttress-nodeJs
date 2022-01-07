@@ -112,6 +112,8 @@ let adminController = {
         let limit1 = req.query.length;
         let start = req.query.start;
         // console.log(req.query.length);
+        // console.log("sttar" , start);
+
         let sortObject = {},
             dir, join, conditions = {};
         if (req.query.order[0].dir == 'asc') {
@@ -126,12 +128,12 @@ let adminController = {
             name = req.query.name;
         }
         registerUsers.countDocuments(conditions).exec((err, rows) => {
-            // console.log('rows', rows);
+            console.log('rows', rows);
             let totalFiltered = rows;
             let data = [];
             let count = 1;
             registerUsers.find(conditions).skip(Number(start)).limit(Number(limit1)).sort(sortObject).exec((err, rows1) => {
-                // console.log("data----", rows1);
+                console.log("data----", rows1);
                 if (err) console.log(err);
                 rows1.forEach((index) => {
                     // console.log("company--------------",index.xcompanyname);
@@ -315,6 +317,7 @@ let adminController = {
             let count = 1;
             site_Data.find(conditions).skip(Number(start)).limit(Number(limit1)).sort(sortObject).exec((err, rows1) => {
                 // console.log("data----", rows1);
+                
                 if (err) console.log(err);
                 rows1.forEach((index) => {
                     data.push({

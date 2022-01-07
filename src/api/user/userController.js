@@ -245,7 +245,7 @@ let userController = {
                     let myworking = new workingStatusSchema({
                         worker_id: req.user._id,
                         constructionSite_id: siteDetails._id,
-                        start_time: moment().format("YYYY-MM-DDTHH:mm:ss"),
+                        start_time: req.body.start_time,
                         status: 'Working'
                     });
                     let myworkSave = await myworking.save();
@@ -255,7 +255,7 @@ let userController = {
             } else {
                 let myworking = new workingStatusSchema({
                     worker_id: req.user._id,
-                    start_time: moment().format("YYYY-MM-DDTHH:mm:ss"),
+                    start_time: req.body.start_time,
                     status: 'Working'
                 });
                 let myworkSave = await myworking.save();
@@ -380,12 +380,13 @@ let userController = {
                 startDate = moment(start_time).add(i, 'days').format("YYYY-MM-DD");
                 if (final.some((val) => { return `${startDate}` == `${val.start_date}` })) {
                     blankDate.push(final.find((val) => { return `${startDate}` == `${val.start_date}` }));
-                } else {
-                    blankDate.push({
-                        start_date: startDate,
-                        total_working_hours: "00:00:00"
-                    });
-                }
+                } 
+                // else {
+                //     blankDate.push({
+                //         start_date: startDate,
+                //         total_working_hours: "00:00:00"
+                //     });
+                // }
             }
             return successResponseWithData(res, "Success", blankDate);
 
