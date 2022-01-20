@@ -26,19 +26,19 @@ const storage = multer.diskStorage({
     }
 });
 var upload = multer({
-    storage: storage,
-})
-// --------- registration route-------
+        storage: storage,
+    })
+    // --------- registration route-------
 
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, async(req, res) => {
     res.send("buttress project setup")
 })
 router.get('/login', adminController.login_View);
 router.post('/login', adminController.log_in);
 router.get('/logout', auth, adminController.log_out);
 // ---------------------------------------------------------------------------------
-// router.get('/register',adminController.register_Admin_view);
-// router.post('/register',upload.single('profile'), adminController.registerAdmin);
+router.get('/register', adminController.register_Admin_view);
+router.post('/register', upload.single('profile'), adminController.registerAdmin);
 // ---------------------------------------------------------------------------------
 router.get('/api', auth, adminController.admindata);
 router.get('/dashbord', auth, adminController.dashbord);
@@ -61,14 +61,3 @@ router.post('/siteinfo-update', auth, adminController.site_info_update);
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-

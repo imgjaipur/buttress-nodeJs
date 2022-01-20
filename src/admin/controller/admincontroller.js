@@ -21,30 +21,30 @@ const site_Data = require('./../../models/siteModel');
 // const express = require('');
 
 let adminController = {
-    // register_Admin_view: (req, res) => {
-    //     res.render('adminRegistration');
-    // },
-    // registerAdmin: async (req, res) => {
-    //     // console.log('i am in here');
-    //     try {
-    //         if (req.method == "POST") {
-    //             // console.log(req.file)
-    //             let hashPassword = await bcrypt.hash(req.body.password, 10);
-    //             let admin = new registerAdmin({
-    //                 name: req.body.name,
-    //                 email: req.body.email,
-    //                 mobile: req.body.mobile,
-    //                 password: hashPassword,
-    //                 profile: req.file.originalname
-    //             });
-    //             let admin_Doc = await admin.save();
-    //             // console.log("admin_doc", admin_Doc);
-    //             res.render('adminLogin');
-    //         }
-    //     } catch (error) {
-    //         res.status(400).send(error);
-    //     }
-    // },
+    register_Admin_view: (req, res) => {
+        res.render('adminRegistration');
+    },
+    registerAdmin: async(req, res) => {
+        // console.log('i am in here');
+        try {
+            if (req.method == "POST") {
+                // console.log(req.file)
+                let hashPassword = await bcrypt.hash(req.body.password, 10);
+                let admin = new registerAdmin({
+                    name: req.body.name,
+                    email: req.body.email,
+                    mobile: req.body.mobile,
+                    password: hashPassword,
+                    profile: req.file.originalname
+                });
+                let admin_Doc = await admin.save();
+                // console.log("admin_doc", admin_Doc);
+                res.render('adminLogin');
+            }
+        } catch (error) {
+            res.status(400).send(error);
+        }
+    },
     admindata: async(req, res) => {
         let data = await registerAdmin.find();
         let json_data = JSON.stringify(data);
@@ -317,7 +317,7 @@ let adminController = {
             let count = 1;
             site_Data.find(conditions).skip(Number(start)).limit(Number(limit1)).sort(sortObject).exec((err, rows1) => {
                 // console.log("data----", rows1);
-                
+
                 if (err) console.log(err);
                 rows1.forEach((index) => {
                     data.push({
